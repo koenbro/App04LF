@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Save, should appear as action button -->
+    <item android:id="@+id/action_save_shot"
+          android:icon="@drawable/ic_action_save"
+          android:title="@string/action_save_shot"
+          android:showAsAction="ifRoom" />
+    <!-- Calculate exposure  -->
+    <item android:id="@+id/action_calculate_exposure"
+          android:icon="@drawable/ic_action_picture"
+          android:title="@string/action_calculate_exposure"
+          android:showAsAction="ifRoom" />
+
+
+
+
+
+
+
+</menu>

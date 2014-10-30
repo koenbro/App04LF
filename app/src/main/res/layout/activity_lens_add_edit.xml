@@ -1,0 +1,112 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TableRow>
+            <TextView
+                android:text="@string/lens_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextLensName"
+                android:layout_column="1"
+                android:maxLength="20"
+                android:hint="@string/hint_lens_nickname"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/lens_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextLensBrand"
+                android:layout_column="1"
+                android:maxLength="25"
+                android:hint="@string/hint_lens_brand"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/lens_focal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextLensFocal"
+                android:maxLength="10"
+                android:inputType="number"
+                android:hint="@string/hint_lens_focal"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/lens_filter_diameter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextLensFilterDia"
+                android:maxLength="10"
+                android:inputType="number"
+                android:hint="@string/hint_lens_filter_dia"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/aperture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_column="1"
+                style="?android:listSeparatorTextViewStyle"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/aperture_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_column="0"
+                android:layout_gravity="right"/>
+
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerApertureOpen"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/aperture_closed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_column="0"
+                android:layout_gravity="right"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerApertureClosed"/>
+
+
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>
+
+

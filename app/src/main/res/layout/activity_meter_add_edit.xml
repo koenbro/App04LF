@@ -1,0 +1,72 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TableRow>
+            <TextView
+                android:text="@string/meter_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextMeterName"
+                android:layout_column="1"
+                android:maxLength="20"
+                android:hint="@string/hint_meter_name"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/meter_results_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_column="0"
+                />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerMeterResultsFormat"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/meter_iso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextMeterIso"
+                android:layout_column="1"
+                android:maxLength="25"
+                android:inputType="number"
+                android:hint="@string/hint_meter_iso"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/meter_compensation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextMeterCompensation"
+                android:maxLength="10"
+                android:inputType="number|numberSigned|numberDecimal"
+                android:hint="@string/hint_meter_compensation"/>
+        </TableRow>
+
+
+
+    </TableLayout>
+</LinearLayout>
+
+
