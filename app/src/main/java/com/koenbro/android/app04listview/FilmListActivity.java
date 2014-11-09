@@ -26,24 +26,23 @@ public class FilmListActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_list);
         db = new FilmDBAdapter(this);
-
         filmAdapterLoad();
         filmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intentEditFilm = new Intent(FilmListActivity.this, FilmAddEditActivity.class);
+                Intent intentEditFilm = new Intent(FilmListActivity.this,
+                        FilmAddEditActivity.class);
                 Log.d(DBContract.TableFilm.TAG, String.valueOf(position));
                 ArrayList<Film> latestFilmList = generateData();
                 Film clickedFilm = (Film) latestFilmList.get(position);
                 long intentId = clickedFilm.getId();
-                intentEditFilm.putExtra(FilmAddEditActivity.EXTRA_FILM_ID, intentId); //sql starts at 1; java at 0
+                intentEditFilm.putExtra(FilmAddEditActivity.EXTRA_FILM_ID, intentId);
                 Toast.makeText(getApplicationContext(),
                         "position:" + String.valueOf(position) + "; id:" + String.valueOf(intentId),
                         Toast.LENGTH_SHORT).show();
                 startActivityForResult(intentEditFilm, 0);
             }
         });
-
     }
 
     // Reload the latest filter list after addition/deletion
@@ -56,21 +55,17 @@ public class FilmListActivity extends Activity{
      * Create a custom adaptor to connect the film list from generateData() with the filmlistview
      */
     public void filmAdapterLoad(){
-
         filmAdapter = new FilmAdapter(this, generateData()); //pass context/data to the custom adapter
         filmListView = (ListView) findViewById(R.id.filmListView); //Get ListView from activity_main.xml
         filmListView.setAdapter(filmAdapter);
-
     }
 
     private ArrayList<Film> generateData() {
-
         db.open();
         ArrayList<Film> allFilms = new ArrayList<Film>();
         allFilms = db.getAllFilms();
         db.close();
         return (allFilms);
-
     }
 
     @Override

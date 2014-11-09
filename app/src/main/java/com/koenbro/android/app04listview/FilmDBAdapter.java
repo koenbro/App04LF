@@ -41,7 +41,6 @@ public class FilmDBAdapter {
         this.mDb = this.mDbHelper.getWritableDatabase();
         return this;
     }
-
     public void close(){
         this.mDbHelper.close();
     }
@@ -115,8 +114,7 @@ public class FilmDBAdapter {
         return (films);
     }
     public int updateFilm(Film film){
-        ContentValues values;
-        values = FilmToContentValues(film);
+        ContentValues values = FilmToContentValues(film);
         int i = this.mDb.update(DBContract.TableFilm.TABLE_NAME,
                 values,
                 DBContract.TableFilm.COLUMN_ID+"=?",

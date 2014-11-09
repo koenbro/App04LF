@@ -139,4 +139,62 @@ public final class DBContract {
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String TAG = "MeterDB.tag";
     }
+
+    public static abstract class TableShot implements BaseColumns{
+        public static final String TABLE_NAME = "shots";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_1 = "lens_focal";
+        public static final String COLUMN_2 = "film_name";
+        public static final String COLUMN_3 = "film_ei";
+        public static final String COLUMN_4 = "lens_name";
+        public static final String COLUMN_5 = "lens_focal";
+        public static final String COLUMN_6 = "aperture";
+        public static final String COLUMN_7 = "shutter";
+        public static final String COLUMN_8 = "filter_name";
+        public static final String COLUMN_9 = "bellows_extension";
+        public static final String COLUMN_10 = "filter_factor";
+        public static final String COLUMN_11 = "rc";
+        public static final String COLUMN_12 = "bellows_correction";
+        public static final String COLUMN_13 = "comment";
+/*  private long id;
+    private int date;
+    private String filmName;
+    private int filmEI;
+    private String lensName;
+    private int lensFocal;
+
+    private String aperture;
+    private String shutter;
+    private String filterName;
+    private int bellowsExtension;
+    private double filterFactor;
+
+    private double rc;
+    private double bellowsCorrection;
+    private String comment;
+*/
+        public static final String[] COLUMNS = {
+                COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3, COLUMN_4,
+                COLUMN_5, COLUMN_6, COLUMN_7, COLUMN_8, COLUMN_9,
+                COLUMN_10, COLUMN_11, COLUMN_12, COLUMN_13};
+        public static final String CREATE_TABLE =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_4 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_5 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_6 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_7 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_8 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_9 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_10 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_11 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_12 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_13 + TEXT_TYPE +
+                        " )";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String TAG = "ShotsDB.tag";
+    }
 }
