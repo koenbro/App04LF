@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- Send data -->
+    <item android:id="@+id/action_send_data"
+          android:icon="@drawable/ic_action_email"
+          android:title="@string/action_send_data"
+          android:showAsAction="ifRoom"/>
     <!-- Save, should appear as action button -->
     <item android:id="@+id/action_save_shot"
           android:icon="@drawable/ic_action_save"
@@ -12,6 +16,7 @@
           android:icon="@drawable/ic_action_picture"
           android:title="@string/action_calculate_exposure"
           android:showAsAction="ifRoom" />
+
 
 
 

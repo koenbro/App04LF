@@ -1,10 +1,12 @@
 package com.koenbro.android.app04listview;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 /**
  * Created by laszlo on 10/21/14. http://hmkcode.com/android-simple-sqlite-database-tutorial/
@@ -29,6 +31,7 @@ public class FilmAdapter extends ArrayAdapter<Film>{
         labelView.setText(filmsArrayList.get(position).getFilmName());
         String valueText =
                 " EI: " + filmsArrayList.get(position).getFilmEi() +
+                "; type: " + filmsArrayList.get(position).getFilmType() +
                 " -- id: " + String.valueOf(filmsArrayList.get(position).getId());
         valueView.setText(valueText);
         return (rowView);

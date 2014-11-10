@@ -27,14 +27,13 @@
     <string name="main_choose_lens">lens</string>
     <string name="main_choose_aperture">f/</string>
     <string name="main_choose_filter">filter</string>
-    <string name="main_choose_be">bellows extension</string>
+    <string name="main_choose_be">bellows</string>
     <string name="main_choose_meter">meter</string>
     <string name="main_choose_meter_read">meter read</string>
     <string name="main_choose_camera">camera</string>
     <string name="main_default_gear">Default gear</string>
-
-
-
+    <string name="main_calculated_exposure">Exposure: </string>
+    <string name="main_user_choices">Your choices:</string>
 
     <string name="equipment_choose_page">Edit gear</string>
 
@@ -130,6 +129,7 @@
     <string name="action_discard_filter">Delete camera</string>
     <string name="action_save_shot">Save shot</string>
     <string name="action_calculate_exposure">Calculate exposure</string>
+    <string name="action_send_data">Email data now</string>
 
     <!-- Dialogs and toasts -->
     <string name="dialog_delete_film">Really delete?</string>

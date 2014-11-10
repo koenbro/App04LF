@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
@@ -7,14 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <TableRow>
-            <TextView
-                android:text="@string/film_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"/>
-        </TableRow>
-
+        <!-- USER INPUT-->
         <TableRow>
             <TextView
                 android:text="@string/main_choose_film"
@@ -35,17 +27,12 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:background="@drawable/layout_bg"/>
-
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_lens_spinner"/>
         </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
+        <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,36 +44,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_aperture_spinner"/>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_column="1"
-                        android:checkedButton="@+id/radioButton0">
+                        android:id="@+id/radioGroupf"
+                        android:checkedButton="@+id/radioButtonf0"
+                        android:paddingLeft="4dp">
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" "
-                    android:id="@+id/radioButton0"/>
+                    android:id="@+id/radioButtonf0"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="*"
-                    android:id="@+id/radioButton1"/>
+                    android:id="@+id/radioButtonf1"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="**"
-                    android:id="@+id/radioButton2"/>
+                    android:id="@+id/radioButtonf2"/>
             </RadioGroup>
-        </TableRow>
 
+        </TableRow>
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -108,24 +91,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
-
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_set_be"
                 android:numeric="integer"/>
-
         </TableRow>
-
         <TableRow>
-        <TextView
-            android:text="@string/main_default_gear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_column="1"
-            style="?android:listSeparatorTextViewStyle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_choose_meter_read"
+                android:padding="10dp"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_ev_spinner"/>
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_column="1"
+                        android:id="@+id/radioGroupMeterRead"
+                        android:checkedButton="@+id/radioButtonMeter0"
+                        android:paddingLeft="4dp">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:id="@+id/radioButtonMeter0"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:id="@+id/radioButtonMeter1"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="**"
+                    android:id="@+id/radioButtonMeter2"/>
+            </RadioGroup>
         </TableRow>
+
+
+
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -158,6 +167,7 @@
                 android:id="@+id/main_choose_camera"/>
 
         </TableRow>
+        <!-- DISPLAY CALCULATED EXPOSURE-->
         <TableRow>
             <TextView
                 android:text="@string/equipment_choose_page"
@@ -171,6 +181,44 @@
                 android:layout_column="1"
                 android:layout_gravity="left"
                 android:gravity="left" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/main_calculated_exposure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_column="1"
+                style="?android:listSeparatorTextViewStyle"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_column="0"
+                android:padding="10dp"
+                android:id="@+id/textViewExpLo"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:padding="10dp"
+                android:layout_column="1"
+                android:textColor="@color/OrangeRed"
+
+                android:id="@+id/textViewExp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:padding="10dp"
+                android:layout_column="2"
+                android:id="@+id/textViewExpHi"/>
+
         </TableRow>
     </TableLayout>
 </LinearLayout>

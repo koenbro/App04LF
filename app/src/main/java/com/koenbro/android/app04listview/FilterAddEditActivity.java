@@ -126,7 +126,6 @@ public class FilterAddEditActivity extends Activity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.filter_add_edit_activity_actions, menu);
-        //TODO
         return super.onCreateOptionsMenu(menu);
     }
 

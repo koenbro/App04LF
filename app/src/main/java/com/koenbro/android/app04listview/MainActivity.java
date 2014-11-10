@@ -2,7 +2,10 @@ package com.koenbro.android.app04listview;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -60,8 +67,6 @@ public class MainActivity extends Activity {
     private Meter meterChosen;
     private Camera cameraChosen;
 
-
-
     //inventory
     private ArrayList<Film> allFilms;
     private ArrayList<Filter> allFilters;
@@ -71,6 +76,10 @@ public class MainActivity extends Activity {
 
     public Shot shot;
     public DBAdapter db;
+    String emailedFilename;
+    // GPSTracker class
+    GPSTracker gps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +108,9 @@ public class MainActivity extends Activity {
         View radioButton = mThirdStops.findViewById(radioButtonID);
         int idx = mThirdStops.indexOfChild(radioButton);
         if (idx == 1)  {
-            aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
+            //aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
+            aperture = aperture / Math.sqrt(Math.pow(0.5, 0.3333)); // 1/3 stop up
+            //TODO not sure if algebra is equivalent; check in R
         }
         else if (idx ==2) {
             aperture = aperture * Math.sqrt(Math.pow(2, 0.6666)); // 2/3 stop up
@@ -118,7 +129,7 @@ public class MainActivity extends Activity {
                 bellowsExtension = lensChosen.getLensFocal();
             }
         }
-        //the meter read like the aperture, also depends on spinner + radio buttons
+        //the meter read (like the aperture) also depends on spinner + radio buttons
         meterReadValue = Double.parseDouble(String.valueOf(mMeterReadEV.getSelectedItem()));
         int radioButtonMeterID = mThirdEV.getCheckedRadioButtonId();
         View radioButtonMeter = mThirdEV.findViewById(radioButtonMeterID);
@@ -172,12 +183,10 @@ public class MainActivity extends Activity {
         allCameras = cameraDB.getAllCameras();
         cameraDB.close();
     }
-
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
         mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
         mLensAperture = (Spinner)findViewById(R.id.main_aperture_spinner);
-
 
         mThirdStops = (RadioGroup)findViewById(R.id.radioGroupf);
         mFullStop = (RadioButton)findViewById(R.id.radioButtonf0);
@@ -203,7 +212,6 @@ public class MainActivity extends Activity {
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         equipmentSelectWidget();
     }
-
     private void refreshDynamicContent(){
         //show film names from db
         ArrayList<String> filmNames = new ArrayList<String>();
@@ -235,6 +243,7 @@ public class MainActivity extends Activity {
         adapterAperture.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLensAperture.setAdapter(adapterAperture);
         mLensAperture.setSelection(adapterAperture.getPosition("11"));
+        //TODO move this number to R.string
 
         //show filter names from db
         ArrayList<String> filtersNames = new ArrayList<String>();
@@ -255,6 +264,7 @@ public class MainActivity extends Activity {
         adapterMeterReadEV.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMeterReadEV.setAdapter(adapterMeterReadEV);
         mMeterReadEV.setSelection(adapterMeterReadEV.getPosition("10"));
+        //TODO move this number to R.string
 
         //show meter names from db
         ArrayList<String> metersNames = new ArrayList<String>();
@@ -279,7 +289,6 @@ public class MainActivity extends Activity {
         mCameraChoice.setAdapter(camerasNamesAdapter);
 
     }
-
     private void equipmentSelectWidget(){
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         mEquipmentPage = (Spinner) findViewById(R.id.spinner_equipment);
@@ -337,27 +346,120 @@ public class MainActivity extends Activity {
             case R.id.action_calculate_exposure:
                 getUserChoices();
                 calcExposure();
-                String dm;
                 NumberFormat twoDec = new DecimalFormat("#0.00");
-//              dm =
-//                        "Film:" + filmChosen.getFilmName() +
-//                        "; Lens:" + lensChosen.getLensName() +
-//                        "; f/" + aperture +
-//                        "; filter:" + filterChosen.getFilterName() +
-//                        "; EV:" + meterReadValue;
-                dm = "BF: " + twoDec.format( shot.getBf())+
-                        ";  FF: " + String.valueOf(shot.getFf())+
-                        ";  RC: " + String.valueOf(shot.getRc());
-                //dm = "f/" + aperture + "; meter:" + meterReadValue;
+                String exposureCompensations =
+                        "BF: " + twoDec.format( shot.getBf())+
+                        ";  FF: " + twoDec.format(shot.getFf())+
+                        ";  RC: " + twoDec.format(shot.getRc());
                 Toast.makeText(MainActivity.this,
-                        dm, Toast.LENGTH_LONG).show();
+                        exposureCompensations, Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
+                shot.setShotDay(timeStamp()[0]); //day
+                shot.setShotTime(timeStamp()[1]); //time
+                shot.setLatitude(locationStamp()[0]); //latitude
+                shot.setLongitude(locationStamp()[1]); //longitude
 
+                //Toast.makeText(MainActivity.this,
+                //        timeStamp()[0] + " " + timeStamp()[1], Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_send_data:
+                emailedFilename = "lfdb_backup.sqlite";
+                //TODO constant
+                String EmailId = "lvaszar@gmail.com";
+                //TODO constant
+                exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
+                exportDatabase(DBContract.DB_NAME, emailedFilename);
+                sendEmail(EmailId, emailedFilename);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private String[] timeStamp(){
+        Time now = new Time(Time.getCurrentTimezone());
+        now.setToNow();
+        String day =  now.year +"-"+(now.month+1)+"-"+now.monthDay;
+        String time = now.format("%k:%M:%S");
+        String[] timeStamp = new String[2];
+        timeStamp[0] = day;
+        timeStamp[1] = time;
+        return (timeStamp);
+    }
+
+    private Double[] locationStamp(){
+        Double[] location = new Double[2];
+        gps = new GPSTracker(MainActivity.this);
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            location[0] = latitude;
+            location[1] = longitude;
+            // \n is for new line
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude +
+                    "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+        return (location);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1222) {
+            File file = new File(Environment.getExternalStorageState()+"/folderName/" +
+                    emailedFilename+ ".xml");
+            file.delete();
+        }
+    }
+
+    private void sendEmail(String email, String fileToSend) {
+        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
+        Uri path = Uri.fromFile(file);
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("application/octet-stream");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
+                timeStamp()[0] + "_" + timeStamp()[1]);
+        String to[] = { email };
+        intent.putExtra(Intent.EXTRA_EMAIL, to);
+        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
+        intent.putExtra(Intent.EXTRA_STREAM, path);
+        startActivityForResult(Intent.createChooser(intent, "Send mail..."),
+                1222);
+    }
+
+    public void exportTableToCSV (String databaseName, String tableName){
+        //TODO add logic
+
+
+    }
+
+    public void exportDatabase(String databaseName, String backupDBPath) {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+            if (sd.canWrite()) {
+                String currentDBPath = "//data//"+getPackageName()+"//databases//"+databaseName+"";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+                if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {        }
+    }
+
+
 
 }

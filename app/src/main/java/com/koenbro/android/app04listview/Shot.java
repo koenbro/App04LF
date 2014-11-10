@@ -2,15 +2,15 @@ package com.koenbro.android.app04listview;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Date;
 
 /**
  * Created by laszlo on 10/31/14.
  */
 public class Shot {
     private long id;
-    private Date shotDate;
-    //TODO add logic to handle date
+    private String shotDay;
+    private String shotTime;
+    private long photoShootId;
 
     private Film film;
     private Lens lens;
@@ -28,6 +28,10 @@ public class Shot {
 
     private double shutter;
     private String comment;
+    private double latitude;
+    private double longitude;
+
+    //reference values for light meters
     private final double tMeterRef = 15;
     private final double fMeterRef = 8;
     private final double evMeterRef = 10;
@@ -72,7 +76,7 @@ public class Shot {
         if (shutter <1){
             shutter = 1/shutter;
             pretty = "1/" + round.format(shutter);
-            if (shutter < 5) {  //show more details
+            if (shutter < 8) {  //show more details
                 pretty = pretty +  " (" + twoDec.format(1/shutter) + "s)";
             }
         } else {
@@ -108,11 +112,23 @@ public class Shot {
     public void setId(long id) {
         this.id = id;
     }
-    public Date getShotDate() {
-        return shotDate;
+    public String getShotDay() {
+        return shotDay;
     }
-    public void setShotDate(Date shotDate) {
-        this.shotDate = shotDate;
+    public void setShotDay(String shotDay) {
+        this.shotDay = shotDay;
+    }
+    public String getShotTime() {
+        return shotTime;
+    }
+    public void setShotTime(String shotTime) {
+        this.shotTime = shotTime;
+    }
+    public long getPhotoShootId() {
+        return photoShootId;
+    }
+    public void setPhotoShootId(long photoShootId) {
+        this.photoShootId = photoShootId;
     }
     public Film getFilm() {
         return film;
@@ -193,5 +209,18 @@ public class Shot {
     }
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
