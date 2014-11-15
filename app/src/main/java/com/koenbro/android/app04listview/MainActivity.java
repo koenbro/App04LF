@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
     private Spinner mMeterReadT;
     private Spinner mMeterChoice;
     private Spinner mCameraChoice;
+    private EditText mCommentShot;
 
     //user choices in the UI
     private int filmId;
@@ -66,6 +67,7 @@ public class MainActivity extends Activity {
     private Filter filterChosen;
     private Meter meterChosen;
     private Camera cameraChosen;
+    private String comment;
 
     //inventory
     private ArrayList<Film> allFilms;
@@ -74,11 +76,10 @@ public class MainActivity extends Activity {
     private ArrayList<Meter> allMeters;
     private ArrayList<Camera> allCameras;
 
-    public Shot shot;
+    public Shot liveShot;
     public DBAdapter db;
     String emailedFilename;
-    // GPSTracker class
-    GPSTracker gps;
+    GPSTracker gps;  // GPSTracker class
 
 
     @Override
@@ -94,7 +95,6 @@ public class MainActivity extends Activity {
         loadGear();
         createWidgets();
         refreshDynamicContent();
-
         db.close();
     }
 
@@ -143,12 +143,13 @@ public class MainActivity extends Activity {
 
         meterChosen = allMeters.get(mMeterChoice.getSelectedItemPosition());
         cameraChosen = allCameras.get(mCameraChoice.getSelectedItemPosition());
+        comment = mCommentShot.getText().toString();
     }
 
     public void calcExposure(){
-        shot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
+        liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
                 aperture, bellowsExtension, meterReadValue);
-        mExposure.setText(shot.getShutter()); //pretty format shutter
+        mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
     }
 
     public void onResume(){
@@ -183,6 +184,7 @@ public class MainActivity extends Activity {
         allCameras = cameraDB.getAllCameras();
         cameraDB.close();
     }
+
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
         mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
@@ -208,10 +210,12 @@ public class MainActivity extends Activity {
         mMeterChoice = (Spinner)findViewById(R.id.main_choose_meter);
 
         mCameraChoice = (Spinner)findViewById(R.id.main_choose_camera);
+        mCommentShot = (EditText)findViewById(R.id.main_comment);
 
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         equipmentSelectWidget();
     }
+
     private void refreshDynamicContent(){
         //show film names from db
         ArrayList<String> filmNames = new ArrayList<String>();
@@ -289,6 +293,7 @@ public class MainActivity extends Activity {
         mCameraChoice.setAdapter(camerasNamesAdapter);
 
     }
+
     private void equipmentSelectWidget(){
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         mEquipmentPage = (Spinner) findViewById(R.id.spinner_equipment);
@@ -348,20 +353,15 @@ public class MainActivity extends Activity {
                 calcExposure();
                 NumberFormat twoDec = new DecimalFormat("#0.00");
                 String exposureCompensations =
-                        "BF: " + twoDec.format( shot.getBf())+
-                        ";  FF: " + twoDec.format(shot.getFf())+
-                        ";  RC: " + twoDec.format(shot.getRc());
+                        "BF: " + twoDec.format( liveShot.getBf())+
+                                ";  FF: " + twoDec.format(liveShot.getFf())+
+                                ";  RC: " + twoDec.format(liveShot.getRc());
                 Toast.makeText(MainActivity.this,
                         exposureCompensations, Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
-                shot.setShotDay(timeStamp()[0]); //day
-                shot.setShotTime(timeStamp()[1]); //time
-                shot.setLatitude(locationStamp()[0]); //latitude
-                shot.setLongitude(locationStamp()[1]); //longitude
-
-                //Toast.makeText(MainActivity.this,
-                //        timeStamp()[0] + " " + timeStamp()[1], Toast.LENGTH_SHORT).show();
+                buildFlatShot(liveShot);
+                saveShot (liveShot);
                 return true;
             case R.id.action_send_data:
                 emailedFilename = "lfdb_backup.sqlite";
@@ -375,6 +375,22 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void buildFlatShot(Shot shot){
+        liveShot.setShotDay(timeStamp()[0]); //day
+        liveShot.setShotTime(timeStamp()[1]); //time
+        liveShot.setLatitude(locationStamp()[0]); //latitude
+        liveShot.setLongitude(locationStamp()[1]); //longitude
+        liveShot.setComment(comment);
+
+    }
+
+    private void saveShot(Shot shot){
+        ShotDBAdapter shotDb = new ShotDBAdapter(this);
+        shotDb.open();
+        shotDb.addShot(shot);
+        shotDb.close();
     }
 
     private String[] timeStamp(){
@@ -391,10 +407,8 @@ public class MainActivity extends Activity {
     private Double[] locationStamp(){
         Double[] location = new Double[2];
         gps = new GPSTracker(MainActivity.this);
-
         // check if GPS enabled
         if(gps.canGetLocation()){
-
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
             location[0] = latitude;

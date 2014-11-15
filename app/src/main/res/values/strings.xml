@@ -34,6 +34,7 @@
     <string name="main_default_gear">Default gear</string>
     <string name="main_calculated_exposure">Exposure: </string>
     <string name="main_user_choices">Your choices:</string>
+    <string name="main_comment">Comment</string>
 
     <string name="equipment_choose_page">Edit gear</string>
 

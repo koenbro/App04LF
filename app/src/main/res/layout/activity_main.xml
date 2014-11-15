@@ -167,21 +167,35 @@
                 android:id="@+id/main_choose_camera"/>
 
         </TableRow>
-        <!-- DISPLAY CALCULATED EXPOSURE-->
         <TableRow>
             <TextView
-                android:text="@string/equipment_choose_page"
+                android:text="@string/main_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
-            <Spinner
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner_equipment"
-                android:layout_column="1"
-                android:layout_gravity="left"
-                android:gravity="left" />
+                android:id="@+id/main_comment"
+                 />
+
         </TableRow>
+        <TableRow>
+        <TextView
+            android:text="@string/equipment_choose_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_equipment"
+            android:layout_column="1"
+            android:layout_gravity="left"
+            android:gravity="left" />
+    </TableRow>
+        <!-- DISPLAY CALCULATED EXPOSURE-->
+
 
         <TableRow>
             <TextView
