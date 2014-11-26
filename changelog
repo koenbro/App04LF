@@ -1,0 +1,6 @@
+[33m29baa3a[m[33m ([1;36mHEAD[m[33m, [1;31morigin/master[m[33m, [1;31morigin/HEAD[m[33m, [1;32mmaster[m[33m)[m Version 04 New db structure adds 'Shots' table. Save shots --------- Backup: exports the whole database to the card Emails the backup file Gets locations form GPS
+[33m6ce9927[m Version 03 Backup: exports the whole database to the card Emails the backup file Gets locations form GPS
+[33mbe69e02[m Version 02 2014-11-08 -model object "Shot" done -user interface gets user input and returns exposure value -essentially ready to use. TODO -get Date -get GPS location -get photo -prettify UI -save shot -email shoot -individualized film-filter FF (now each filter has only one FF)
+[33m10bc769[m Create README.md
+[33mb08ab09[m New changelist
+[33mb23736a[m Version 01 -database works, multiple tables. Model-side is ready -rudimentary MainActivity, has basic widgets but no controller logic. -needs model object "Shot"
