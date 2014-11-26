@@ -1,7 +1,7 @@
 App04LF
 =======
 
-LF Assistant
+Large format photography assistant
 
 This app has three goals:   
 * manage LF gear (cameras, films, filters, lenses, meters) 
