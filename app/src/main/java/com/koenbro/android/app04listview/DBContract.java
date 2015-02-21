@@ -7,17 +7,35 @@ import android.provider.BaseColumns;
  */
 public final class DBContract {
     public static final String DB_NAME = "lfgear.sqlite";
-    public static final int DB_VERSION = 33;
+    public static final int DB_VERSION = 34;
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
-    public final String TAG_GET_ALL = "get all ";
+    /*public final String TAG_GET_ALL = "get all ";
     public final String TAG_ADD = "add ";
     public final String TAG_GET_ONE = "get (";
     public final String TAG_UPDATE = "updated ";
-    public final String TAG_DELETE = "delete ";
+    public final String TAG_DELETE = "delete ";*/
 
     // Empty constructor prevents accidental instantiation of the contract class.
     private DBContract() {}
+
+    public static abstract class TableCamera implements BaseColumns{
+        public static final String TABLE_NAME = "cameras";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_1 = "camera_name";
+        public static final String COLUMN_2 = "bellows_min"; //bellows extension minimal
+        public static final String COLUMN_3 = "bellows_max";
+        public static final String[] COLUMNS = {COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3};
+        public static final String CREATE_TABLE =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
+                        " )";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String TAG = "CameraDB.tag";
+    }
 
     public static abstract class TableFilm implements BaseColumns {
         public static final String TABLE_NAME = "films";
@@ -54,6 +72,29 @@ public final class DBContract {
         public static final String TAG = "FilmDB.tag";
     }
 
+    public static abstract class TableFilter implements BaseColumns{
+        public static final String TABLE_NAME = "filters";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_1 = "filter_name";
+        public static final String COLUMN_2 = "filter_for_bw"; //boolean
+        public static final String COLUMN_3 = "filter_for_color"; //boolean
+        public static final String COLUMN_4 = "filter_factor_bw";
+        public static final String COLUMN_5 = "filter_factor_color";
+        public static final String[] COLUMNS = {COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3, COLUMN_4,
+                COLUMN_5};
+        public static final String CREATE_TABLE =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_4 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_5 + TEXT_TYPE +
+                        " )";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String TAG = "FilterDB.tag";
+    }
+
     public static abstract class TableLens implements BaseColumns {
         public static final String TABLE_NAME = "lenses";
         public static final String COLUMN_ID = "id";
@@ -79,47 +120,6 @@ public final class DBContract {
         public static final String TAG = "LensDB.tag";
     }
 
-    public static abstract class TableFilter implements BaseColumns{
-        public static final String TABLE_NAME = "filters";
-        public static final String COLUMN_ID = "id";
-        public static final String COLUMN_1 = "filter_name";
-        public static final String COLUMN_2 = "filter_for_bw"; //boolean
-        public static final String COLUMN_3 = "filter_for_color"; //boolean
-        public static final String COLUMN_4 = "filter_factor_bw";
-        public static final String COLUMN_5 = "filter_factor_color";
-        public static final String[] COLUMNS = {COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3, COLUMN_4,
-                COLUMN_5};
-        public static final String CREATE_TABLE =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_4 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_5 + TEXT_TYPE +
-                        " )";
-        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        public static final String TAG = "FilterDB.tag";
-    }
-
-    public static abstract class TableCamera implements BaseColumns{
-        public static final String TABLE_NAME = "cameras";
-        public static final String COLUMN_ID = "id";
-        public static final String COLUMN_1 = "camera_name";
-        public static final String COLUMN_2 = "bellows_min"; //bellows extension minimal
-        public static final String COLUMN_3 = "bellows_max";
-        public static final String[] COLUMNS = {COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3};
-        public static final String CREATE_TABLE =
-                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
-                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
-                        " )";
-        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        public static final String TAG = "CameraDB.tag";
-    }
-
     public static abstract class TableMeter implements BaseColumns{
         public static final String TABLE_NAME = "meters";
         public static final String COLUMN_ID = "id";
@@ -138,6 +138,26 @@ public final class DBContract {
                         " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String TAG = "MeterDB.tag";
+    }
+
+    public static abstract class TableFilmFilter implements BaseColumns{
+        public static final String TABLE_NAME ="film-filter-factors";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_1 = "film_id";
+        public static final String COLUMN_2 = "filter_id";
+        public static final String COLUMN_3 = "ff_value";
+        public static final String[] COLUMNS = {COLUMN_ID, COLUMN_1, COLUMN_2, COLUMN_3};
+        public static final String CREATE_TABLE =
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        COMMA_SEP + COLUMN_1 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_2 + TEXT_TYPE +
+                        COMMA_SEP + COLUMN_3 + TEXT_TYPE +
+                        " )";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String TAG = "FilmFilterDB.tag";
+
+
     }
 
     public static abstract class TableShot implements BaseColumns{
@@ -199,4 +219,6 @@ public final class DBContract {
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String TAG = "ShotsDB.tag";
     }
+
+
 }

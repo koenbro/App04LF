@@ -108,9 +108,7 @@ public class MainActivity extends Activity {
         View radioButton = mThirdStops.findViewById(radioButtonID);
         int idx = mThirdStops.indexOfChild(radioButton);
         if (idx == 1)  {
-            //aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
-            aperture = aperture / Math.sqrt(Math.pow(0.5, 0.3333)); // 1/3 stop up
-            //TODO not sure if algebra is equivalent; check in R
+            aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
         }
         else if (idx ==2) {
             aperture = aperture * Math.sqrt(Math.pow(2, 0.6666)); // 2/3 stop up
@@ -246,8 +244,8 @@ public class MainActivity extends Activity {
                         android.R.layout.simple_spinner_item);
         adapterAperture.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLensAperture.setAdapter(adapterAperture);
-        mLensAperture.setSelection(adapterAperture.getPosition("11"));
-        //TODO move this number to R.string
+        mLensAperture.setSelection(adapterAperture.getPosition(
+                getResources().getString(R.string.default_fstop))); //"11"
 
         //show filter names from db
         ArrayList<String> filtersNames = new ArrayList<String>();
@@ -267,8 +265,8 @@ public class MainActivity extends Activity {
                         android.R.layout.simple_spinner_item);
         adapterMeterReadEV.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMeterReadEV.setAdapter(adapterMeterReadEV);
-        mMeterReadEV.setSelection(adapterMeterReadEV.getPosition("10"));
-        //TODO move this number to R.string
+        mMeterReadEV.setSelection(adapterMeterReadEV.getPosition(
+                getResources().getString(R.string.default_ev))); //"10"
 
         //show meter names from db
         ArrayList<String> metersNames = new ArrayList<String>();
@@ -354,8 +352,8 @@ public class MainActivity extends Activity {
                 NumberFormat twoDec = new DecimalFormat("#0.00");
                 String exposureCompensations =
                         "BF: " + twoDec.format( liveShot.getBf())+
-                                ";  FF: " + twoDec.format(liveShot.getFf())+
-                                ";  RC: " + twoDec.format(liveShot.getRc());
+                        ";  FF: " + twoDec.format(liveShot.getFf())+
+                        ";  RC: " + twoDec.format(liveShot.getRc());
                 Toast.makeText(MainActivity.this,
                         exposureCompensations, Toast.LENGTH_LONG).show();
                 return true;
@@ -364,10 +362,8 @@ public class MainActivity extends Activity {
                 saveShot (liveShot);
                 return true;
             case R.id.action_send_data:
-                emailedFilename = "lfdb_backup.sqlite";
-                //TODO constant
-                String EmailId = "lvaszar@gmail.com";
-                //TODO constant
+                emailedFilename = getResources().getString(R.string.file_to_email);
+                String EmailId = getResources().getString(R.string.email_address);
                 exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
                 exportDatabase(DBContract.DB_NAME, emailedFilename);
                 sendEmail(EmailId, emailedFilename);
@@ -378,11 +374,11 @@ public class MainActivity extends Activity {
     }
 
     private void buildFlatShot(Shot shot){
-        liveShot.setShotDay(timeStamp()[0]); //day
-        liveShot.setShotTime(timeStamp()[1]); //time
-        liveShot.setLatitude(locationStamp()[0]); //latitude
-        liveShot.setLongitude(locationStamp()[1]); //longitude
-        liveShot.setComment(comment);
+        shot.setShotDay(timeStamp()[0]); //day
+        shot.setShotTime(timeStamp()[1]); //time
+        shot.setLatitude(locationStamp()[0]); //latitude
+        shot.setLongitude(locationStamp()[1]); //longitude
+        shot.setComment(comment);
 
     }
 
@@ -415,7 +411,7 @@ public class MainActivity extends Activity {
             location[1] = longitude;
             // \n is for new line
             Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude +
-                    "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                    "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
         }else{
             // can't get location
             // GPS or Network is not enabled

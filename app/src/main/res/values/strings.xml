@@ -51,6 +51,7 @@
     <string name="film_name">Film name</string>
     <string name="film_ei">EI</string>
     <string name="film_type">Type</string>
+    <string name="filter_factors">Filters</string>
 
 
     <string name="rec_corr">Reciprocity correction</string>
@@ -156,5 +157,9 @@
 
     <string name="title_activity_meter_list">MeterListActivity</string>
     <string name="title_activity_meter_add_edit">MeterAddEditActivity</string>
+    <string name="default_fstop">11</string>
+    <string name="default_ev">10</string>
+    <string name="email_address">lvaszar@gmail.com</string>
+    <string name="file_to_email">lfdb_backup.sqlite</string>
 
 </resources>
