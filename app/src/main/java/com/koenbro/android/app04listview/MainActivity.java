@@ -98,64 +98,7 @@ public class MainActivity extends Activity {
         db.close();
     }
 
-    public void getUserChoices(){
-        filmChosen = allFilms.get(mFilmChoice.getSelectedItemPosition());
-        lensChosen = allLenses.get(mLensChoice.getSelectedItemPosition());
-
-        //aperture depends on spinner + radio buttons
-        aperture = Double.parseDouble(String.valueOf(mLensAperture.getSelectedItem()));
-        int radioButtonID = mThirdStops.getCheckedRadioButtonId();
-        View radioButton = mThirdStops.findViewById(radioButtonID);
-        int idx = mThirdStops.indexOfChild(radioButton);
-        if (idx == 1)  {
-            aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
-        }
-        else if (idx ==2) {
-            aperture = aperture * Math.sqrt(Math.pow(2, 0.6666)); // 2/3 stop up
-        }
-
-        filterChosen = allFilters.get(mFilterChoice.getSelectedItemPosition());
-
-        //if bellows extension field is empty, enter lens focal length
-        if (mBellowsText.getText().toString().matches("")) {
-            //Toast.makeText(this, "No BE given; default chosen",Toast.LENGTH_SHORT).show();
-            bellowsExtension = lensChosen.getLensFocal();
-        } else {
-            bellowsExtension = Integer.parseInt(mBellowsText.getText().toString());
-            // bellows extension cannot be < focal
-            if (bellowsExtension < lensChosen.getLensFocal() ){
-                bellowsExtension = lensChosen.getLensFocal();
-            }
-        }
-        //the meter read (like the aperture) also depends on spinner + radio buttons
-        meterReadValue = Double.parseDouble(String.valueOf(mMeterReadEV.getSelectedItem()));
-        int radioButtonMeterID = mThirdEV.getCheckedRadioButtonId();
-        View radioButtonMeter = mThirdEV.findViewById(radioButtonMeterID);
-        int idxMeter = mThirdEV.indexOfChild(radioButtonMeter);
-        if (idxMeter == 1)  {
-            meterReadValue = meterReadValue + 0.3333;  // 1/3 stop up
-        }
-        else if (idxMeter ==2) {
-            meterReadValue = meterReadValue + 0.6666;   // 2/3 stop up
-        }
-
-        meterChosen = allMeters.get(mMeterChoice.getSelectedItemPosition());
-        cameraChosen = allCameras.get(mCameraChoice.getSelectedItemPosition());
-        comment = mCommentShot.getText().toString();
-    }
-
-    public void calcExposure(){
-        liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
-                aperture, bellowsExtension, meterReadValue);
-        mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
-    }
-
-    public void onResume(){
-        super.onResume();
-        loadGear();
-        refreshDynamicContent();
-    }
-
+    // Set up the screen
     private void loadGear(){
         FilmDBAdapter filmDB = new FilmDBAdapter(this);
         filmDB.open();
@@ -182,7 +125,6 @@ public class MainActivity extends Activity {
         allCameras = cameraDB.getAllCameras();
         cameraDB.close();
     }
-
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
         mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
@@ -213,7 +155,6 @@ public class MainActivity extends Activity {
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         equipmentSelectWidget();
     }
-
     private void refreshDynamicContent(){
         //show film names from db
         ArrayList<String> filmNames = new ArrayList<String>();
@@ -291,6 +232,103 @@ public class MainActivity extends Activity {
         mCameraChoice.setAdapter(camerasNamesAdapter);
 
     }
+    // Done setting up the screen
+
+
+    public void getUserChoices(){
+        filmChosen = allFilms.get(mFilmChoice.getSelectedItemPosition());
+        lensChosen = allLenses.get(mLensChoice.getSelectedItemPosition());
+
+        //aperture depends on spinner + radio buttons
+        aperture = Double.parseDouble(String.valueOf(mLensAperture.getSelectedItem()));
+        int radioButtonID = mThirdStops.getCheckedRadioButtonId();
+        View radioButton = mThirdStops.findViewById(radioButtonID);
+        int idx = mThirdStops.indexOfChild(radioButton);
+        if (idx == 1)  {
+            aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
+        }
+        else if (idx ==2) {
+            aperture = aperture * Math.sqrt(Math.pow(2, 0.6666)); // 2/3 stop up
+        }
+
+        filterChosen = allFilters.get(mFilterChoice.getSelectedItemPosition());
+
+        //if bellows extension field is empty, enter lens focal length
+        if (mBellowsText.getText().toString().trim().equals("")) {
+            //Toast.makeText(this, "No BE given; default chosen",Toast.LENGTH_SHORT).show();
+            bellowsExtension = lensChosen.getLensFocal();
+        } else {
+            bellowsExtension = Integer.parseInt(mBellowsText.getText().toString());
+            // bellows extension cannot be < focal
+            if (bellowsExtension < lensChosen.getLensFocal() ){
+                bellowsExtension = lensChosen.getLensFocal();
+            }
+        }
+        //the meter read (like the aperture) also depends on spinner + radio buttons
+        meterReadValue = Double.parseDouble(String.valueOf(mMeterReadEV.getSelectedItem()));
+        int radioButtonMeterID = mThirdEV.getCheckedRadioButtonId();
+        View radioButtonMeter = mThirdEV.findViewById(radioButtonMeterID);
+        int idxMeter = mThirdEV.indexOfChild(radioButtonMeter);
+        if (idxMeter == 1)  {
+            meterReadValue = meterReadValue + 0.3333;  // 1/3 stop up
+        }
+        else if (idxMeter ==2) {
+            meterReadValue = meterReadValue + 0.6666;   // 2/3 stop up
+        }
+
+        meterChosen = allMeters.get(mMeterChoice.getSelectedItemPosition());
+        cameraChosen = allCameras.get(mCameraChoice.getSelectedItemPosition());
+        comment = mCommentShot.getText().toString();
+    }
+    public void calcExposure(){
+        liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
+                aperture, bellowsExtension, meterReadValue);
+        mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
+    }
+
+
+    //Housekeeping
+    public void onResume(){
+        super.onResume();
+        loadGear();
+        refreshDynamicContent();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_calculate_exposure:
+                getUserChoices();
+                calcExposure();
+                NumberFormat twoDec = new DecimalFormat("#0.00");
+                String exposureCompensations =
+                        "BF: " + twoDec.format( liveShot.getBf())+
+                                ";  FF: " + twoDec.format(liveShot.getFf())+
+                                ";  RC: " + twoDec.format(liveShot.getRc());
+                Toast.makeText(MainActivity.this,
+                        exposureCompensations, Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_save_shot:
+                addMetaInformation(liveShot);
+                saveShot (liveShot);
+                return true;
+            case R.id.action_send_data:
+                emailedFilename = getResources().getString(R.string.file_to_email);
+                String EmailId = getResources().getString(R.string.email_address);
+                exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
+                exportDatabase(DBContract.DB_NAME, emailedFilename);
+                sendEmail(EmailId, emailedFilename);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void equipmentSelectWidget(){
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
@@ -336,50 +374,14 @@ public class MainActivity extends Activity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_calculate_exposure:
-                getUserChoices();
-                calcExposure();
-                NumberFormat twoDec = new DecimalFormat("#0.00");
-                String exposureCompensations =
-                        "BF: " + twoDec.format( liveShot.getBf())+
-                        ";  FF: " + twoDec.format(liveShot.getFf())+
-                        ";  RC: " + twoDec.format(liveShot.getRc());
-                Toast.makeText(MainActivity.this,
-                        exposureCompensations, Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.action_save_shot:
-                buildFlatShot(liveShot);
-                saveShot (liveShot);
-                return true;
-            case R.id.action_send_data:
-                emailedFilename = getResources().getString(R.string.file_to_email);
-                String EmailId = getResources().getString(R.string.email_address);
-                exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
-                exportDatabase(DBContract.DB_NAME, emailedFilename);
-                sendEmail(EmailId, emailedFilename);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
-    private void buildFlatShot(Shot shot){
+    private void addMetaInformation(Shot shot){
         shot.setShotDay(timeStamp()[0]); //day
         shot.setShotTime(timeStamp()[1]); //time
         shot.setLatitude(locationStamp()[0]); //latitude
         shot.setLongitude(locationStamp()[1]); //longitude
         shot.setComment(comment);
-
     }
 
     private void saveShot(Shot shot){
