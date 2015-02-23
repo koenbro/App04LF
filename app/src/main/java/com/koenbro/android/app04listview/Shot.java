@@ -61,17 +61,34 @@ public class Shot {
         this.meterRead = meterRead;
     }
 
+    private double calcFf(Film film, Filter filter) {
+        if (film.getFilmType().matches("bw")) ff = filter.getFilterFactorBW();
+        if (film.getFilmType().matches("color")) ff = filter.getFilterFactorColor();
+        setFf(ff);
+        return ff;
+    }
+    private double calcRc (double shutter){
+        if (shutter < 1) rc = 1;
+        else if(shutter>=1 & shutter<2) rc = film.getFilmRc1();
+        else if(shutter>=2 & shutter<5) rc = film.getFilmRc2();
+        else if(shutter>=5 & shutter<10) rc = film.getFilmRc3();
+        else if(shutter>=10 & shutter<30) rc = film.getFilmRc4();
+        else if(shutter>=30 & shutter<60) rc = film.getFilmRc5();
+        else if(shutter>=60 & shutter<100) rc = film.getFilmRc6();
+        else if(shutter>=100) rc = film.getFilmRc7();
+        setRc(rc);
+        return( rc);
+    }
+
     private double calcShutter(){
-        double shutterPreRc;
-        double mc = Math.pow(2.0, evMeterRef - meterRead);
+        double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
         bf = Math.pow((double)bellowsExtension/(double)lens.getLensFocal(), 2.0);
         setBf(bf);
-        double ac = Math.pow(aperture/fMeterRef,2.0);
-        double sc = isoMeterRef/film.getFilmEi();
+        double ac = Math.pow(aperture/fMeterRef,2.0); //aperture
+        double sc = isoMeterRef/film.getFilmEi(); //film sensitivity
         ff = calcFf(film, filter);
-        shutterPreRc = (1/tMeterRef) * mc * bf * ac * sc * ff;
-        rc = calcRc(shutterPreRc);
-        shutter = shutterPreRc * rc;
+        shutter = (1/tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
+        shutter = shutter * calcRc(shutter); //post-reciprocity correction
         return shutter;
     }
 
@@ -101,25 +118,7 @@ public class Shot {
         this.prettyShutter = prettyShutter;
     }
 
-    private double calcFf(Film film, Filter filter) {
-        if (film.getFilmType().matches("bw")) ff = filter.getFilterFactorBW();
-        if (film.getFilmType().matches("color")) ff = filter.getFilterFactorColor();
-        setFf(ff);
-        return ff;
-    }
 
-    private double calcRc (double shutter){
-        if (shutter < 1) rc = 1;
-        else if(shutter>=1 & shutter<2) rc = film.getFilmRc1();
-        else if(shutter>=2 & shutter<5) rc = film.getFilmRc2();
-        else if(shutter>=5 & shutter<10) rc = film.getFilmRc3();
-        else if(shutter>=10 & shutter<30) rc = film.getFilmRc4();
-        else if(shutter>=30 & shutter<60) rc = film.getFilmRc5();
-        else if(shutter>=60 & shutter<100) rc = film.getFilmRc6();
-        else if(shutter>=100) rc = film.getFilmRc7();
-        setRc(rc);
-        return( rc);
-    }
 
     public long getId() {
         return id;
@@ -238,17 +237,9 @@ public class Shot {
         this.longitude = longitude;
     }
 
-    /*this.filmName = super.getFilm().getFilmName();
-        this.filmEi = super.getFilm().getFilmEi();
-        this.lensName = super.getLens().getLensName();
-        this.lensFocal = super.getLens().getLensFocal();
-        this.filterName = super.getCamera().getCameraName();
-        this.cameraName = super.getCamera().getCameraName();
-        this.meterName = super.getMeter().getMeterName();*/
     public String getFilmName() {
         return film.getFilmName();
     }
-
     public void setFilmName(String filmName) {
         this.filmName = filmName;
     }
@@ -256,7 +247,6 @@ public class Shot {
     public int getFilmEi() {
         return film.getFilmEi();
     }
-
     public void setFilmEi(int filmEi) {
         this.filmEi = filmEi;
     }
@@ -264,7 +254,6 @@ public class Shot {
     public String getLensName() {
         return lens.getLensName();
     }
-
     public void setLensName(String lensName) {
         this.lensName = lensName;
     }
@@ -272,7 +261,6 @@ public class Shot {
     public int getLensFocal() {
         return lens.getLensFocal();
     }
-
     public void setLensFocal(int lensFocal) {
         this.lensFocal = lensFocal;
     }
@@ -280,7 +268,6 @@ public class Shot {
     public String getFilterName() {
         return filter.getFilterName();
     }
-
     public void setFilterName(String filterName) {
         this.filterName = filterName;
     }
@@ -288,7 +275,6 @@ public class Shot {
     public String getCameraName() {
         return camera.getCameraName();
     }
-
     public void setCameraName(String cameraName) {
         this.cameraName = cameraName;
     }
@@ -296,7 +282,6 @@ public class Shot {
     public String getMeterName() {
         return meter.getMeterName();
     }
-
     public void setMeterName(String meterName) {
         this.meterName = meterName;
     }
