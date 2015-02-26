@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -80,50 +79,27 @@ public class MainActivity extends Activity {
     public DBAdapter db;
     String emailedFilename;
     GPSTracker gps;  // GPSTracker class
+    Gear gear;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new DBAdapter(this);
-        try {
-            db.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        gear = new Gear();
+        gear.tryDatabase();
         loadGear();
         createWidgets();
         refreshDynamicContent();
-        db.close();
     }
 
     // Set up the screen
     private void loadGear(){
-        FilmDBAdapter filmDB = new FilmDBAdapter(this);
-        filmDB.open();
-        allFilms = filmDB.getAllFilms();
-        filmDB.close();
-
-        FilterDBAdapter filterDB = new FilterDBAdapter(this);
-        filterDB.open();
-        allFilters = filterDB.getAllFilters();
-        filterDB.close();
-
-        LensDBAdapter lensDB = new LensDBAdapter(this);
-        lensDB.open();
-        allLenses = lensDB.getAllLenses();
-        lensDB.close();
-
-        MeterDBAdapter meterDB = new MeterDBAdapter(this);
-        meterDB.open();
-        allMeters = meterDB.getAllMeters();
-        meterDB.close();
-
-        CameraDBAdapter cameraDB = new CameraDBAdapter(this);
-        cameraDB.open();
-        allCameras = cameraDB.getAllCameras();
-        cameraDB.close();
+        allFilms = gear.getAllFilms();
+        allFilters = gear.getAllFilters();
+        allLenses = gear.getAllLenses();
+        allMeters = gear.getAllMeters();
+        allCameras = gear.getAllCameras();
     }
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
