@@ -18,9 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -89,15 +86,18 @@ public class MainActivity extends Activity {
     private Shot liveShot;
     private DBAdapter db;
     private String emailedFilename;
+    private String emailAddress;
     private GPSTracker gps;  // GPSTracker class
     private Gear gear;
     private MetaInformation metaInformation;
+    private DBUtil dbUtil;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbUtil = new DBUtil();
         gear = new Gear();
         metaInformation = new MetaInformation();
         gear.tryDatabase(); //maybe remove from here and use only in Gear constructor?
@@ -302,10 +302,10 @@ public class MainActivity extends Activity {
                 return true;
             case R.id.action_send_data:
                 emailedFilename = getResources().getString(R.string.file_to_email);
-                String EmailId = getResources().getString(R.string.email_address);
-                exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
-                exportDatabase(DBContract.DB_NAME, emailedFilename);
-                sendEmail(EmailId, emailedFilename);
+                emailAddress = getResources().getString(R.string.email_address);
+                dbUtil.exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
+                dbUtil.exportDatabase(DBContract.DB_NAME, emailedFilename);
+                sendEmail(emailAddress, emailedFilename);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -373,8 +373,6 @@ public class MainActivity extends Activity {
         });
     }
 
-
-
     private void addMetaInformation(Shot shot){
         shot.setShotDay(metaInformation.getDay()); //day
         shot.setShotTime(metaInformation.getTime()); //time
@@ -389,9 +387,6 @@ public class MainActivity extends Activity {
         shotDb.addShot(shot);
         shotDb.close();
     }
-
-
-
 
     private void sendEmail(String email, String fileToSend) {
         File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
@@ -408,30 +403,9 @@ public class MainActivity extends Activity {
                 1222);
     }
 
-    public void exportTableToCSV (String databaseName, String tableName){
-        //TODO add logic
 
 
-    }
 
-    public void exportDatabase(String databaseName, String backupDBPath) {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-            if (sd.canWrite()) {
-                String currentDBPath = "//data//"+getPackageName()+"//databases//"+databaseName+"";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-            }
-        } catch (Exception e) {        }
-    }
 
 
 
