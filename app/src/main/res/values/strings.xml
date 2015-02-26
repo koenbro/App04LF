@@ -161,5 +161,9 @@
     <string name="default_ev">10</string>
     <string name="email_address">lvaszar@gmail.com</string>
     <string name="file_to_email">lfdb_backup.sqlite</string>
+    <string name="one_third">*</string>
+    <string name="two_thirds">**</string>
+    <string name="blank"></string>
+
 
 </resources>
