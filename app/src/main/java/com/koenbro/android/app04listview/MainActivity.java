@@ -26,6 +26,18 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/**
+ * Main activity for the Large Format Photography Assistant app.<br/>
+ *     This app has three main goals: (1) manages LF gear; (2) calculates exposure in the field,
+ *     adjusting for bellows draw, filter factor, and reciprocity correction; and (3) stores
+ *     information on a shot, including meta information (time stamp, GPS location, comment,
+ *     dictaphone note, snapshot of subject, etc).<p>
+ *         Beyond the end user functionality this complex app serves as a learning project for Java
+ *         and Android programming and a test bed for several techniques, like (1) SQLite
+ *         databases with multiple tables, (2) application wide contexts, and (3) general OOP
+ *         techniques.
+ *     </p>
+ */
 public class MainActivity extends Activity {
     private Spinner mEquipmentPage;
     private Spinner mFilmChoice;
@@ -77,9 +89,9 @@ public class MainActivity extends Activity {
 
     private Shot liveShot;
     private DBAdapter db;
-    String emailedFilename;
-    GPSTracker gps;  // GPSTracker class
-    Gear gear;
+    private String emailedFilename;
+    private GPSTracker gps;  // GPSTracker class
+    private Gear gear;
 
 
     @Override
@@ -206,7 +218,6 @@ public class MainActivity extends Activity {
                 android.R.layout.simple_spinner_item, camerasNames);
         camerasNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCameraChoice.setAdapter(camerasNamesAdapter);
-
     }
     // Done setting up the screen
 
@@ -304,6 +315,14 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1222) {
+            File file = new File(Environment.getExternalStorageState()+"/folderName/" +
+                    emailedFilename+ ".xml");
+            file.delete();
+        }
+    }
 
 
     private void equipmentSelectWidget(){
@@ -399,14 +418,6 @@ public class MainActivity extends Activity {
         return (location);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1222) {
-            File file = new File(Environment.getExternalStorageState()+"/folderName/" +
-                    emailedFilename+ ".xml");
-            file.delete();
-        }
-    }
 
     private void sendEmail(String email, String fileToSend) {
         File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
