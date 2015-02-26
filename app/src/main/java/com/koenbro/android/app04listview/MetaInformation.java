@@ -4,7 +4,7 @@ import android.text.format.Time;
 import android.widget.Toast;
 
 /**
- * Meta information for shot
+ * Meta information for a shot
  * @author laszlo
  * @date 2/26/15.
  */

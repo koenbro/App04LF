@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,6 +91,7 @@ public class MainActivity extends Activity {
     private String emailedFilename;
     private GPSTracker gps;  // GPSTracker class
     private Gear gear;
+    private MetaInformation metaInformation;
 
 
     @Override
@@ -99,6 +99,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gear = new Gear();
+        metaInformation = new MetaInformation();
         gear.tryDatabase(); //maybe remove from here and use only in Gear constructor?
         loadGear();
         createWidgets();
@@ -292,13 +293,8 @@ public class MainActivity extends Activity {
             case R.id.action_calculate_exposure:
                 getUserChoices();
                 calcExposure();
-                NumberFormat twoDec = new DecimalFormat("#0.00");
-                String exposureCompensations =
-                        "BF: " + twoDec.format( liveShot.getBf())+
-                                ";  FF: " + twoDec.format(liveShot.getFf())+
-                                ";  RC: " + twoDec.format(liveShot.getRc());
                 Toast.makeText(MainActivity.this,
-                        exposureCompensations, Toast.LENGTH_LONG).show();
+                        exposureCompensations(), Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
                 addMetaInformation(liveShot);
@@ -324,6 +320,14 @@ public class MainActivity extends Activity {
         }
     }
 
+    private String exposureCompensations(){
+        NumberFormat twoDec = new DecimalFormat("#0.00");
+        String exposureCompensations =
+                "BF: " + twoDec.format( liveShot.getBf())+
+                        ";  FF: " + twoDec.format(liveShot.getFf())+
+                        ";  RC: " + twoDec.format(liveShot.getRc());
+        return exposureCompensations;
+    }
 
     private void equipmentSelectWidget(){
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
@@ -372,10 +376,10 @@ public class MainActivity extends Activity {
 
 
     private void addMetaInformation(Shot shot){
-        shot.setShotDay(timeStamp()[0]); //day
-        shot.setShotTime(timeStamp()[1]); //time
-        shot.setLatitude(locationStamp()[0]); //latitude
-        shot.setLongitude(locationStamp()[1]); //longitude
+        shot.setShotDay(metaInformation.getDay()); //day
+        shot.setShotTime(metaInformation.getTime()); //time
+        shot.setLatitude(metaInformation.getLatitude()); //latitude
+        shot.setLongitude(metaInformation.getLongitude()); //longitude
         shot.setComment(comment);
     }
 
@@ -386,37 +390,7 @@ public class MainActivity extends Activity {
         shotDb.close();
     }
 
-    private String[] timeStamp(){
-        Time now = new Time(Time.getCurrentTimezone());
-        now.setToNow();
-        String day =  now.year +"-"+(now.month+1)+"-"+now.monthDay;
-        String time = now.format("%k:%M:%S");
-        String[] timeStamp = new String[2];
-        timeStamp[0] = day;
-        timeStamp[1] = time;
-        return (timeStamp);
-    }
 
-    private Double[] locationStamp(){
-        Double[] location = new Double[2];
-        gps = new GPSTracker(MainActivity.this);
-        // check if GPS enabled
-        if(gps.canGetLocation()){
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-            location[0] = latitude;
-            location[1] = longitude;
-            // \n is for new line
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude +
-                    "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
-        }else{
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-        }
-        return (location);
-    }
 
 
     private void sendEmail(String email, String fileToSend) {
@@ -425,7 +399,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("application/octet-stream");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
-                timeStamp()[0] + "_" + timeStamp()[1]);
+                metaInformation.getDay() + "_" + metaInformation.getTime());
         String to[] = { email };
         intent.putExtra(Intent.EXTRA_EMAIL, to);
         intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
