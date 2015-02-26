@@ -269,6 +269,7 @@ public class MainActivity extends Activity {
         comment = mCommentShot.getText().toString();
     }
     public void calcExposure(){
+        getUserChoices();
         liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
                 aperture, bellowsExtension, meterReadValue);
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
@@ -291,13 +292,11 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_calculate_exposure:
-                getUserChoices();
                 calcExposure();
                 Toast.makeText(MainActivity.this,
                         exposureCompensations(), Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
-                addMetaInformation(liveShot);
                 saveShot (liveShot);
                 return true;
             case R.id.action_send_data:
@@ -382,6 +381,7 @@ public class MainActivity extends Activity {
     }
 
     private void saveShot(Shot shot){
+        addMetaInformation(liveShot);
         ShotDBAdapter shotDb = new ShotDBAdapter(this);
         shotDb.open();
         shotDb.addShot(shot);
