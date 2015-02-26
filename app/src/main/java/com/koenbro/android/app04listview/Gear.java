@@ -5,5 +5,5 @@ package com.koenbro.android.app04listview;
  * @date 2/25/15.
  */
 public class Gear {
-    
+
 }
