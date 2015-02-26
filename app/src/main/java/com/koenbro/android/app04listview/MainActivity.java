@@ -75,8 +75,8 @@ public class MainActivity extends Activity {
     private ArrayList<Meter> allMeters;
     private ArrayList<Camera> allCameras;
 
-    public Shot liveShot;
-    public DBAdapter db;
+    private Shot liveShot;
+    private DBAdapter db;
     String emailedFilename;
     GPSTracker gps;  // GPSTracker class
     Gear gear;
@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gear = new Gear();
-        gear.tryDatabase();
+        gear.tryDatabase(); //maybe remove from here and use only in Gear constructor?
         loadGear();
         createWidgets();
         refreshDynamicContent();
