@@ -6,7 +6,7 @@
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:paddingLeft="16dp"
         android:textColor="@color/sysBlack"
         >
@@ -17,9 +17,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/label"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:paddingLeft="32dp"
-        android:textColor="@color/articlecolor"
+        android:textColor="@color/blue"
         >
     </TextView>
 

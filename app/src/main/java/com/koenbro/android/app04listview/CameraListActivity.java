@@ -31,17 +31,15 @@ public class CameraListActivity extends Activity {
         });
     }
 
-    // Reload the latest camera list after addition/deletion
     public void onResume(){
         super.onResume();
-        cameraAdapterLoad();
+        cameraAdapterLoad();// Reload the latest camera list after addition/deletion
     }
 
     /**
      * Create a custom adaptor to connect the camera list from generateData() with the cameralistview
      */
     public void cameraAdapterLoad(){
-
         cameraAdapter = new CameraAdapter(this, gear.getAllCameras()); //pass context/data to the custom adapter
         cameraListView = (ListView) findViewById(R.id.cameraListView); //Get ListView from activity_main.xml
         cameraListView.setAdapter(cameraAdapter);

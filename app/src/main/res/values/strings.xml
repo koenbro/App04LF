@@ -10,6 +10,8 @@
     <string name="meters_list_title">Meters</string>
     <string name="cameras_list_title">Cameras</string>
     <string name="other_list_title">Other</string>
+    <string name="shots_list_title">Shots</string>
+
     <string name="title_activity_lens_list">Lenses</string>
     <string name="title_activity_lens_add_edit">Add or edit a lens</string>
     <string name="title_activity_lens_add">Deprecated!</string>
@@ -21,6 +23,7 @@
     <string name="title_activity_camera_list">Cameras</string>
     <string name="title_activity_camera_add_edit">Add or edit a camera</string>
     <string name="title_activity_zzdelete">zzdeleteActivity</string>
+    <string name="title_activity_shot_list">Shots</string>
 
     <!-- Widget field names -->
     <string name="main_choose_film">film</string>

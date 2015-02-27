@@ -68,6 +68,10 @@
             android:name=".MeterAddEditActivity"
             android:label="@string/title_activity_meter_add_edit" >
         </activity>
+        <activity
+            android:name=".ShotListActivity"
+            android:label="@string/title_activity_shot_list" >
+        </activity>
     </application>
 
 </manifest>

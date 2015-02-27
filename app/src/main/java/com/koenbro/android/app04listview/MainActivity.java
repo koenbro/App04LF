@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
                         intent = new Intent(MainActivity.this, CameraListActivity.class);
                         break;
                     case 6:
-                        intent = new Intent(MainActivity.this, zzdeleteActivity.class);
+                        intent = new Intent(MainActivity.this, ShotListActivity.class);
                         break;
                 }
                 startActivity(intent);
@@ -306,6 +306,7 @@ public class MainActivity extends Activity {
         getUserChoices();
         liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
                 aperture, bellowsExtension, meterReadValue);
+        //liveShot.calcShutter();
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
     }
 

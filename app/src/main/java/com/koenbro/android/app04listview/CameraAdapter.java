@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class CameraAdapter extends ArrayAdapter<Camera>{
 
     private final Context context;
-    private final ArrayList<Camera> camerasArrayList;
+    private ArrayList<Camera> camerasArrayList;
 
     public CameraAdapter(Context context, ArrayList<Camera> camerasArrayList) {
         super(context, R.layout.row, camerasArrayList);
