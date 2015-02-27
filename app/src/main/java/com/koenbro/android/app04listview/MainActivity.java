@@ -2,7 +2,6 @@ package com.koenbro.android.app04listview;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -84,10 +83,8 @@ public class MainActivity extends Activity {
     private ArrayList<Camera> allCameras;
 
     private Shot liveShot;
-    private DBAdapter db;
     private String emailedFilename;
     private String emailAddress;
-    private GPSTracker gps;  // GPSTracker class
     private Gear gear;
     private MetaInformation metaInformation;
     private DBUtil dbUtil;
@@ -99,21 +96,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         dbUtil = new DBUtil();
         gear = new Gear();
-        metaInformation = new MetaInformation();
         gear.tryDatabase(); //maybe remove from here and use only in Gear constructor?
-        loadGear();
+        metaInformation = new MetaInformation();
+
         createWidgets();
         refreshDynamicContent();
     }
 
-    // Set up the screen
-    private void loadGear(){
-        allFilms = gear.getAllFilms();
-        allFilters = gear.getAllFilters();
-        allLenses = gear.getAllLenses();
-        allMeters = gear.getAllMeters();
-        allCameras = gear.getAllCameras();
-    }
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
         mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
@@ -144,7 +133,54 @@ public class MainActivity extends Activity {
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         equipmentSelectWidget();
     }
+    private void equipmentSelectWidget(){
+        //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
+        mEquipmentPage = (Spinner) findViewById(R.id.spinner_equipment);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
+                R.array.equipment_pages,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEquipmentPage.setAdapter(adapter);
+        mEquipmentPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            Intent intent;
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
+                switch(position){
+                    case 0:
+                        return;
+                    case 1:
+                        intent = new Intent(MainActivity.this, FilmListActivity.class);
+                        break;
+                    case 2:
+                        intent = new Intent(MainActivity.this, LensListActivity.class);
+                        break;
+                    case 3:
+                        intent = new Intent(MainActivity.this, FilterListActivity.class);
+                        break;
+                    case 4:
+                        intent = new Intent(MainActivity.this, MeterListActivity.class);
+                        break;
+                    case 5:
+                        intent = new Intent(MainActivity.this, CameraListActivity.class);
+                        break;
+                    case 6:
+                        intent = new Intent(MainActivity.this, zzdeleteActivity.class);
+                        break;
+                }
+                startActivity(intent);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                return;
+            }
+        });
+    }
     private void refreshDynamicContent(){
+        allFilms = gear.getAllFilms();
+        allFilters = gear.getAllFilters();
+        allLenses = gear.getAllLenses();
+        allMeters = gear.getAllMeters();
+        allCameras = gear.getAllCameras();
         //show film names from db
         ArrayList<String> filmNames = new ArrayList<String>();
         for (int i=0; i<allFilms.size(); i++) {
@@ -220,8 +256,6 @@ public class MainActivity extends Activity {
         camerasNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCameraChoice.setAdapter(camerasNamesAdapter);
     }
-    // Done setting up the screen
-
 
     public void getUserChoices(){
         filmChosen = allFilms.get(mFilmChoice.getSelectedItemPosition());
@@ -275,20 +309,16 @@ public class MainActivity extends Activity {
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
     }
 
-
     //Housekeeping
-    public void onResume(){
+    protected void onResume(){
         super.onResume();
-        loadGear();
         refreshDynamicContent();
     }
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
         return true;
     }
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_calculate_exposure:
@@ -302,76 +332,44 @@ public class MainActivity extends Activity {
             case R.id.action_send_data:
                 emailedFilename = getResources().getString(R.string.file_to_email);
                 emailAddress = getResources().getString(R.string.email_address);
-                dbUtil.exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
+                //dbUtil.exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
                 dbUtil.exportDatabase(DBContract.DB_NAME, emailedFilename);
-                sendEmail(emailAddress, emailedFilename);
+                //email the exported file
+                startActivityForResult(
+                        Intent.createChooser(dbUtil.sendEmailIntent(
+                                        emailAddress, emailedFilename),
+                                "Send mail..."),
+                        1222);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1222) {
-            File file = new File(Environment.getExternalStorageState()+"/folderName/" +
-                    emailedFilename+ ".xml");
+            File file = new File(Environment.getExternalStorageState() +
+                    "/folderName/" + emailedFilename + ".xml");
             file.delete();
         }
     }
-
+    /**
+     * Retrieve bellows factor, filter factor, and reciprocity correction.
+     * @return String   formatted sequence BF - FF - RC
+     */
     private String exposureCompensations(){
         NumberFormat twoDec = new DecimalFormat("#0.00");
         String exposureCompensations =
                 "BF: " + twoDec.format( liveShot.getBf())+
-                        ";  FF: " + twoDec.format(liveShot.getFf())+
-                        ";  RC: " + twoDec.format(liveShot.getRc());
+                ";  FF: " + twoDec.format(liveShot.getFf())+
+                ";  RC: " + twoDec.format(liveShot.getRc());
         return exposureCompensations;
     }
-
-    private void equipmentSelectWidget(){
-        //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
-        mEquipmentPage = (Spinner) findViewById(R.id.spinner_equipment);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
-                R.array.equipment_pages,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEquipmentPage.setAdapter(adapter);
-        mEquipmentPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            Intent intent;
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
-
-                switch(position){
-                    case 0:
-                        return;
-                    case 1:
-                        intent = new Intent(MainActivity.this, FilmListActivity.class);
-                        break;
-                    case 2:
-                        intent = new Intent(MainActivity.this, LensListActivity.class);
-                        break;
-                    case 3:
-                        intent = new Intent(MainActivity.this, FilterListActivity.class);
-                        break;
-                    case 4:
-                        intent = new Intent(MainActivity.this, MeterListActivity.class);
-                        break;
-                    case 5:
-                        intent = new Intent(MainActivity.this, CameraListActivity.class);
-                        break;
-                    case 6:
-                        intent = new Intent(MainActivity.this, zzdeleteActivity.class);
-                        break;
-                }
-                startActivity(intent);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                return;
-            }
-        });
-    }
-
+    /**
+     * Add time stop, location info etc to the shot
+     * @param shot
+     */
     private void addMetaInformation(Shot shot){
         shot.setShotDay(metaInformation.getDay()); //day
         shot.setShotTime(metaInformation.getTime()); //time
@@ -379,7 +377,10 @@ public class MainActivity extends Activity {
         shot.setLongitude(metaInformation.getLongitude()); //longitude
         shot.setComment(comment);
     }
-
+    /**
+     * Save shot that (including meta information)
+     * @param shot
+     */
     private void saveShot(Shot shot){
         addMetaInformation(liveShot);
         ShotDBAdapter shotDb = new ShotDBAdapter(this);
@@ -388,20 +389,20 @@ public class MainActivity extends Activity {
         shotDb.close();
     }
 
-    private void sendEmail(String email, String fileToSend) {
-        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
-        Uri path = Uri.fromFile(file);
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("application/octet-stream");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
-                metaInformation.getDay() + "_" + metaInformation.getTime());
-        String to[] = { email };
-        intent.putExtra(Intent.EXTRA_EMAIL, to);
-        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
-        intent.putExtra(Intent.EXTRA_STREAM, path);
-        startActivityForResult(Intent.createChooser(intent, "Send mail..."),
-                1222);
-    }
+//    private void sendEmail(String email, String fileToSend) {
+//        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
+//        Uri path = Uri.fromFile(file);
+//        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+//        intent.setType("application/octet-stream");
+//        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
+//                metaInformation.getDay() + "_" + metaInformation.getTime());
+//        String to[] = { email };
+//        intent.putExtra(Intent.EXTRA_EMAIL, to);
+//        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
+//        intent.putExtra(Intent.EXTRA_STREAM, path);
+//        startActivityForResult(Intent.createChooser(intent, "Send mail..."),
+//                1222);
+//    }
 
 
 

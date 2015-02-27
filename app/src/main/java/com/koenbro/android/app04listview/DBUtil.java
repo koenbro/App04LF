@@ -1,5 +1,7 @@
 package com.koenbro.android.app04listview;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 
 import java.io.File;
@@ -13,7 +15,11 @@ import java.nio.channels.FileChannel;
  * @date 2/26/15.
  */
 public class DBUtil {
+    MetaInformation metaInformation;
 
+    public DBUtil() {
+        metaInformation = new MetaInformation();
+    }
 
     public void exportDatabase(String databaseName, String backupDBPath) {
         try {
@@ -38,7 +44,19 @@ public class DBUtil {
 
     public void exportTableToCSV (String databaseName, String tableName){
         //TODO add logic
+    }
 
-
+    public Intent sendEmailIntent (String email, String fileToSend) {
+        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
+        Uri path = Uri.fromFile(file);
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("application/octet-stream");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
+                metaInformation.getDay() + "_" + metaInformation.getTime());
+        String to[] = { email };
+        intent.putExtra(Intent.EXTRA_EMAIL, to);
+        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
+        intent.putExtra(Intent.EXTRA_STREAM, path);
+        return intent;
     }
 }
