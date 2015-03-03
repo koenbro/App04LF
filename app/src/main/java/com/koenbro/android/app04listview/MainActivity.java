@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -88,15 +89,21 @@ public class MainActivity extends Activity {
     private Gear gear;
     private MetaInformation metaInformation;
     private DBUtil dbUtil;
-
+    private DBAdapter db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new DBAdapter(this);
+        try {
+            db.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        db.close();
         dbUtil = new DBUtil();
         gear = new Gear();
-        gear.tryDatabase(); //maybe remove from here and use only in Gear constructor?
         metaInformation = new MetaInformation();
 
         createWidgets();
@@ -337,8 +344,8 @@ public class MainActivity extends Activity {
                 dbUtil.exportDatabase(DBContract.DB_NAME, emailedFilename);
                 //email the exported file
                 startActivityForResult(
-                        Intent.createChooser(dbUtil.sendEmailIntent(
-                                        emailAddress, emailedFilename),
+                        Intent.createChooser(dbUtil.
+                                        sendEmailIntent(emailAddress, emailedFilename),
                                 "Send mail..."),
                         1222);
                 return true;
@@ -346,7 +353,6 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1222) {
@@ -355,6 +361,7 @@ public class MainActivity extends Activity {
             file.delete();
         }
     }
+
     /**
      * Retrieve bellows factor, filter factor, and reciprocity correction.
      * @return String   formatted sequence BF - FF - RC
@@ -367,6 +374,7 @@ public class MainActivity extends Activity {
                 ";  RC: " + twoDec.format(liveShot.getRc());
         return exposureCompensations;
     }
+
     /**
      * Add time stop, location info etc to the shot
      * @param shot
@@ -378,8 +386,9 @@ public class MainActivity extends Activity {
         shot.setLongitude(metaInformation.getLongitude()); //longitude
         shot.setComment(comment);
     }
+
     /**
-     * Save shot that (including meta information)
+     * Save shot  (including meta information)
      * @param shot
      */
     private void saveShot(Shot shot){
@@ -389,26 +398,4 @@ public class MainActivity extends Activity {
         shotDb.addShot(shot);
         shotDb.close();
     }
-
-//    private void sendEmail(String email, String fileToSend) {
-//        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
-//        Uri path = Uri.fromFile(file);
-//        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-//        intent.setType("application/octet-stream");
-//        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
-//                metaInformation.getDay() + "_" + metaInformation.getTime());
-//        String to[] = { email };
-//        intent.putExtra(Intent.EXTRA_EMAIL, to);
-//        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
-//        intent.putExtra(Intent.EXTRA_STREAM, path);
-//        startActivityForResult(Intent.createChooser(intent, "Send mail..."),
-//                1222);
-//    }
-
-
-
-
-
-
-
 }

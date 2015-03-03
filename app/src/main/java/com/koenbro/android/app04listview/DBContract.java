@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 public final class DBContract {
     public static final String DB_NAME = "lfgear.sqlite";
-    public static final int DB_VERSION = 36;
+    public static final int DB_VERSION = 40;
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
     /*public final String TAG_GET_ALL = "get all ";
@@ -141,7 +141,7 @@ public final class DBContract {
     }
 
     public static abstract class TableFilmFilter implements BaseColumns{
-        public static final String TABLE_NAME ="film-filter-factors";
+        public static final String TABLE_NAME ="film_filter_factors";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_1 = "film_id";
         public static final String COLUMN_2 = "filter_id";
@@ -153,11 +153,13 @@ public final class DBContract {
                         COMMA_SEP + COLUMN_1 + TEXT_TYPE +
                         COMMA_SEP + COLUMN_2 + TEXT_TYPE +
                         COMMA_SEP + COLUMN_3 + TEXT_TYPE +
+                        COMMA_SEP + "FOREIGN KEY(" + COLUMN_1 +
+                        ") REFERENCES " + TableFilm.TABLE_NAME + " (" +  TableFilm.COLUMN_ID + ")" +
+                        COMMA_SEP + "FOREIGN KEY(" + COLUMN_2 +
+                        ") REFERENCES " + TableFilter.TABLE_NAME + " (" + TableFilter.COLUMN_ID + ")" +
                         " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String TAG = "FilmFilterDB.tag";
-
-
     }
 
     public static abstract class TableShot implements BaseColumns{
@@ -219,6 +221,5 @@ public final class DBContract {
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String TAG = "ShotsDB.tag";
     }
-
 
 }
