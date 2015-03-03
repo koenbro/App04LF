@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by laszlo on 10/21/14. http://hmkcode.com/android-simple-sqlite-database-tutorial/
  */
-public class CameraAdapter extends ArrayAdapter<Camera>{
+public class CameraAdapter extends ArrayAdapter<String>{
 
     private final Context context;
     private ArrayList<Camera> camerasArrayList;
