@@ -18,7 +18,7 @@ import java.util.Collections;
  */
 public class ShotListActivity extends Activity {
     ShotDBAdapter db;
-    ShotAdapter ShotAdapter;
+    GearAdapter ShotAdapter;
     ListView ShotListView;
 
     @Override
@@ -54,7 +54,7 @@ public class ShotListActivity extends Activity {
      * Create a custom adaptor to connect the Shot list from generateData() with the ShotListView
      */
     public void ShotAdapterLoad(){
-        ShotAdapter = new ShotAdapter(this, generateData()); //pass context/data to custom adapter
+        ShotAdapter = new GearAdapter(this, generateData()); //pass context/data to custom adapter
         ShotListView = (ListView) findViewById(R.id.shotListView); //Get ShotListView from
         // activity_Shot_list.xml
         ShotListView.setAdapter(ShotAdapter);
@@ -67,6 +67,7 @@ public class ShotListActivity extends Activity {
         Collections.reverse(allShots); //show most recent first
         return (allShots);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -11,7 +11,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class CameraListActivity extends Activity {
-    CameraAdapter cameraAdapter;
+    //CameraAdapter cameraAdapter;
+    GearAdapter cameraAdapter;
     ListView cameraListView;
     Gear gear;
     @Override
@@ -40,10 +41,10 @@ public class CameraListActivity extends Activity {
      * Create a custom adaptor to connect the camera list from generateData() with the cameralistview
      */
     public void cameraAdapterLoad(){
-        cameraAdapter = new CameraAdapter(this, gear.getAllCameras()); //pass context/data to the custom adapter
+        //cameraAdapter = new CameraAdapter(this, gear.getAllCameras());//pass context/data to the custom adapter
+        cameraAdapter = new GearAdapter(this, gear.getAllCameras());
         cameraListView = (ListView) findViewById(R.id.cameraListView); //Get ListView from activity_main.xml
         cameraListView.setAdapter(cameraAdapter);
-
     }
 
     @Override

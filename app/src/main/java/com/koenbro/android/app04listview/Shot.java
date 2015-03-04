@@ -298,4 +298,9 @@ public class Shot {
         return isoMeterRef;
     }
 
+    @Override
+    public String toString() {
+        return "Shot [id=" + id + ", film name=" + filmName  + "]";
+    }
+
 }

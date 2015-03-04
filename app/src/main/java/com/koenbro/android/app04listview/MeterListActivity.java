@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class MeterListActivity extends Activity{
     MeterDBAdapter db;
-    MeterAdapter meterAdapter;
+    GearAdapter meterAdapter;
     ListView meterListView;
 
     @Override
@@ -54,7 +54,7 @@ public class MeterListActivity extends Activity{
      * Create a custom adaptor to connect the meter list from generateData() with the meterListView
      */
     public void meterAdapterLoad(){
-        meterAdapter = new MeterAdapter(this, generateData()); //pass context/data to custom adapter
+        meterAdapter = new GearAdapter(this, generateData()); //pass context/data to custom adapter
         meterListView = (ListView) findViewById(R.id.meterListView); //Get MeterListView from
         // activity_meter_list.xml
         meterListView.setAdapter(meterAdapter);

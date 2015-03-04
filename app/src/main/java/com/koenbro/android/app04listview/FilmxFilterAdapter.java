@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author laszlo
  * @date 2/28/15.
  */
-public class FilmxFilterAdapter extends FilterAdapter {
+public class FilmxFilterAdapter extends GearAdapter {
     private final Context context;
     private final ArrayList<Filter> filtersArrayList;
     private final Film film;

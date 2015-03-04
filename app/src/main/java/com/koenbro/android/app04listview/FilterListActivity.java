@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class FilterListActivity extends Activity {
     FilterDBAdapter db;
-    FilterAdapter filterAdapter;
+    GearAdapter filterAdapter;
     ListView filterListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class FilterListActivity extends Activity {
      * Create a custom adaptor to connect the filter list from generateData() with the filterlistview
      */
     public void filterAdapterLoad(){
-        filterAdapter = new FilterAdapter(this, generateData()); //pass context/data to the custom adapter
+        filterAdapter = new GearAdapter(this, generateData()); //pass context/data to the custom adapter
         filterListView = (ListView) findViewById(R.id.filterListView); //Get ListView from activity_main.xml
         filterListView.setAdapter(filterAdapter);
     }

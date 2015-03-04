@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class LensListActivity extends Activity{
     LensDBAdapter db;
-    LensAdapter lensAdapter;
+    GearAdapter lensAdapter;
     ListView lensListView;
 
     @Override
@@ -55,7 +55,7 @@ public class LensListActivity extends Activity{
      */
     public void lensAdapterLoad(){
 
-        lensAdapter = new LensAdapter(this, generateData()); //pass context/data to custom adapter
+        lensAdapter = new GearAdapter(this, generateData()); //pass context/data to custom adapter
         lensListView = (ListView) findViewById(R.id.lensListView); //Get LensListView from
         // activity_lens_list.xml
         lensListView.setAdapter(lensAdapter);
