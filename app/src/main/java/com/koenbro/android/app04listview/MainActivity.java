@@ -156,19 +156,19 @@ public class MainActivity extends Activity {
                     case 0:
                         return;
                     case 1:
-                        intent = new Intent(MainActivity.this, FilmListActivity.class);
+                        intent = new Intent(MainActivity.this, CameraListActivity.class);
                         break;
                     case 2:
-                        intent = new Intent(MainActivity.this, LensListActivity.class);
+                        intent = new Intent(MainActivity.this, FilmListActivity.class);
                         break;
                     case 3:
                         intent = new Intent(MainActivity.this, FilterListActivity.class);
                         break;
                     case 4:
-                        intent = new Intent(MainActivity.this, MeterListActivity.class);
+                        intent = new Intent(MainActivity.this, LensListActivity.class);
                         break;
                     case 5:
-                        intent = new Intent(MainActivity.this, CameraListActivity.class);
+                        intent = new Intent(MainActivity.this, MeterListActivity.class);
                         break;
                     case 6:
                         intent = new Intent(MainActivity.this, ShotListActivity.class);

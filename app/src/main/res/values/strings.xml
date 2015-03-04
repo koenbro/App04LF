@@ -48,7 +48,7 @@
         <item>Filters</item>
         <item>Meters</item>
         <item>Cameras</item>
-        <item>Other</item>
+        <item>Shots</item>
     </string-array>
 
     <string name="film_name">Film name</string>
