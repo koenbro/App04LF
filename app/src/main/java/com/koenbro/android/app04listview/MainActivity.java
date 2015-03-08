@@ -323,6 +323,7 @@ public class MainActivity extends Activity {
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
         mExposureLo.setText(liveShot.getOneThirdDownUp()[0]);
         mExposureHi.setText(liveShot.getOneThirdDownUp()[1]);
+        mBellowsText.setText(String.valueOf(liveShot.getBellowsExtension()));
     }
 
     //Housekeeping

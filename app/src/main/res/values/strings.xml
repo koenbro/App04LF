@@ -26,14 +26,14 @@
     <string name="title_activity_shot_list">Shots</string>
 
     <!-- Widget field names -->
-    <string name="main_choose_film">film</string>
-    <string name="main_choose_lens">lens</string>
+    <string name="main_choose_film">Film</string>
+    <string name="main_choose_lens">Lens</string>
     <string name="main_choose_aperture">f/</string>
-    <string name="main_choose_filter">filter</string>
-    <string name="main_choose_be">bellows</string>
-    <string name="main_choose_meter">meter</string>
-    <string name="main_choose_meter_read">meter read</string>
-    <string name="main_choose_camera">camera</string>
+    <string name="main_choose_filter">Filter</string>
+    <string name="main_choose_be">Bellows</string>
+    <string name="main_choose_meter">Meter</string>
+    <string name="main_choose_meter_read">Meter EV</string>
+    <string name="main_choose_camera">Camera</string>
     <string name="main_default_gear">Default gear</string>
     <string name="main_calculated_exposure">Exposure: </string>
     <string name="main_user_choices">Your choices:</string>
@@ -166,6 +166,9 @@
     <string name="file_to_email">lfdb_backup.sqlite</string>
     <string name="one_third">*</string>
     <string name="two_thirds">**</string>
+    <string name="one_third_down">1/3 down</string>
+    <string name="one_third_up">1/3 up</string>
+    <string name="shutter">shutter</string>
     <string name="blank"></string>
     <string name="title_activity_filmx_filter">FilmxFilterActivity</string>
 
