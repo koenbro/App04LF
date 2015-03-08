@@ -7,42 +7,42 @@ import java.text.NumberFormat;
  * Created by laszlo on 10/31/14.
  */
 public class Shot {
-    long id;
-    String shotDay;
-    String shotTime;
-    long photoShootId;
-    double aperture;
-    int bellowsExtension;
-    double meterRead;
-    double ff;
-    double bf;
-    double rc;
-    double shutter;
-    String prettyShutter;
-    String comment;
-    double latitude;
-    double longitude;
+    private long id;
+    private String shotDay;
+    private String shotTime;
+    private long photoShootId;
+    private double aperture;
+    private int bellowsExtension;
+    private double meterRead;
+    private double ff;
+    private double bf;
+    private double rc;
+    private double shutter;
+    private String prettyShutter;
+    private String comment;
+    private double latitude;
+    private double longitude;
 
-    String filmName;
-    int filmEi;
-    String lensName;
-    int lensFocal;
-    String filterName;
-    String cameraName;
-    String meterName;
+    private String filmName;
+    private int filmEi;
+    private String lensName;
+    private int lensFocal;
+    private String filterName;
+    private String cameraName;
+    private String meterName;
 
     //Gear objects
-    Film film;
-    Lens lens;
-    Filter filter;
-    Camera camera;
-    Meter meter;
+    private Film film;
+    private Lens lens;
+    private Filter filter;
+    private Camera camera;
+    private Meter meter;
 
     //reference values for light meters
-    final double tMeterRef = 15;
-    final double fMeterRef = 8;
-    final double evMeterRef = 10;
-    final double isoMeterRef = 100;
+    private final double tMeterRef = 15;
+    private final double fMeterRef = 8;
+    private final double evMeterRef = 10;
+    private final double isoMeterRef = 100;
     //TODO get these from db
 
 
@@ -66,8 +66,6 @@ public class Shot {
         setMeterName(meter.getMeterName());
         setShutter(calcShutter(aperture));
         setPrettyShutter(pretty(shutter));
-        //calcShutter(aperture);
-
     }
 
     private double calcFf(Film film, Filter filter) {
@@ -88,7 +86,6 @@ public class Shot {
         setRc(rc);
         return( rc);
     }
-
     private double calcShutter(double aperture) {
         double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
         bf = Math.pow((double) bellowsExtension / (double) lens.getLensFocal(), 2.0);
@@ -100,12 +97,10 @@ public class Shot {
         shutter = shutter * calcRc(shutter); //post-reciprocity correction
         return shutter;
     }
-
     private String pretty(double shutter) {
         String pretty;
         NumberFormat round = new DecimalFormat("#0");
         NumberFormat twoDec = new DecimalFormat("#0.00");
-
         //TODO maybe just cast as integer; or round; or set to nearest
         //need to handle fractions as inverse 1/T
         if (shutter <1){
@@ -117,7 +112,6 @@ public class Shot {
         } else {
             pretty = round.format(shutter)+"s";
         }
-        //setPrettyShutter(pretty);
         return pretty;
     }
 
