@@ -7,6 +7,7 @@
                 android:paddingTop="16dp"
     >
 
+    <!-- Results -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,10 +62,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Lens and aperture-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_bg"
+        android:background="@drawable/layout_dk1_bg"
         android:orientation="horizontal"
         android:id="@+id/secondTable"
         android:layout_below="@+id/topTable"
@@ -72,60 +74,75 @@
         android:padding="10dp"
         >
 
-        <TextView
-            android:text="@string/main_choose_lens"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Spinner
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/main_lens_spinner"/>
+            android:layout_weight="2">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:text="@string/main_choose_lens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_lens_spinner"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/main_choose_aperture"
-            android:id="@+id/textView"
-            android:paddingLeft="10dp"
-            />
+            android:layout_weight="1"
+            >
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/main_aperture_spinner"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_choose_aperture"
+                android:id="@+id/textView"
+                />
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_aperture_spinner"/>
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/radioGroupf"
+                        android:checkedButton="@+id/radioButtonf0"
+                        android:paddingLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:baselineAligned="false">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:id="@+id/radioGroupf"
-                    android:checkedButton="@+id/radioButtonf0"
-                    android:paddingLeft="4dp"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"
-                    android:baselineAligned="false">
+                    android:text="@string/blank"
+                    android:id="@+id/radioButtonf0"/>
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/blank"
-                android:id="@+id/radioButtonf0"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/one_third"
+                    android:id="@+id/radioButtonf1"/>
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/one_third"
-                android:id="@+id/radioButtonf1"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/two_thirds"
+                    android:id="@+id/radioButtonf2"/>
+            </RadioGroup>
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/two_thirds"
-                android:id="@+id/radioButtonf2"/>
-        </RadioGroup>
+        </LinearLayout>
+
     </LinearLayout>
 
+    <!-- Bellows - meter  -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/thirdTable"
@@ -180,7 +197,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_column="1"
                         android:id="@+id/radioGroupMeterRead"
                         android:checkedButton="@+id/radioButtonMeter0"
                         android:paddingLeft="4dp"
@@ -211,7 +227,7 @@
 
     </LinearLayout>
 
-
+    <!-- Film - filter - comment -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/fourthTable"
@@ -224,35 +240,53 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-            <TextView
-                android:text="@string/main_choose_film"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:padding="10dp"/>
+                android:layout_width="match_parent"
+                android:layout_weight="1">
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_film_spinner"
-                android:clickable="true"
-                android:prompt="@string/main_choose_film"
-                android:maxWidth="@dimen/spinner_max_width"/>
+                <TextView
+                    android:text="@string/main_choose_film"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_choose_filter"
-                android:padding="10dp"
-                />
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_film_spinner"
+                    android:clickable="true"
+                    android:prompt="@string/main_choose_film"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+            </LinearLayout>
 
-            <Spinner
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:id="@+id/main_filter_spinner"
-                android:maxWidth="@dimen/spinner_max_width"/>
+                android:layout_width="match_parent"
+                android:paddingRight="10dp"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_choose_filter"
+                    android:padding="10dp"
+                    />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_filter_spinner"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -261,7 +295,6 @@
             android:layout_width="match_parent"
             android:paddingRight="10dp"
             >
-
             <TextView
                 android:text="@string/main_comment"
                 android:layout_width="wrap_content"
@@ -274,8 +307,10 @@
                 android:id="@+id/main_comment"
                 android:inputType="text"/>
         </LinearLayout>
+
     </LinearLayout>
 
+    <!-- Manage gear-->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/fifthTable"
@@ -323,9 +358,10 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp">
 
-            <TextView
+        <TextView
                 android:text="@string/equipment_choose_page"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -335,7 +371,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner_equipment"
-                android:layout_column="1"
                 android:layout_gravity="left"
                 android:gravity="left"/>
         </LinearLayout>
@@ -343,7 +378,6 @@
 
 
     </LinearLayout>
-
 
 </RelativeLayout>
 
