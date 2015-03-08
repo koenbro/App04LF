@@ -36,8 +36,6 @@ public class GearAdapter extends ArrayAdapter {
 
         return (rowView);
     }
-
-
 }
 
 

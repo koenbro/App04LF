@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class CameraListActivity extends Activity {
-    GearAdapter cameraAdapter;
+    GearAdapter gearAdapter;
     ListView cameraListView;
     Gear gear;
 
@@ -20,7 +20,7 @@ public class CameraListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_list);
         gear = new Gear();
-        cameraAdapterLoad();
+        gearAdapterLoad();
         cameraListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -34,18 +34,18 @@ public class CameraListActivity extends Activity {
 
     public void onResume() {
         super.onResume();
-        cameraAdapterLoad();// Reload the latest camera list after addition/deletion
+        gearAdapterLoad();// Reload the latest camera list after addition/deletion
     }
 
     /**
      * Create a custom adaptor to connect the camera list from generateData() with the
      * cameralistview
      */
-    public void cameraAdapterLoad() {
-        //cameraAdapter = new CameraAdapter(this, gear.getAllCameras());//pass context/data to the custom adapter
-        cameraAdapter = new GearAdapter(this, gear.getAllCameras());
+    public void gearAdapterLoad() {
+        //gearAdapter = new CameraAdapter(this, gear.getAllCameras());//pass context/data to the custom adapter
+        gearAdapter = new GearAdapter(this, gear.getAllCameras());
         cameraListView = (ListView) findViewById(R.id.cameraListView); //Get ListView from activity_main.xml
-        cameraListView.setAdapter(cameraAdapter);
+        cameraListView.setAdapter(gearAdapter);
     }
 
     @Override

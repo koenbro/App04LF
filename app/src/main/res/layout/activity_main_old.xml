@@ -1,33 +1,25 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/topTable"
-        android:background="@drawable/layout_bg"
-        android:orientation="vertical">
+        >
         <!-- USER INPUT-->
+        <TableRow>
 
-        <TextView
+            <TextView
                 android:text="@string/main_calculated_exposure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:layout_column="1"
+                style="?android:listSeparatorTextViewStyle"/>
+        </TableRow>
 
-                style="?android:listSeparatorTextViewStyle"
-                android:layout_gravity="center_horizontal"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <TableRow>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,9 +27,7 @@
                 android:text="1/3 down"
                 android:layout_column="0"
                 android:padding="10dp"
-                android:id="@+id/textViewExpLo"
-                android:layout_weight="1"
-                android:layout_gravity="left"/>
+                android:id="@+id/textViewExpLo"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,9 +37,7 @@
                 android:layout_column="1"
                 android:textColor="@color/OrangeRed"
                 android:id="@+id/textViewExp"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:layout_gravity="center_horizontal"/>
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,36 +45,27 @@
                 android:text="1/3 up"
                 android:padding="10dp"
                 android:layout_column="2"
-                android:id="@+id/textViewExpHi"
-                android:layout_weight="1"
-                android:layout_gravity="right"
-                android:gravity="right"/>
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/secondTable"
-        android:layout_below="@+id/topTable"
-
-        >
+                android:id="@+id/textViewExpHi"/>
+        </TableRow>
 
         <TableRow>
+
             <TextView
                 android:text="@string/main_choose_lens"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 />
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_lens_spinner"/>
         </TableRow>
+
         <TableRow
             android:background="@drawable/layout_bg">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,10 +73,12 @@
                 android:id="@+id/textView"
                 android:padding="10dp"
                 />
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_aperture_spinner"/>
+
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -105,21 +86,20 @@
                         android:layout_column="1"
                         android:id="@+id/radioGroupf"
                         android:checkedButton="@+id/radioButtonf0"
-                        android:paddingLeft="4dp"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="right"
-                        android:baselineAligned="false">
+                        android:paddingLeft="4dp">
 
-            <RadioButton
+                <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/blank"
                     android:id="@+id/radioButtonf0"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/one_third"
                     android:id="@+id/radioButtonf1"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,28 +109,33 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:text="@string/main_choose_be"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
+
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_set_be"
-                android:numeric="integer"
-                android:inputType="number"/>
+                android:numeric="integer"/>
         </TableRow>
+
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_choose_meter_read"
                 android:padding="10dp"/>
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_ev_spinner"/>
+
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -158,19 +143,20 @@
                         android:layout_column="1"
                         android:id="@+id/radioGroupMeterRead"
                         android:checkedButton="@+id/radioButtonMeter0"
-                        android:paddingLeft="4dp"
-                        android:layout_gravity="center_vertical">
+                        android:paddingLeft="4dp">
 
-            <RadioButton
+                <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/blank"
                     android:id="@+id/radioButtonMeter0"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/one_third"
                     android:id="@+id/radioButtonMeter1"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,22 +166,22 @@
 
         </TableRow>
     </TableLayout>
+
     <TableLayout
-        android:id="@+id/thirdTable"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/secondTable"
-        android:layout_alignParentLeft="true"
         >
 
         <TableRow
             android:layout_width="match_parent">
+
             <TextView
                 android:text="@string/main_choose_film"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:layout_column="0"/>
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -220,31 +206,34 @@
 
 
     </TableLayout>
+
     <TableLayout
-        android:id="@+id/fourthTable"
-        android:layout_below="@+id/thirdTable"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_bg"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="16dp">
+        >
 
         <TableRow>
+
             <TextView
                 android:text="@string/main_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
+
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_comment"
-                android:layout_span="1"
-                android:inputType="text"/>
+                android:layout_span="3"
+                />
         </TableRow>
+
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -255,7 +244,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_choose_meter"/>
-
 
 
             <TextView
@@ -293,6 +281,6 @@
     </TableLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
 
 

@@ -64,21 +64,10 @@ public class Shot {
         setFilterName(filter.getFilterName());
         setCameraName(camera.getCameraName());
         setMeterName(meter.getMeterName());
-        calcShutter();
+        setShutter(calcShutter(aperture));
+        setPrettyShutter(pretty(shutter));
+        //calcShutter(aperture);
 
-    }
-
-    public void calcShutter(){
-        double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
-        bf = Math.pow((double)bellowsExtension/(double)lens.getLensFocal(), 2.0);
-        setBf(bf);
-        double ac = Math.pow(aperture/fMeterRef,2.0); //aperture
-        double sc = isoMeterRef/film.getFilmEi(); //film sensitivity
-        ff = calcFf(film, filter);
-        shutter = (1/tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
-        shutter = shutter * calcRc(shutter); //post-reciprocity correction
-        setShutter(shutter);
-        pretty();
     }
 
     private double calcFf(Film film, Filter filter) {
@@ -99,10 +88,24 @@ public class Shot {
         setRc(rc);
         return( rc);
     }
-    private void pretty(){
+
+    private double calcShutter(double aperture) {
+        double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
+        bf = Math.pow((double) bellowsExtension / (double) lens.getLensFocal(), 2.0);
+        setBf(bf);
+        double ac = Math.pow(aperture / fMeterRef, 2.0); //aperture
+        double sc = isoMeterRef / film.getFilmEi(); //film sensitivity
+        ff = calcFf(film, filter);
+        shutter = (1 / tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
+        shutter = shutter * calcRc(shutter); //post-reciprocity correction
+        return shutter;
+    }
+
+    private String pretty(double shutter) {
         String pretty;
         NumberFormat round = new DecimalFormat("#0");
         NumberFormat twoDec = new DecimalFormat("#0.00");
+
         //TODO maybe just cast as integer; or round; or set to nearest
         //need to handle fractions as inverse 1/T
         if (shutter <1){
@@ -114,7 +117,17 @@ public class Shot {
         } else {
             pretty = round.format(shutter)+"s";
         }
-        setPrettyShutter(pretty);
+        //setPrettyShutter(pretty);
+        return pretty;
+    }
+
+    public String[] getOneThirdDownUp() {
+        String[] adjusted = new String[2];
+        double down = calcShutter(aperture / Math.sqrt(Math.pow(2, 0.3333)));
+        double up = calcShutter(aperture * Math.sqrt(Math.pow(2, 0.3333)));
+        adjusted[0] = pretty(down);
+        adjusted[1] = pretty(up);
+        return adjusted;
     }
 
     public long getId() {

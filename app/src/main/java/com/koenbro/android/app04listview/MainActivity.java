@@ -95,13 +95,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new DBAdapter(this);
-        try {
-            db.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        db.close();
+        tryDatabase();
         dbUtil = new DBUtil();
         gear = new Gear();
         metaInformation = new MetaInformation();
@@ -110,6 +104,18 @@ public class MainActivity extends Activity {
         refreshDynamicContent();
     }
 
+    /**
+     * Checks if db exists; if not, creates it. Ignored after 1st run
+     */
+    private void tryDatabase() {
+        db = new DBAdapter(this);
+        try {
+            db.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
     private void createWidgets(){
         mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
         mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
@@ -264,7 +270,7 @@ public class MainActivity extends Activity {
         mCameraChoice.setAdapter(camerasNamesAdapter);
     }
 
-    public void getUserChoices(){
+    private void getUserChoices() {
         filmChosen = allFilms.get(mFilmChoice.getSelectedItemPosition());
         lensChosen = allLenses.get(mLensChoice.getSelectedItemPosition());
 
@@ -309,18 +315,21 @@ public class MainActivity extends Activity {
         cameraChosen = allCameras.get(mCameraChoice.getSelectedItemPosition());
         comment = mCommentShot.getText().toString();
     }
-    public void calcExposure(){
+
+    private void calcExposure() {
         getUserChoices();
         liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
                 aperture, bellowsExtension, meterReadValue);
-        //liveShot.calcShutter();
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
+        mExposureLo.setText(liveShot.getOneThirdDownUp()[0]);
+        mExposureHi.setText(liveShot.getOneThirdDownUp()[1]);
     }
 
     //Housekeeping
     protected void onResume(){
         super.onResume();
         refreshDynamicContent();
+        equipmentSelectWidget();
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -340,7 +349,6 @@ public class MainActivity extends Activity {
             case R.id.action_send_data:
                 emailedFilename = getResources().getString(R.string.file_to_email);
                 emailAddress = getResources().getString(R.string.email_address);
-                //dbUtil.exportTableToCSV(DBContract.DB_NAME, DBContract.TableFilm.TABLE_NAME);
                 dbUtil.exportDatabase(DBContract.DB_NAME, emailedFilename);
                 //email the exported file
                 startActivityForResult(
@@ -370,8 +378,8 @@ public class MainActivity extends Activity {
         NumberFormat twoDec = new DecimalFormat("#0.00");
         String exposureCompensations =
                 "BF: " + twoDec.format( liveShot.getBf())+
-                ";  FF: " + twoDec.format(liveShot.getFf())+
-                ";  RC: " + twoDec.format(liveShot.getRc());
+                        ";  FF: " + twoDec.format(liveShot.getFf()) +
+                        ";  RC: " + twoDec.format(liveShot.getRc());
         return exposureCompensations;
     }
 

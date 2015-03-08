@@ -43,11 +43,11 @@
 
     <string-array name="equipment_pages">
         <item>Choose...</item>
-        <item>Films</item>
-        <item>Lenses</item>
-        <item>Filters</item>
-        <item>Meters</item>
         <item>Cameras</item>
+        <item>Films</item>
+        <item>Filters</item>
+        <item>Lenses</item>
+        <item>Meters</item>
         <item>Shots</item>
     </string-array>
 
