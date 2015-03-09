@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class FilmxFilterActivity extends Activity {
+public class FilmxFilterListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

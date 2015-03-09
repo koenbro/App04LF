@@ -23,16 +23,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
- * Main activity for the Large Format Photography Assistant app.<br/>
- *     This app has three main goals: (1) manages LF gear; (2) calculates exposure in the field,
- *     adjusting for bellows draw, filter factor, and reciprocity correction; and (3) stores
- *     information on a shot, including meta information (time stamp, GPS location, comment,
- *     dictaphone note, snapshot of subject, etc).<p>
- *         Beyond the end user functionality this complex app serves as a learning project for Java
- *         and Android programming and a test bed for several techniques, like (1) SQLite
- *         databases with multiple tables, (2) application wide contexts, and (3) general OOP
- *         techniques.
- *     </p>
+ * Main activity for the Large Format Photography Assistant app.<br/> This app has three main goals:
+ * (1) manages LF gear; (2) calculates exposure in the field, adjusting for bellows draw, filter
+ * factor, and reciprocity correction; and (3) stores information on a shot, including meta
+ * information (time stamp, GPS location, comment, dictaphone note, snapshot of subject, etc).<p>
+ * Beyond the end user functionality this complex app serves as a learning project for Java and
+ * Android programming and a test bed for several techniques, like (1) SQLite databases with
+ * multiple tables, (2) application wide contexts, and (3) general OOP techniques. </p>
  */
 public class MainActivity extends Activity {
     private Spinner mEquipmentPage;
@@ -116,37 +113,39 @@ public class MainActivity extends Activity {
         }
         db.close();
     }
-    private void createWidgets(){
-        mFilmChoice = (Spinner)findViewById(R.id.main_film_spinner);
-        mLensChoice = (Spinner)findViewById(R.id.main_lens_spinner);
-        mLensAperture = (Spinner)findViewById(R.id.main_aperture_spinner);
 
-        mThirdStops = (RadioGroup)findViewById(R.id.radioGroupf);
-        mFullStop = (RadioButton)findViewById(R.id.radioButtonf0);
-        mOneThirdStop = (RadioButton)findViewById(R.id.radioButtonf1);
-        mTwoThirdStop = (RadioButton)findViewById(R.id.radioButtonf2);
+    private void createWidgets() {
+        mFilmChoice = (Spinner) findViewById(R.id.main_film_spinner);
+        mLensChoice = (Spinner) findViewById(R.id.main_lens_spinner);
+        mLensAperture = (Spinner) findViewById(R.id.main_aperture_spinner);
 
-        mFilterChoice =(Spinner)findViewById(R.id.main_filter_spinner);
-        mBellowsText = (EditText)findViewById(R.id.main_set_be);
-        mMeterReadEV = (Spinner)findViewById(R.id.main_ev_spinner);
+        mThirdStops = (RadioGroup) findViewById(R.id.radioGroupf);
+        mFullStop = (RadioButton) findViewById(R.id.radioButtonf0);
+        mOneThirdStop = (RadioButton) findViewById(R.id.radioButtonf1);
+        mTwoThirdStop = (RadioButton) findViewById(R.id.radioButtonf2);
 
-        mThirdEV = (RadioGroup)findViewById(R.id.radioGroupMeterRead);
-        mFullEV = (RadioButton)findViewById(R.id.radioButtonMeter0);
-        mOneThirdEV = (RadioButton)findViewById(R.id.radioButtonMeter1);
-        mTwoThirdEV = (RadioButton)findViewById(R.id.radioButtonMeter2);
+        mFilterChoice = (Spinner) findViewById(R.id.main_filter_spinner);
+        mBellowsText = (EditText) findViewById(R.id.main_set_be);
+        mMeterReadEV = (Spinner) findViewById(R.id.main_ev_spinner);
 
-        mExposureLo = (TextView)findViewById(R.id.textViewExpLo);
-        mExposure = (TextView)findViewById(R.id.textViewExp);
-        mExposureHi = (TextView)findViewById(R.id.textViewExpHi);
-        mMeterChoice = (Spinner)findViewById(R.id.main_choose_meter);
+        mThirdEV = (RadioGroup) findViewById(R.id.radioGroupMeterRead);
+        mFullEV = (RadioButton) findViewById(R.id.radioButtonMeter0);
+        mOneThirdEV = (RadioButton) findViewById(R.id.radioButtonMeter1);
+        mTwoThirdEV = (RadioButton) findViewById(R.id.radioButtonMeter2);
 
-        mCameraChoice = (Spinner)findViewById(R.id.main_choose_camera);
-        mCommentShot = (EditText)findViewById(R.id.main_comment);
+        mExposureLo = (TextView) findViewById(R.id.textViewExpLo);
+        mExposure = (TextView) findViewById(R.id.textViewExp);
+        mExposureHi = (TextView) findViewById(R.id.textViewExpHi);
+        mMeterChoice = (Spinner) findViewById(R.id.main_choose_meter);
+
+        mCameraChoice = (Spinner) findViewById(R.id.main_choose_camera);
+        mCommentShot = (EditText) findViewById(R.id.main_comment);
 
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         equipmentSelectWidget();
     }
-    private void equipmentSelectWidget(){
+
+    private void equipmentSelectWidget() {
         //equipment inventory spinner is immutable, no need for dynamic reload; others are dynamic
         mEquipmentPage = (Spinner) findViewById(R.id.spinner_equipment);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
@@ -156,9 +155,10 @@ public class MainActivity extends Activity {
         mEquipmentPage.setAdapter(adapter);
         mEquipmentPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             Intent intent;
+
             @Override
             public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
-                switch(position){
+                switch (position) {
                     case 0:
                         return;
                     case 1:
@@ -182,13 +182,15 @@ public class MainActivity extends Activity {
                 }
                 startActivity(intent);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
                 return;
             }
         });
     }
-    private void refreshDynamicContent(){
+
+    private void refreshDynamicContent() {
         allFilms = gear.getAllFilms();
         allFilters = gear.getAllFilters();
         allLenses = gear.getAllLenses();
@@ -196,7 +198,7 @@ public class MainActivity extends Activity {
         allCameras = gear.getAllCameras();
         //show film names from db
         ArrayList<String> filmNames = new ArrayList<String>();
-        for (int i=0; i<allFilms.size(); i++) {
+        for (int i = 0; i < allFilms.size(); i++) {
             filmNames.add(allFilms.get(i).getFilmName());
         }
         ArrayAdapter<String> filmNamesAdapter =
@@ -207,7 +209,7 @@ public class MainActivity extends Activity {
 
         //show lens names from db
         ArrayList<String> lensesNames = new ArrayList<String>();
-        for (int i=0; i<allLenses.size(); i++){
+        for (int i = 0; i < allLenses.size(); i++) {
             lensesNames.add(allLenses.get(i).getLensName());
         }
         ArrayAdapter<String> lensesNamesAdapter =
@@ -228,11 +230,11 @@ public class MainActivity extends Activity {
 
         //show filter names from db
         ArrayList<String> filtersNames = new ArrayList<String>();
-        for (int i=0; i<allFilters.size(); i++){
+        for (int i = 0; i < allFilters.size(); i++) {
             filtersNames.add(allFilters.get(i).getFilterName());
         }
         ArrayAdapter<String> filtersNamesAdapter;
-        filtersNamesAdapter = new ArrayAdapter<String>( this,
+        filtersNamesAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, filtersNames);
         filtersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilterChoice.setAdapter(filtersNamesAdapter);
@@ -249,22 +251,22 @@ public class MainActivity extends Activity {
 
         //show meter names from db
         ArrayList<String> metersNames = new ArrayList<String>();
-        for (int i=0; i<allMeters.size(); i++){
+        for (int i = 0; i < allMeters.size(); i++) {
             metersNames.add(allMeters.get(i).getMeterName());
         }
         ArrayAdapter<String> metersNamesAdapter;
-        metersNamesAdapter = new ArrayAdapter<String>( this,
+        metersNamesAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, metersNames);
         metersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMeterChoice.setAdapter(metersNamesAdapter);
 
         //show camera names from db
         ArrayList<String> camerasNames = new ArrayList<String>();
-        for (int i=0; i<allCameras.size(); i++){
+        for (int i = 0; i < allCameras.size(); i++) {
             camerasNames.add(allCameras.get(i).getCameraName());
         }
         ArrayAdapter<String> camerasNamesAdapter;
-        camerasNamesAdapter = new ArrayAdapter<String>( this,
+        camerasNamesAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, camerasNames);
         camerasNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCameraChoice.setAdapter(camerasNamesAdapter);
@@ -279,10 +281,9 @@ public class MainActivity extends Activity {
         int radioButtonID = mThirdStops.getCheckedRadioButtonId();
         View radioButton = mThirdStops.findViewById(radioButtonID);
         int idx = mThirdStops.indexOfChild(radioButton);
-        if (idx == 1)  {
+        if (idx == 1) {
             aperture = aperture * Math.sqrt(Math.pow(2, 0.3333)); // 1/3 stop up
-        }
-        else if (idx ==2) {
+        } else if (idx == 2) {
             aperture = aperture * Math.sqrt(Math.pow(2, 0.6666)); // 2/3 stop up
         }
 
@@ -295,7 +296,7 @@ public class MainActivity extends Activity {
         } else {
             bellowsExtension = Integer.parseInt(mBellowsText.getText().toString());
             // bellows extension cannot be < focal
-            if (bellowsExtension < lensChosen.getLensFocal() ){
+            if (bellowsExtension < lensChosen.getLensFocal()) {
                 bellowsExtension = lensChosen.getLensFocal();
             }
         }
@@ -304,10 +305,9 @@ public class MainActivity extends Activity {
         int radioButtonMeterID = mThirdEV.getCheckedRadioButtonId();
         View radioButtonMeter = mThirdEV.findViewById(radioButtonMeterID);
         int idxMeter = mThirdEV.indexOfChild(radioButtonMeter);
-        if (idxMeter == 1)  {
+        if (idxMeter == 1) {
             meterReadValue = meterReadValue + 0.3333;  // 1/3 stop up
-        }
-        else if (idxMeter ==2) {
+        } else if (idxMeter == 2) {
             meterReadValue = meterReadValue + 0.6666;   // 2/3 stop up
         }
 
@@ -327,16 +327,18 @@ public class MainActivity extends Activity {
     }
 
     //Housekeeping
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         refreshDynamicContent();
         equipmentSelectWidget();
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
         return true;
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_calculate_exposure:
@@ -345,7 +347,7 @@ public class MainActivity extends Activity {
                         exposureCompensations(), Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
-                saveShot (liveShot);
+                saveShot(liveShot);
                 return true;
             case R.id.action_send_data:
                 emailedFilename = getResources().getString(R.string.file_to_email);
@@ -362,6 +364,7 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1222) {
@@ -373,12 +376,13 @@ public class MainActivity extends Activity {
 
     /**
      * Retrieve bellows factor, filter factor, and reciprocity correction.
+     *
      * @return String   formatted sequence BF - FF - RC
      */
-    private String exposureCompensations(){
+    private String exposureCompensations() {
         NumberFormat twoDec = new DecimalFormat("#0.00");
         String exposureCompensations =
-                "BF: " + twoDec.format( liveShot.getBf())+
+                "BF: " + twoDec.format(liveShot.getBf()) +
                         ";  FF: " + twoDec.format(liveShot.getFf()) +
                         ";  RC: " + twoDec.format(liveShot.getRc());
         return exposureCompensations;
@@ -386,9 +390,10 @@ public class MainActivity extends Activity {
 
     /**
      * Add time stop, location info etc to the shot
+     *
      * @param shot
      */
-    private void addMetaInformation(Shot shot){
+    private void addMetaInformation(Shot shot) {
         shot.setShotDay(metaInformation.getDay()); //day
         shot.setShotTime(metaInformation.getTime()); //time
         shot.setLatitude(metaInformation.getLatitude()); //latitude
@@ -398,9 +403,10 @@ public class MainActivity extends Activity {
 
     /**
      * Save shot  (including meta information)
+     *
      * @param shot
      */
-    private void saveShot(Shot shot){
+    private void saveShot(Shot shot) {
         addMetaInformation(liveShot);
         ShotDBAdapter shotDb = new ShotDBAdapter(this);
         shotDb.open();
