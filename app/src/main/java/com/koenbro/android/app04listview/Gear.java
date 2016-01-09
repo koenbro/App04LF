@@ -9,17 +9,19 @@ import java.util.ArrayList;
  * @date 2/25/15.
  */
 public class Gear {
-
     private FilmDBAdapter filmDB;
     private FilterDBAdapter filterDB;
     private LensDBAdapter lensDB;
     private MeterDBAdapter meterDB;
     private CameraDBAdapter cameraDB;
+    private FilmxFilterDBAdapter filmxfilterDB;
+
     private ArrayList<Film> allFilms;
     private ArrayList<Filter> allFilters;
     private ArrayList<Lens> allLenses;
     private ArrayList<Meter> allMeters;
     private ArrayList<Camera> allCameras;
+    private ArrayList<FilmxFilter> allFilterxFilms;
 
     public Gear() {
         cameraDB = new CameraDBAdapter(ApplicationContextProvider.getContext());
@@ -58,6 +60,13 @@ public class Gear {
         allMeters = meterDB.getAllMeters();
         meterDB.close();
         return allMeters;
+    }
+
+    public ArrayList<FilmxFilter> getAllFilterxFilms() {
+        filmxfilterDB.open();
+        allFilterxFilms = filmxfilterDB.getAllFilmxFilters();
+        filmxfilterDB.close();
+        return allFilterxFilms;
     }
 
 }

@@ -46,7 +46,7 @@ public class FilmListActivity extends Activity{
         });
     }
 
-    // Reload the latest filter list after addition/deletion
+    // Reload the latest  list after addition/deletion
     public void onResume(){
         super.onResume();
         filmAdapterLoad();

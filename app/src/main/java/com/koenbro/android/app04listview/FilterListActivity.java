@@ -3,13 +3,13 @@ package com.koenbro.android.app04listview;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class FilterListActivity extends Activity {
@@ -26,7 +26,7 @@ public class FilterListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intentEditFilter = new Intent(FilterListActivity.this, FilterAddEditActivity.class);
-                Log.d(DBContract.TableFilter.TAG, String.valueOf(position));
+                //Log.d(DBContract.TableFilter.TAG, String.valueOf(position));
                 ArrayList<Filter> latestFilterList = generateData();
                 Filter clickedFilter = (Filter) latestFilterList.get(position);
                 long intentId = clickedFilter.getId();

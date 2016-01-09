@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,14 +32,18 @@ public class FilmAddEditActivity extends Activity {
     private EditText mFilmRC6;
     private EditText mFilmRC7;
     private List<String> mFilmTypes;
-    
+    private Spinner mFilters;
+    private Gear gear;
+    private ArrayList<Filter> allFilters;
+
+
     private FilmDBAdapter db;
     private Film mFilm;
     public static final String EXTRA_FILM_ID = "com.koenbro.app03.filmid";
     private static final int DIALOG_ID = 0;
     //public static final String[] mFilmTypesArray  = {"bw", "color neg", "slide", "IR" };
 
-    
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_add_edit);
@@ -51,15 +56,17 @@ public class FilmAddEditActivity extends Activity {
         } else {
             mFilm = db.getFilm(getIntent().getLongExtra(EXTRA_FILM_ID, 0));
         }
+        gear = new Gear();
         createWidgets();
         fillWidgets();
         db.close();
     }
+
     private Film getDummy() {
         mFilm = new Film();
         mFilm.setFilmName(getString(R.string.hint_film_name));
         //mFilm.setFilmType(getString(R.string.hint_film_type)); //spinner does not need set
-        mFilm.setFilmEi (Integer.parseInt( getString(R.string.hint_ei)));
+        mFilm.setFilmEi(Integer.parseInt(getString(R.string.hint_ei)));
         mFilm.setFilmRc1(Double.parseDouble(getString(R.string.hint_rc1)));
         mFilm.setFilmRc2(Double.parseDouble(getString(R.string.hint_rc2)));
         mFilm.setFilmRc3(Double.parseDouble(getString(R.string.hint_rc3)));
@@ -67,29 +74,44 @@ public class FilmAddEditActivity extends Activity {
         mFilm.setFilmRc5(Double.parseDouble(getString(R.string.hint_rc5)));
         mFilm.setFilmRc6(Double.parseDouble(getString(R.string.hint_rc6)));
         mFilm.setFilmRc7(Double.parseDouble(getString(R.string.hint_rc7)));
-        return(mFilm);
+        return (mFilm);
     }
 
-    private void createWidgets(){
-        mFilmName = (EditText)findViewById(R.id.editTextFilmName);
+    private void createWidgets() {
+        mFilmName = (EditText) findViewById(R.id.editTextFilmName);
         mFilmType = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapterFilmType =
                 ArrayAdapter.createFromResource(FilmAddEditActivity.this,
-                R.array.film_type,
-                android.R.layout.simple_spinner_item);
+                        R.array.film_type,
+                        android.R.layout.simple_spinner_item);
         adapterFilmType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilmType.setAdapter(adapterFilmType);
-        mFilmEI = (EditText)findViewById(R.id.editTextFilmEi);
-        mFilmRC1 = (EditText)findViewById(R.id.editTextRC1);
-        mFilmRC2 = (EditText)findViewById(R.id.editTextRC2);
-        mFilmRC3 = (EditText)findViewById(R.id.editTextRC3);
-        mFilmRC4 = (EditText)findViewById(R.id.editTextRC4);
-        mFilmRC5 = (EditText)findViewById(R.id.editTextRC5);
-        mFilmRC6 = (EditText)findViewById(R.id.editTextRC6);
-        mFilmRC7 = (EditText)findViewById(R.id.editTextRC7);
+
+        mFilters = (Spinner) findViewById(R.id.spinner_filmxfilter);
+        //show filter names from db
+        allFilters = gear.getAllFilters();
+        ArrayList<String> filtersNames = new ArrayList<String>();
+        for (int i = 0; i < allFilters.size(); i++) {
+            filtersNames.add(allFilters.get(i).getFilterName());
+        }
+        ArrayAdapter<String> filtersNamesAdapter =
+                new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_item,
+                        filtersNames);
+        filtersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFilters.setAdapter(filtersNamesAdapter);
+
+        mFilmEI = (EditText) findViewById(R.id.editTextFilmEi);
+        mFilmRC1 = (EditText) findViewById(R.id.editTextRC1);
+        mFilmRC2 = (EditText) findViewById(R.id.editTextRC2);
+        mFilmRC3 = (EditText) findViewById(R.id.editTextRC3);
+        mFilmRC4 = (EditText) findViewById(R.id.editTextRC4);
+        mFilmRC5 = (EditText) findViewById(R.id.editTextRC5);
+        mFilmRC6 = (EditText) findViewById(R.id.editTextRC6);
+        mFilmRC7 = (EditText) findViewById(R.id.editTextRC7);
     }
 
-    private void fillWidgets(){  //Fill in the fields for the first time as the Activity is created
+    private void fillWidgets() {  //Fill in the fields for the first time as the Activity is created
         mFilmName.setText(mFilm.getFilmName());
         mFilmTypes = Arrays.asList(getResources().getStringArray(R.array.film_type));
         mFilmType.setSelection(mFilmTypes.
@@ -104,7 +126,7 @@ public class FilmAddEditActivity extends Activity {
         mFilmRC7.setText(String.valueOf(mFilm.getFilmRc7()));
     }
 
-    public Film getUserInput (){
+    public Film getUserInput() {
         mFilm.setFilmName(mFilmName.getText().toString());
         mFilm.setFilmType(mFilmType.getSelectedItem().toString());
         mFilm.setFilmEi(Integer.parseInt(mFilmEI.getText().toString()));
@@ -115,51 +137,51 @@ public class FilmAddEditActivity extends Activity {
         mFilm.setFilmRc5(Double.parseDouble(mFilmRC5.getText().toString()));
         mFilm.setFilmRc6(Double.parseDouble(mFilmRC6.getText().toString()));
         mFilm.setFilmRc7(Double.parseDouble(mFilmRC7.getText().toString()));
-        return(mFilm);
+        return (mFilm);
     }
 
     private void fillBlankFields() {
-        if (mFilmName.getText() == null | mFilmName.getText().toString().matches("")){
+        if (mFilmName.getText() == null | mFilmName.getText().toString().matches("")) {
             warnEmptyField();
             mFilmName.setText(getString(R.string.hint_film_name));
         }
-        if (mFilmEI.getText() == null | mFilmEI.getText().toString().matches("")){
+        if (mFilmEI.getText() == null | mFilmEI.getText().toString().matches("")) {
             warnEmptyField();
             mFilmEI.setText(getString(R.string.hint_ei));
         }
-        if (mFilmRC1.getText() == null | mFilmRC1.getText().toString().matches("")){
+        if (mFilmRC1.getText() == null | mFilmRC1.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC1.setText(getString(R.string.hint_rc1));
         }
-        if (mFilmRC2.getText() == null | mFilmRC2.getText().toString().matches("")){
+        if (mFilmRC2.getText() == null | mFilmRC2.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC2.setText(getString(R.string.hint_rc2));
         }
-        if (mFilmRC3.getText() == null | mFilmRC3.getText().toString().matches("")){
+        if (mFilmRC3.getText() == null | mFilmRC3.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC3.setText(getString(R.string.hint_rc3));
         }
-        if (mFilmRC4.getText() == null | mFilmRC4.getText().toString().matches("")){
+        if (mFilmRC4.getText() == null | mFilmRC4.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC4.setText(getString(R.string.hint_rc4));
         }
-        if (mFilmRC5.getText() == null | mFilmRC5.getText().toString().matches("")){
+        if (mFilmRC5.getText() == null | mFilmRC5.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC5.setText(getString(R.string.hint_rc5));
         }
-        if (mFilmRC6.getText() == null | mFilmRC6.getText().toString().matches("")){
+        if (mFilmRC6.getText() == null | mFilmRC6.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC6.setText(getString(R.string.hint_rc6));
         }
-        if (mFilmRC7.getText() == null | mFilmRC7.getText().toString().matches("")){
+        if (mFilmRC7.getText() == null | mFilmRC7.getText().toString().matches("")) {
             warnEmptyField();
             mFilmRC7.setText(getString(R.string.hint_rc7));
         }
     }
 
-    private void warnEmptyField(){
+    private void warnEmptyField() {
         Toast.makeText(FilmAddEditActivity.this,
-                R.string.warning_empty_field,  Toast.LENGTH_LONG).show();
+                R.string.warning_empty_field, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -178,8 +200,7 @@ public class FilmAddEditActivity extends Activity {
                 // not really deleting, bec. it was not yet saved. You are simply canceling.
                 if (getIntent().getLongExtra(EXTRA_FILM_ID, 0) == 0) {
                     finish();
-                }
-                else {
+                } else {
                     showDialog(DIALOG_ID);
                 }
                 return true;
@@ -208,8 +229,8 @@ public class FilmAddEditActivity extends Activity {
         }
     }
 
-/*  Alert dialog using deprecated code. Works but need to replace.
-    This dialog adds a layer of safety, preventing accidental deletion of films.*/
+    /*  Alert dialog using deprecated code. Works but need to replace.
+        This dialog adds a layer of safety, preventing accidental deletion of films.*/
     //TODO replace deprecated Alert dialog
     protected final Dialog onCreateDialog(final int id) {
         Dialog dialog = null;

@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 public final class DBContract {
     public static final String DB_NAME = "lfgear.sqlite";
-    public static final int DB_VERSION = 40;
+    public static final int DB_VERSION = 41;
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
     /*public final String TAG_GET_ALL = "get all ";

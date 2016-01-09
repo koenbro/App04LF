@@ -93,6 +93,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tryDatabase();
+
         dbUtil = new DBUtil();
         gear = new Gear();
         metaInformation = new MetaInformation();
@@ -100,6 +101,7 @@ public class MainActivity extends Activity {
         createWidgets();
         refreshDynamicContent();
     }
+
 
     /**
      * Checks if db exists; if not, creates it. Ignored after 1st run
