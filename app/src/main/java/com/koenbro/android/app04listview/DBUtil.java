@@ -15,10 +15,10 @@ import java.nio.channels.FileChannel;
  * @date 2/26/15.
  */
 public class DBUtil {
-    MetaInformation metaInformation;
+    ShotMetaInfo shotMetaInfo;
 
     public DBUtil() {
-        metaInformation = new MetaInformation();
+        shotMetaInfo = new ShotMetaInfo();
     }
 
     public void exportDatabase(String databaseName, String backupDBPath) {
@@ -52,7 +52,7 @@ public class DBUtil {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("application/octet-stream");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
-                metaInformation.getDay() + "_" + metaInformation.getTime());
+                shotMetaInfo.getDay() + "_" + shotMetaInfo.getTime());
         String to[] = { email };
         intent.putExtra(Intent.EXTRA_EMAIL, to);
         intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");

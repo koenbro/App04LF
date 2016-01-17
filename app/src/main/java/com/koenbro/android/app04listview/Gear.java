@@ -14,14 +14,14 @@ public class Gear {
     private LensDBAdapter lensDB;
     private MeterDBAdapter meterDB;
     private CameraDBAdapter cameraDB;
-    private FilmxFilterDBAdapter filmxfilterDB;
+    private FxFDBAdapter fxfDB;
 
     private ArrayList<Film> allFilms;
     private ArrayList<Filter> allFilters;
     private ArrayList<Lens> allLenses;
     private ArrayList<Meter> allMeters;
     private ArrayList<Camera> allCameras;
-    private ArrayList<FilmxFilter> allFilterxFilms;
+    private ArrayList<FxF> allFxFs;
 
     public Gear() {
         cameraDB = new CameraDBAdapter(ApplicationContextProvider.getContext());
@@ -29,6 +29,7 @@ public class Gear {
         filterDB = new FilterDBAdapter(ApplicationContextProvider.getContext());
         lensDB = new LensDBAdapter(ApplicationContextProvider.getContext());
         meterDB = new MeterDBAdapter(ApplicationContextProvider.getContext());
+        fxfDB = new FxFDBAdapter(ApplicationContextProvider.getContext());
     }
 
     public ArrayList<Camera> getAllCameras() {
@@ -62,11 +63,11 @@ public class Gear {
         return allMeters;
     }
 
-    public ArrayList<FilmxFilter> getAllFilterxFilms() {
-        filmxfilterDB.open();
-        allFilterxFilms = filmxfilterDB.getAllFilmxFilters();
-        filmxfilterDB.close();
-        return allFilterxFilms;
+    public ArrayList<FxF> getAllFxFs() {
+        fxfDB.open();
+        allFxFs = fxfDB.getAllFxF();
+        fxfDB.close();
+        return allFxFs;
     }
 
 }

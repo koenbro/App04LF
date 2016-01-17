@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
     private String emailedFilename;
     private String emailAddress;
     private Gear gear;
-    private MetaInformation metaInformation;
+    private ShotMetaInfo shotMetaInfo;
     private DBUtil dbUtil;
     private DBAdapter db;
 
@@ -93,11 +93,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tryDatabase();
-
         dbUtil = new DBUtil();
         gear = new Gear();
-        metaInformation = new MetaInformation();
-
+        shotMetaInfo = new ShotMetaInfo();
         createWidgets();
         refreshDynamicContent();
     }
@@ -396,10 +394,10 @@ public class MainActivity extends Activity {
      * @param shot
      */
     private void addMetaInformation(Shot shot) {
-        shot.setShotDay(metaInformation.getDay()); //day
-        shot.setShotTime(metaInformation.getTime()); //time
-        shot.setLatitude(metaInformation.getLatitude()); //latitude
-        shot.setLongitude(metaInformation.getLongitude()); //longitude
+        shot.setShotDay(shotMetaInfo.getDay()); //day
+        shot.setShotTime(shotMetaInfo.getTime()); //time
+        shot.setLatitude(shotMetaInfo.getLatitude()); //latitude
+        shot.setLongitude(shotMetaInfo.getLongitude()); //longitude
         shot.setComment(comment);
     }
 

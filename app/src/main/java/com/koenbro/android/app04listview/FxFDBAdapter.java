@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author laszlo
  * @date 3/8/15.
  */
-public class FilmxFilterDBAdapter {
+public class FxFDBAdapter {
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
     private final Context mCtx;
@@ -32,43 +32,42 @@ public class FilmxFilterDBAdapter {
         }
     }
 
-    public FilmxFilterDBAdapter(Context ctx) {
+    public FxFDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
-    public FilmxFilterDBAdapter open() throws SQLException {
+    public FxFDBAdapter open() throws SQLException {
         this.mDbHelper = new DatabaseHelper(this.mCtx);
         this.mDb = this.mDbHelper.getWritableDatabase();
         return this;
     }
-
     public void close() {
         this.mDbHelper.close();
     }
 
-    private FilmxFilter cursorToFilmxFilter(Cursor cursor) {
-        FilmxFilter filmxFilter = new FilmxFilter();
-        filmxFilter.setId(Long.parseLong(cursor.getString(0)));
-        filmxFilter.setFilmId(Long.parseLong(cursor.getString(1)));
-        filmxFilter.setFilterId(Long.parseLong(cursor.getString(2)));
-        filmxFilter.setFactor(Double.parseDouble(cursor.getString(3)));
-        return filmxFilter;
-    }
-
-    private ContentValues filmxFilterToContentValues(FilmxFilter filmxFilter) {
+    private ContentValues fxFToContentValues(FxF fxF) {
         ContentValues values = new ContentValues();
-        values.put(DBContract.TableFilmFilter.COLUMN_1, String.valueOf(filmxFilter.getFilmId()));
-        values.put(DBContract.TableFilmFilter.COLUMN_2, String.valueOf(filmxFilter.getFilterId()));
-        values.put(DBContract.TableFilmFilter.COLUMN_3, String.valueOf(filmxFilter.getFactor()));
+        values.put(DBContract.TableFilmFilter.COLUMN_1, String.valueOf(fxF.getFilmId()));
+        values.put(DBContract.TableFilmFilter.COLUMN_2, String.valueOf(fxF.getFilterId()));
+        values.put(DBContract.TableFilmFilter.COLUMN_3, String.valueOf(fxF.getFactor()));
         return (values);
     }
 
-    public void addFilmxFilter(FilmxFilter filmxFilter) {
-        ContentValues values = filmxFilterToContentValues(filmxFilter);
+    private FxF cursorToFxF(Cursor cursor) {
+        FxF fxF = new FxF();
+        fxF.setId(Long.parseLong(cursor.getString(0)));
+        fxF.setFilmId(Long.parseLong(cursor.getString(1)));
+        fxF.setFilterId(Long.parseLong(cursor.getString(2)));
+        fxF.setFactor(Double.parseDouble(cursor.getString(3)));
+        return fxF;
+    }
+
+    public void addFxF(FxF fxF) {
+        ContentValues values = fxFToContentValues(fxF);
         this.mDb.insert(DBContract.TableFilmFilter.TABLE_NAME, null, values);
     }
 
-    public FilmxFilter getFilmxFilter(long id) throws SQLException {
+    public FxF getFxF(long id) throws SQLException {
         Cursor cursor = this.mDb.query(
                 DBContract.TableFilmFilter.TABLE_NAME,
                 DBContract.TableFilmFilter.COLUMNS,
@@ -78,43 +77,53 @@ public class FilmxFilterDBAdapter {
                 null, // f. having
                 null, // g. order by
                 null); // h. limit
-        FilmxFilter filmxFilter;
+        FxF fxF;
         if (cursor != null) cursor.moveToFirst();
-        filmxFilter = cursorToFilmxFilter(cursor);
+        fxF = cursorToFxF(cursor);
         cursor.close();
-        return (filmxFilter);
+        return (fxF);
     }
 
-    public ArrayList<FilmxFilter> getAllFilmxFilters() {
-        ArrayList<FilmxFilter> filmxFilters = new ArrayList<FilmxFilter>();
+    public ArrayList<FxF> getAllFxF() {
+        FxF fxF;
+        ArrayList<FxF> fxFs = new ArrayList<FxF>();
         String query = "SELECT * FROM " + DBContract.TableFilmFilter.TABLE_NAME;
         Cursor cursor = this.mDb.rawQuery(query, null);
-        FilmxFilter filmxFilter;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    filmxFilter = cursorToFilmxFilter(cursor);
-                    filmxFilters.add(filmxFilter);
+                    fxF = cursorToFxF(cursor);
+                    fxFs.add(fxF);
                 }
                 while (cursor.moveToNext());
             }
             cursor.close();
         }
-        return (filmxFilters);
+        return (fxFs);
     }
 
-    public boolean updateFilmxFilter(FilmxFilter filmxFilter) {
-        ContentValues values = filmxFilterToContentValues(filmxFilter);
-        return this.mDb.update(DBContract.TableFilmFilter.TABLE_NAME,
+    public int updateFxF(FxF fxF) {
+        ContentValues values = fxFToContentValues(fxF);
+        int i = this.mDb.update(DBContract.TableFilmFilter.TABLE_NAME,
                 values,
                 DBContract.TableFilmFilter.COLUMN_ID + "=?",
-                new String[]{String.valueOf(filmxFilter.getId())}) > 0;
+                new String[]{String.valueOf(fxF.getId())});// > 0;
+        //Log.d(DBContract.TableFilmFilter.TAG, TAG_UPDATE + filmFilter.toString());
+        return i;
     }
 
-    public boolean deleteFilmxFilter(FilmxFilter filmxFilter) {
+    public boolean deleteFxF(FxF fxF) {
         return this.mDb.delete(DBContract.TableFilmFilter.TABLE_NAME,
                 DBContract.TableFilmFilter.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(filmxFilter.getId())}) > 0;
+                new String[]{String.valueOf(fxF.getId())}) > 0;
+    }
+
+    public boolean deleteAllByFilmID(int filmID) {
+        return true;
+    }
+
+    public boolean deleteAllByFilterID(int filterID) {
+        return true;
     }
     
     

@@ -3,7 +3,7 @@ package com.koenbro.android.app04listview;
 /**
  * Created by laszlo on 2/20/15.
  */
-public class FilmxFilter {
+public class FxF {
     private long id;
     private long filmId;
     private long filterId;

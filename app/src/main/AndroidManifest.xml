@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.koenbro.android.app04listview">
+<manifest package="com.koenbro.android.app04listview"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-sdk android:minSdkVersion="11"/>
+    <uses-sdk android:minSdkVersion="15"/>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -77,8 +77,16 @@
             android:label="@string/title_activity_shot_list">
         </activity>
         <activity
-            android:name=".FilmxFilterListActivity"
+            android:name=".FxFListActivity"
             android:label="@string/title_activity_filmx_filter">
+        </activity>
+        <activity
+            android:name=".FxFActivity"
+            android:label="@string/title_activity_filmx_filter">
+        </activity>
+        <activity
+            android:name=".GearListActivity"
+            android:label="@string/title_activity_gear_list">
         </activity>
     </application>
 

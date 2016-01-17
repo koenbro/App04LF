@@ -4,16 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,9 +34,10 @@ public class FilmAddEditActivity extends Activity {
     private EditText mFilmRC6;
     private EditText mFilmRC7;
     private List<String> mFilmTypes;
-    private Spinner mFilters;
-    private Gear gear;
-    private ArrayList<Filter> allFilters;
+    private Button mFilterFactors;
+    //private Gear gear;
+    //private ArrayList<Filter> allFilters;
+    private long filmID;
 
 
     private FilmDBAdapter db;
@@ -49,14 +52,16 @@ public class FilmAddEditActivity extends Activity {
         setContentView(R.layout.activity_film_add_edit);
         db = new FilmDBAdapter(this);
         db.open();
+        filmID = getIntent().getLongExtra(EXTRA_FILM_ID, 0);
         /* If adding a new film, the intent does NOT have an extra;
         if editing an existing film, the intent extra is the 'id' of the film in database.  */
-        if (getIntent().getLongExtra(EXTRA_FILM_ID, 0) == 0) {
+        if (filmID == 0) {
             mFilm = getDummy();
         } else {
-            mFilm = db.getFilm(getIntent().getLongExtra(EXTRA_FILM_ID, 0));
+            mFilm = db.getFilm(filmID);
         }
-        gear = new Gear();
+        //gear = new Gear();
+        //allFilters = gear.getAllFilters();
         createWidgets();
         fillWidgets();
         db.close();
@@ -87,19 +92,34 @@ public class FilmAddEditActivity extends Activity {
         adapterFilmType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilmType.setAdapter(adapterFilmType);
 
-        mFilters = (Spinner) findViewById(R.id.spinner_filmxfilter);
-        //show filter names from db
-        allFilters = gear.getAllFilters();
-        ArrayList<String> filtersNames = new ArrayList<String>();
-        for (int i = 0; i < allFilters.size(); i++) {
-            filtersNames.add(allFilters.get(i).getFilterName());
-        }
-        ArrayAdapter<String> filtersNamesAdapter =
-                new ArrayAdapter<String>(this,
-                        android.R.layout.simple_spinner_item,
-                        filtersNames);
-        filtersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mFilters.setAdapter(filtersNamesAdapter);
+        mFilterFactors = (Button) findViewById(R.id.button_filmxfilter);
+
+
+//        allFilters = gear.getAllFilters(); //show filter names from db
+//        ArrayList<String> filtersNames = new ArrayList<String>();
+//        for (int i = 0; i < allFilters.size(); i++) {
+//            filtersNames.add(allFilters.get(i).getFilterName());
+//        }
+//        ArrayAdapter<String> filtersNamesAdapter =
+//                new ArrayAdapter<String>(this,
+//                        android.R.layout.simple_spinner_item,
+//                        filtersNames);
+//        filtersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mFilters.setAdapter(filtersNamesAdapter);
+//        mFilters.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            Intent intent;
+//            @Override
+//            public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
+//                //intent = new Intent(FilmAddEditActivity.this, Film.class);
+//Toast.makeText(getApplicationContext(), "yo",Toast.LENGTH_SHORT).show() ;
+//                //startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0) {
+//                return;
+//            }
+//        });
 
         mFilmEI = (EditText) findViewById(R.id.editTextFilmEi);
         mFilmRC1 = (EditText) findViewById(R.id.editTextRC1);
@@ -109,6 +129,16 @@ public class FilmAddEditActivity extends Activity {
         mFilmRC5 = (EditText) findViewById(R.id.editTextRC5);
         mFilmRC6 = (EditText) findViewById(R.id.editTextRC6);
         mFilmRC7 = (EditText) findViewById(R.id.editTextRC7);
+    }
+
+    /**
+     * Called when the user clicks the Send button
+     */
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, FxFListActivity.class);
+        Toast.makeText(this, "yo film: " + String.valueOf(filmID), Toast.LENGTH_SHORT).show();
+        intent.putExtra(EXTRA_FILM_ID, filmID);
+        startActivity(intent);
     }
 
     private void fillWidgets() {  //Fill in the fields for the first time as the Activity is created

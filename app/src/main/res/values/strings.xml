@@ -54,7 +54,8 @@
     <string name="film_name">Film name</string>
     <string name="film_ei">EI</string>
     <string name="film_type">Type</string>
-    <string name="filter_factors">Filters</string>
+    <string name="filter_factors">Filter factors</string>
+    <string name="filter_factors_button">Edit</string>
 
 
     <string name="rec_corr">Reciprocity correction</string>
@@ -88,6 +89,15 @@
     <string name="meter_results_format">Meter results</string>
     <string name="meter_iso">ISO</string>
     <string name="meter_compensation">Compensation</string>
+
+
+    <!-- Film-x-Filter labels -->
+    <string name="film_to_match">Film</string>
+    <string name="filter_to_match">Filter</string>
+    <string name="is_filter_for_bw">BW?</string>
+    <string name="is_filter_for_color">Color?</string>
+    <string name="filter_factor">Filter factor</string>
+
 
     <!-- Hints -->
     <string name="hint_film_name">Dummy</string>
@@ -171,6 +181,7 @@
     <string name="shutter">shutter</string>
     <string name="blank"></string>
     <string name="title_activity_filmx_filter">FilmxFilterActivity</string>
+    <string name="title_activity_gear_list">GearListActivity</string>
 
 
 </resources>

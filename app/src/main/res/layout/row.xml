@@ -19,7 +19,7 @@
         android:layout_below="@+id/label"
         android:textSize="14dp"
         android:paddingLeft="32dp"
-        android:textColor="@color/blue"
+        android:textColor="@color/Gainsboro"
         >
     </TextView>
 
