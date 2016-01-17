@@ -10,6 +10,8 @@
     <string name="meters_list_title">Meters</string>
     <string name="cameras_list_title">Cameras</string>
     <string name="other_list_title">Other</string>
+    <string name="shots_list_title">Shots</string>
+
     <string name="title_activity_lens_list">Lenses</string>
     <string name="title_activity_lens_add_edit">Add or edit a lens</string>
     <string name="title_activity_lens_add">Deprecated!</string>
@@ -21,16 +23,17 @@
     <string name="title_activity_camera_list">Cameras</string>
     <string name="title_activity_camera_add_edit">Add or edit a camera</string>
     <string name="title_activity_zzdelete">zzdeleteActivity</string>
+    <string name="title_activity_shot_list">Shots</string>
 
     <!-- Widget field names -->
-    <string name="main_choose_film">film</string>
-    <string name="main_choose_lens">lens</string>
+    <string name="main_choose_film">Film</string>
+    <string name="main_choose_lens">Lens</string>
     <string name="main_choose_aperture">f/</string>
-    <string name="main_choose_filter">filter</string>
-    <string name="main_choose_be">bellows</string>
-    <string name="main_choose_meter">meter</string>
-    <string name="main_choose_meter_read">meter read</string>
-    <string name="main_choose_camera">camera</string>
+    <string name="main_choose_filter">Filter</string>
+    <string name="main_choose_be">Bellows</string>
+    <string name="main_choose_meter">Meter</string>
+    <string name="main_choose_meter_read">Meter EV</string>
+    <string name="main_choose_camera">Camera</string>
     <string name="main_default_gear">Default gear</string>
     <string name="main_calculated_exposure">Exposure: </string>
     <string name="main_user_choices">Your choices:</string>
@@ -40,18 +43,19 @@
 
     <string-array name="equipment_pages">
         <item>Choose...</item>
-        <item>Films</item>
-        <item>Lenses</item>
-        <item>Filters</item>
-        <item>Meters</item>
         <item>Cameras</item>
-        <item>Other</item>
+        <item>Films</item>
+        <item>Filters</item>
+        <item>Lenses</item>
+        <item>Meters</item>
+        <item>Shots</item>
     </string-array>
 
     <string name="film_name">Film name</string>
     <string name="film_ei">EI</string>
     <string name="film_type">Type</string>
-    <string name="filter_factors">Filters</string>
+    <string name="filter_factors">Filter factors</string>
+    <string name="filter_factors_button">Edit</string>
 
 
     <string name="rec_corr">Reciprocity correction</string>
@@ -85,6 +89,15 @@
     <string name="meter_results_format">Meter results</string>
     <string name="meter_iso">ISO</string>
     <string name="meter_compensation">Compensation</string>
+
+
+    <!-- Film-x-Filter labels -->
+    <string name="film_to_match">Film</string>
+    <string name="filter_to_match">Filter</string>
+    <string name="is_filter_for_bw">BW?</string>
+    <string name="is_filter_for_color">Color?</string>
+    <string name="filter_factor">Filter factor</string>
+
 
     <!-- Hints -->
     <string name="hint_film_name">Dummy</string>
@@ -163,7 +176,12 @@
     <string name="file_to_email">lfdb_backup.sqlite</string>
     <string name="one_third">*</string>
     <string name="two_thirds">**</string>
+    <string name="one_third_down">1/3 down</string>
+    <string name="one_third_up">1/3 up</string>
+    <string name="shutter">shutter</string>
     <string name="blank"></string>
+    <string name="title_activity_filmx_filter">FilmxFilterActivity</string>
+    <string name="title_activity_gear_list">GearListActivity</string>
 
 
 </resources>

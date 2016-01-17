@@ -1,138 +1,223 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <TableLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+    >
+
+    <!-- Results -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:id="@+id/topTable"
+        android:background="@drawable/layout_bg"
+        android:orientation="vertical">
         <!-- USER INPUT-->
-        <TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/main_calculated_exposure"
+            style="?android:listSeparatorTextViewStyle"
+            android:gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <TextView
-                android:text="@string/main_calculated_exposure"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/one_third_down"
                 android:padding="10dp"
-                android:layout_column="1"
-                style="?android:listSeparatorTextViewStyle"/>
-        </TableRow>
-        <TableRow>
+                android:id="@+id/textViewExpLo"
+                android:layout_weight="1"
+                android:layout_gravity="left"/>
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1/3 down"
-                android:layout_column="0"
+                android:text="@string/shutter"
                 android:padding="10dp"
-                android:id="@+id/textViewExpLo"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:padding="10dp"
-                android:layout_column="1"
                 android:textColor="@color/OrangeRed"
                 android:id="@+id/textViewExp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1/3 up"
-                android:padding="10dp"
-                android:layout_column="2"
-                android:id="@+id/textViewExpHi"/>
-        </TableRow>
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"/>
 
-        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/one_third_up"
+                android:padding="10dp"
+                android:id="@+id/textViewExpHi"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="right"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Lens and aperture-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_dk1_bg"
+        android:orientation="horizontal"
+        android:id="@+id/secondTable"
+        android:layout_below="@+id/topTable"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
             <TextView
                 android:text="@string/main_choose_lens"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                />
+                android:layout_height="wrap_content"/>
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_lens_spinner"/>
-        </TableRow>
-        <TableRow
-            android:background="@drawable/layout_bg">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:gravity="right"
+            >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_choose_aperture"
                 android:id="@+id/textView"
-                android:padding="10dp"
                 />
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_aperture_spinner"/>
+
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_column="1"
                         android:id="@+id/radioGroupf"
                         android:checkedButton="@+id/radioButtonf0"
-                        android:paddingLeft="4dp">
+                        android:paddingLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:baselineAligned="false">
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/blank"
                     android:id="@+id/radioButtonf0"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/one_third"
                     android:id="@+id/radioButtonf1"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/two_thirds"
                     android:id="@+id/radioButtonf2"/>
             </RadioGroup>
-        </TableRow>
 
-        <TableRow>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Bellows - meter  -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/thirdTable"
+        android:layout_below="@+id/secondTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
             <TextView
                 android:text="@string/main_choose_be"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_set_be"
-                android:numeric="integer"/>
-        </TableRow>
-        <TableRow>
+                android:numeric="integer"
+                android:inputType="number"
+                android:hint="@string/hint_be_max"
+                android:maxWidth="@dimen/edit_text_max_width"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingRight="10dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_choose_meter_read"
                 android:padding="10dp"/>
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_ev_spinner"/>
+
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_column="1"
                         android:id="@+id/radioGroupMeterRead"
                         android:checkedButton="@+id/radioButtonMeter0"
-                        android:paddingLeft="4dp">
+                        android:paddingLeft="4dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:gravity="right"
+                >
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/blank"
                     android:id="@+id/radioButtonMeter0"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/one_third"
                     android:id="@+id/radioButtonMeter1"/>
+
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -140,113 +225,177 @@
                     android:id="@+id/radioButtonMeter2"/>
             </RadioGroup>
 
-        </TableRow>
-    </TableLayout>
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        </LinearLayout>
 
-        <TableRow
-            android:layout_width="match_parent">
-            <TextView
-                android:text="@string/main_choose_film"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_column="0"/>
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_film_spinner"
-                android:clickable="true"
-                android:prompt="@string/main_choose_film"
-                android:layout_column="1"/>
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_choose_filter"
-                android:padding="10dp"
-                android:layout_column="2"/>
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_filter_spinner"
-                android:layout_column="3"/>
-        </TableRow>
-
-
-    </TableLayout>
-    <TableLayout
-
+    <!-- Film - filter - comment -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/fourthTable"
+        android:layout_below="@+id/thirdTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_bg"
-        >
-        <TableRow>
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:text="@string/main_choose_film"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_film_spinner"
+                    android:clickable="true"
+                    android:prompt="@string/main_choose_film"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingRight="10dp"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_choose_filter"
+                    android:padding="10dp"
+                    />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_filter_spinner"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingRight="10dp"
+            >
             <TextView
                 android:text="@string/main_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
+
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_comment"
-                android:layout_span="3"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+                android:inputType="text"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Manage gear-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/fifthTable"
+        android:layout_below="@+id/fourthTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="16dp">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_choose_meter"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_choose_meter"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_choose_camera"
+                    />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_choose_camera"
+                    android:maxWidth="@dimen/spinner_max_width"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp">
+
             <TextView
+                android:text="@string/equipment_choose_page"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/main_choose_meter"
                 android:padding="10dp"/>
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/main_choose_meter"/>
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_choose_camera"
-                android:padding="10dp"/>
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_choose_camera"/>
-
-        </TableRow>
-
-        <TableRow>
-        <TextView
-            android:text="@string/equipment_choose_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"/>
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner_equipment"
-            android:layout_column="1"
-            android:layout_gravity="left"
-            android:gravity="left" />
-    </TableRow>
+                android:id="@+id/spinner_equipment"
+                android:layout_gravity="left"
+                android:gravity="left"/>
+        </LinearLayout>
         <!-- DISPLAY CALCULATED EXPOSURE-->
 
 
-    </TableLayout>
+    </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>
 
 

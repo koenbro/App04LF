@@ -1,5 +1,4 @@
 package com.koenbro.android.app04listview;
-
 /**
  * Created by laszlo on 11/9/14.
  * Code from http://www.androidhive.info/2012/07/android-gps-location-manager-tutorial/

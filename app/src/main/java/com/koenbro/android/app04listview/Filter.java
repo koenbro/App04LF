@@ -8,8 +8,8 @@ public class Filter {
     private String filterName;
     private boolean filterForBW;
     private boolean filterForColor;
-    private float filterFactorBW;
-    private float filterFactorColor;
+    private double filterFactorBW;
+    private double filterFactorColor;
 
     public Filter() {}
 
@@ -54,7 +54,7 @@ public class Filter {
         this.filterForColor = filterForColor;
     }
 
-    public float getFilterFactorBW() {
+    public double getFilterFactorBW() {
         return filterFactorBW;
     }
 
@@ -62,7 +62,7 @@ public class Filter {
         this.filterFactorBW = filterFactorBW;
     }
 
-    public float getFilterFactorColor() {
+    public double getFilterFactorColor() {
         return filterFactorColor;
     }
 

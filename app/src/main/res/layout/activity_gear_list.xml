@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+        android:text="Gear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/Peru"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <ListView
+        android:id="@+id/gearListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
+
+

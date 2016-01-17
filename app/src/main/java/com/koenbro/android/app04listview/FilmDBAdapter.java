@@ -31,11 +31,9 @@ public class FilmDBAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
     }
-
     public FilmDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
-
     public FilmDBAdapter open() throws SQLException {
         this.mDbHelper = new DatabaseHelper(this.mCtx);
         this.mDb = this.mDbHelper.getWritableDatabase();
@@ -113,11 +111,12 @@ public class FilmDBAdapter {
         cursor.close();
         return (films);
     }
-    public int updateFilm(Film film){
+
+    public int updateFilm(Film film) {
         ContentValues values = FilmToContentValues(film);
         int i = this.mDb.update(DBContract.TableFilm.TABLE_NAME,
                 values,
-                DBContract.TableFilm.COLUMN_ID+"=?",
+                DBContract.TableFilm.COLUMN_ID + "=?",
                 new String [] {String.valueOf(film.getId())});
         //Log.d(DBContract.TableFilm.TAG,  TAG_UPDATE + film.toString());
         return(i);

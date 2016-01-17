@@ -98,6 +98,7 @@ public class ShotDBAdapter {
         return(shot);
     }
 
+    // CRUD
     public void addShot(Shot shot) {
         ContentValues values = shotToContentValues(shot);
         this.mDb.insert(DBContract.TableShot.TABLE_NAME, null, values);

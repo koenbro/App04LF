@@ -1,70 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.koenbro.android.app04listview" >
+<manifest package="com.koenbro.android.app04listview"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-sdk android:minSdkVersion="15"/>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <uses-sdk android:minSdkVersion="11" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18"/>
 
     <application
+        android:name=".ApplicationContextProvider"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".FilmListActivity"
-            android:label="@string/title_activity_film_list" >
+            android:label="@string/title_activity_film_list">
         </activity>
         <activity
             android:name=".FilmAddEditActivity"
-            android:label="@string/title_activity_film_add_edit" >
+            android:label="@string/title_activity_film_add_edit">
         </activity>
         <activity
             android:name=".LensListActivity"
-            android:label="@string/title_activity_lens_list" >
+            android:label="@string/title_activity_lens_list">
         </activity>
         <activity
             android:name=".LensAddEditActivity"
-            android:label="@string/title_activity_lens_add_edit" >
+            android:label="@string/title_activity_lens_add_edit">
         </activity>
         <activity
             android:name=".FilterListActivity"
-            android:label="@string/title_activity_filter_list" >
+            android:label="@string/title_activity_filter_list">
         </activity>
         <activity
             android:name=".FilterAddEditActivity"
-            android:label="@string/title_activity_filter_add_edit" >
+            android:label="@string/title_activity_filter_add_edit">
         </activity>
         <activity
             android:name=".CameraListActivity"
-            android:label="@string/title_activity_camera_list" >
+            android:label="@string/title_activity_camera_list">
         </activity>
         <activity
             android:name=".CameraAddEditActivity"
-            android:label="@string/title_activity_camera_add_edit" >
+            android:label="@string/title_activity_camera_add_edit">
         </activity>
         <activity
             android:name=".zzdeleteActivity"
-            android:label="@string/title_activity_zzdelete" >
+            android:label="@string/title_activity_zzdelete">
         </activity>
         <activity
             android:name=".MeterListActivity"
-            android:label="@string/title_activity_meter_list" >
+            android:label="@string/title_activity_meter_list">
         </activity>
         <activity
             android:name=".MeterAddEditActivity"
-            android:label="@string/title_activity_meter_add_edit" >
+            android:label="@string/title_activity_meter_add_edit">
+        </activity>
+        <activity
+            android:name=".ShotListActivity"
+            android:label="@string/title_activity_shot_list">
+        </activity>
+        <activity
+            android:name=".FxFListActivity"
+            android:label="@string/title_activity_filmx_filter">
+        </activity>
+        <activity
+            android:name=".FxFActivity"
+            android:label="@string/title_activity_filmx_filter">
+        </activity>
+        <activity
+            android:name=".GearListActivity"
+            android:label="@string/title_activity_gear_list">
         </activity>
     </application>
 

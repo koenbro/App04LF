@@ -18,7 +18,8 @@ import java.util.ArrayList;
  */
 public class FilmListActivity extends Activity{
     FilmDBAdapter db;
-    FilmAdapter filmAdapter;
+    //FilmAdapter filmAdapter;
+    GearAdapter filmAdapter;
     ListView filmListView;
 
     @Override
@@ -45,7 +46,7 @@ public class FilmListActivity extends Activity{
         });
     }
 
-    // Reload the latest filter list after addition/deletion
+    // Reload the latest  list after addition/deletion
     public void onResume(){
         super.onResume();
         filmAdapterLoad();
@@ -55,7 +56,7 @@ public class FilmListActivity extends Activity{
      * Create a custom adaptor to connect the film list from generateData() with the filmlistview
      */
     public void filmAdapterLoad(){
-        filmAdapter = new FilmAdapter(this, generateData()); //pass context/data to the custom adapter
+        filmAdapter = new GearAdapter(this, generateData()); //pass context/data to the custom adapter
         filmListView = (ListView) findViewById(R.id.filmListView); //Get ListView from activity_main.xml
         filmListView.setAdapter(filmAdapter);
     }

@@ -15,19 +15,23 @@ public class DBAdapter {
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
-
-
     public DBAdapter(Context ctx) {
         this.context = ctx;
         this.DBHelper = new DatabaseHelper(this.context);
     }
-    private static class DatabaseHelper extends SQLiteOpenHelper{
+
+    private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
             super(context, DBContract.DB_NAME, null, DBContract.DB_VERSION);
         }
 
+        /**
+         * The app works without seeding the db (prepopulating one row in each table) but it crashes
+         * if you try to calculate an exposure, as it tries to pull info from the db.
+         */
         @Override
         public void onCreate(SQLiteDatabase db) {
+//            db.setForeignKeyConstraintsEnabled(true);
             db.execSQL(DBContract.TableCamera.CREATE_TABLE);
             db.execSQL(DBContract.TableFilm.CREATE_TABLE);
             db.execSQL(DBContract.TableFilter.CREATE_TABLE);
@@ -35,7 +39,16 @@ public class DBAdapter {
             db.execSQL(DBContract.TableMeter.CREATE_TABLE);
             db.execSQL(DBContract.TableShot.CREATE_TABLE);
             db.execSQL(DBContract.TableFilmFilter.CREATE_TABLE);
+            seedDB(db);
+        }
 
+        public void seedDB(SQLiteDatabase db) {
+            db.execSQL(DBContract.TableCamera.SEED);
+            db.execSQL(DBContract.TableFilm.SEED);
+            db.execSQL(DBContract.TableFilter.SEED);
+            db.execSQL(DBContract.TableLens.SEED);
+            db.execSQL(DBContract.TableMeter.SEED);
+            db.execSQL(DBContract.TableFilmFilter.SEED);
         }
 
         @Override
@@ -59,7 +72,7 @@ public class DBAdapter {
         return this;
     }
 
-    public void close(){
+    public void close() {
         this.DBHelper.close();
     }
 }

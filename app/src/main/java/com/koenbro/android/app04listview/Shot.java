@@ -7,50 +7,48 @@ import java.text.NumberFormat;
  * Created by laszlo on 10/31/14.
  */
 public class Shot {
-    long id;
-     String shotDay;
-     String shotTime;
-     long photoShootId;
+    private long id;
+    private String shotDay;
+    private String shotTime;
+    private long photoShootId;
+    private double aperture;
+    private int bellowsExtension;
+    private double meterRead;
+    private double ff;
+    private double bf;
+    private double rc;
+    private double shutter;
+    private String prettyShutter;
+    private String comment;
+    private double latitude;
+    private double longitude;
 
-     Film film;
-     Lens lens;
-     Filter filter;
-     Camera camera;
-     Meter meter;
+    private String filmName;
+    private int filmEi;
+    private String lensName;
+    private int lensFocal;
+    private String filterName;
+    private String cameraName;
+    private String meterName;
 
-     double aperture;
-     int bellowsExtension;
-     double meterRead;
-
-     double ff;
-     double bf;
-     double rc;
-
-     double shutter;
-    String prettyShutter;
-     String comment;
-     double latitude;
-     double longitude;
-
-    String filmName;
-    int filmEi;
-    String lensName;
-    int lensFocal;
-    String filterName;
-    String cameraName;
-    String meterName;
+    //Gear objects
+    private Film film;
+    private Lens lens;
+    private Filter filter;
+    private Camera camera;
+    private Meter meter;
 
     //reference values for light meters
-     final double tMeterRef = 15;
-     final double fMeterRef = 8;
-     final double evMeterRef = 10;
-     final double isoMeterRef = 100;
+    private final double tMeterRef = 15;
+    private final double fMeterRef = 8;
+    private final double evMeterRef = 10;
+    private final double isoMeterRef = 100;
     //TODO get these from db
 
 
     Shot() {}
     public Shot(Film film, Lens lens, Filter filter, Camera camera, Meter meter,
-                    double aperture, int bellowsExtension, double meterRead) {
+                double aperture, int bellowsExtension, double meterRead) {
         this.film = film;
         this.lens = lens;
         this.filter = filter;
@@ -59,6 +57,15 @@ public class Shot {
         this.aperture = aperture;
         this.bellowsExtension = bellowsExtension;
         this.meterRead = meterRead;
+        setFilmName(film.getFilmName());
+        setFilmEi(film.getFilmEi());
+        setLensName(lens.getLensName());
+        setLensFocal(lens.getLensFocal());
+        setFilterName(filter.getFilterName());
+        setCameraName(camera.getCameraName());
+        setMeterName(meter.getMeterName());
+        setShutter(calcShutter(aperture));
+        setPrettyShutter(pretty(shutter));
     }
 
     private double calcFf(Film film, Filter filter) {
@@ -79,20 +86,18 @@ public class Shot {
         setRc(rc);
         return( rc);
     }
-
-    private double calcShutter(){
+    private double calcShutter(double aperture) {
         double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
-        bf = Math.pow((double)bellowsExtension/(double)lens.getLensFocal(), 2.0);
+        bf = Math.pow((double) bellowsExtension / (double) lens.getLensFocal(), 2.0);
         setBf(bf);
-        double ac = Math.pow(aperture/fMeterRef,2.0); //aperture
-        double sc = isoMeterRef/film.getFilmEi(); //film sensitivity
+        double ac = Math.pow(aperture / fMeterRef, 2.0); //aperture
+        double sc = isoMeterRef / film.getFilmEi(); //film sensitivity
         ff = calcFf(film, filter);
-        shutter = (1/tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
+        shutter = (1 / tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
         shutter = shutter * calcRc(shutter); //post-reciprocity correction
         return shutter;
     }
-
-    public String pretty(double shutter){
+    private String pretty(double shutter) {
         String pretty;
         NumberFormat round = new DecimalFormat("#0");
         NumberFormat twoDec = new DecimalFormat("#0.00");
@@ -107,18 +112,17 @@ public class Shot {
         } else {
             pretty = round.format(shutter)+"s";
         }
-        return (pretty);
-
+        return pretty;
     }
 
-    public String getPrettyShutter(){
-        return pretty(calcShutter());
-            }
-    public void setPrettyShutter(String prettyShutter) {
-        this.prettyShutter = prettyShutter;
+    public String[] getOneThirdDownUp() {
+        String[] adjusted = new String[2];
+        double down = calcShutter(aperture / Math.sqrt(Math.pow(2, 0.3333)));
+        double up = calcShutter(aperture * Math.sqrt(Math.pow(2, 0.3333)));
+        adjusted[0] = pretty(down);
+        adjusted[1] = pretty(up);
+        return adjusted;
     }
-
-
 
     public long getId() {
         return id;
@@ -174,6 +178,7 @@ public class Shot {
     public void setMeter(Meter meter) {
         this.meter = meter;
     }
+
     public double getAperture() {
         return aperture;
     }
@@ -210,13 +215,19 @@ public class Shot {
     public void setRc(double rc) {
         this.rc = rc;
     }
-
     public double getShutter() {
         return(shutter);
     }
     public void setShutter(double shutter) {
         this.shutter = shutter;
     }
+    public String getPrettyShutter(){
+        return prettyShutter;
+    }
+    public void setPrettyShutter(String prettyShutter) {
+        this.prettyShutter = prettyShutter;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -238,51 +249,65 @@ public class Shot {
     }
 
     public String getFilmName() {
-        return film.getFilmName();
+        return filmName;
     }
-    public void setFilmName(String filmName) {
-        this.filmName = filmName;
+    public int getFilmEi() {
+        return filmEi;
+    }
+    public String getLensName() {
+        return lensName;
+    }
+    public int getLensFocal() {
+        return lensFocal;
+    }
+    public String getFilterName() {
+        return filterName;
+    }
+    public String getCameraName() {
+        return cameraName;
+    }
+    public String getMeterName() {
+        return meterName;
     }
 
-    public int getFilmEi() {
-        return film.getFilmEi();
+    public void setFilmName(String filmName) {
+        this.filmName = filmName;
     }
     public void setFilmEi(int filmEi) {
         this.filmEi = filmEi;
     }
-
-    public String getLensName() {
-        return lens.getLensName();
-    }
     public void setLensName(String lensName) {
         this.lensName = lensName;
-    }
-
-    public int getLensFocal() {
-        return lens.getLensFocal();
     }
     public void setLensFocal(int lensFocal) {
         this.lensFocal = lensFocal;
     }
-
-    public String getFilterName() {
-        return filter.getFilterName();
-    }
     public void setFilterName(String filterName) {
         this.filterName = filterName;
-    }
-
-    public String getCameraName() {
-        return camera.getCameraName();
     }
     public void setCameraName(String cameraName) {
         this.cameraName = cameraName;
     }
-
-    public String getMeterName() {
-        return meter.getMeterName();
-    }
     public void setMeterName(String meterName) {
         this.meterName = meterName;
     }
+
+    public double gettMeterRef() {
+        return tMeterRef;
+    }
+    public double getfMeterRef() {
+        return fMeterRef;
+    }
+    public double getEvMeterRef() {
+        return evMeterRef;
+    }
+    public double getIsoMeterRef() {
+        return isoMeterRef;
+    }
+
+    @Override
+    public String toString() {
+        return "Shot [id=" + id + ", film name=" + filmName  + "]";
+    }
+
 }

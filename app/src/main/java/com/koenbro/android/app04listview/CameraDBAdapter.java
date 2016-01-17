@@ -21,9 +21,11 @@ public class CameraDBAdapter {
         DatabaseHelper(Context context) {
             super(context, DBContract.DB_NAME, null, DBContract.DB_VERSION);
         }
+
         @Override
         public void onCreate(SQLiteDatabase db) {
         }
+
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
@@ -32,13 +34,14 @@ public class CameraDBAdapter {
     public CameraDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
-    
+
     public CameraDBAdapter open() throws SQLException {
         this.mDbHelper = new DatabaseHelper(this.mCtx);
         this.mDb = this.mDbHelper.getWritableDatabase();
         return this;
     }
-    public void close(){
+
+    public void close() {
         this.mDbHelper.close();
     }
 
@@ -50,7 +53,8 @@ public class CameraDBAdapter {
         camera.setBellowsMax(Integer.parseInt(cursor.getString(3)));
         return camera;
     }
-    private ContentValues cameraToContentValues (Camera camera){
+
+    private ContentValues cameraToContentValues(Camera camera) {
         ContentValues values = new ContentValues();
         values.put(DBContract.TableCamera.COLUMN_1, camera.getCameraName());
         values.put(DBContract.TableCamera.COLUMN_2, String.valueOf(camera.getBellowsMin()));
@@ -63,6 +67,7 @@ public class CameraDBAdapter {
         this.mDb.insert(DBContract.TableCamera.TABLE_NAME, null, values);
 //        Log.d(DBContract.TableCamera.TAG, "add camera " + camera.toString());
     }
+
     public Camera getCamera(long id) throws SQLException {
         Cursor cursor = this.mDb.query(
                 DBContract.TableCamera.TABLE_NAME,
@@ -74,16 +79,17 @@ public class CameraDBAdapter {
                 null, // g. order by
                 null); // h. limit
         Camera camera;
-        if (cursor != null)  cursor.moveToFirst();
+        if (cursor != null) cursor.moveToFirst();
         camera = cursorToCamera(cursor);
 //            Log.d(DBContract.TableCamera.TAG, "getCamera(" + id + ") " + camera.toString());
         cursor.close();
-        return(camera);
+        return (camera);
     }
-    public ArrayList<Camera> getAllCameras(){
+
+    public ArrayList<Camera> getAllCameras() {
         ArrayList<Camera> cameras = new ArrayList<Camera>();
         String query = "SELECT * FROM " + DBContract.TableCamera.TABLE_NAME;
-        Cursor cursor = this.mDb.rawQuery( query, null);
+        Cursor cursor = this.mDb.rawQuery(query, null);
         Camera camera;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -99,18 +105,20 @@ public class CameraDBAdapter {
 //        Log.d(DBContract.TableCamera.TAG, "get all cameras() " + cameras.toString());
         return (cameras);
     }
-    public boolean updateCamera(Camera camera){
+
+    public boolean updateCamera(Camera camera) {
         ContentValues values = cameraToContentValues(camera);
         return this.mDb.update(DBContract.TableCamera.TABLE_NAME,
                 values,
-                DBContract.TableCamera.COLUMN_ID+"=?",
-                new String [] {String.valueOf(camera.getId())}) > 0;
+                DBContract.TableCamera.COLUMN_ID + "=?",
+                new String[]{String.valueOf(camera.getId())}) > 0;
         //Log.d(DBContract.TableCamera.TAG, "updated camera " + camera.toString());
     }
-    public boolean deleteCamera(Camera camera){
+
+    public boolean deleteCamera(Camera camera) {
         return this.mDb.delete(DBContract.TableCamera.TABLE_NAME,
-                DBContract.TableCamera.COLUMN_ID+" = ?",
-                new String[] {String.valueOf(camera.getId())}) > 0;
+                DBContract.TableCamera.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(camera.getId())}) > 0;
         //Log.d(DBContract.TableCamera.TAG, "delete camera " + camera.toString());
     }
 }

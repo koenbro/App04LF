@@ -8,47 +8,59 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class FilterListActivity extends Activity {
+public class FxFListActivity extends Activity {
     FilterDBAdapter db;
     GearAdapter filterAdapter;
     ListView filterListView;
+    public static final String EXTRA_FILM_ID = "com.koenbro.app03.filmid";
+    int filmID;
+    int filterID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_list);
+        filmID = (int) getIntent().getLongExtra(EXTRA_FILM_ID, 0);
+
+
         db = new FilterDBAdapter(this);
         filterAdapterLoad();
         filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intentEditFilter = new Intent(FilterListActivity.this, FilterAddEditActivity.class);
+                Intent intentEditFilter = new Intent(FxFListActivity.this, FxFActivity.class);
                 //Log.d(DBContract.TableFilter.TAG, String.valueOf(position));
                 ArrayList<Filter> latestFilterList = generateData();
                 Filter clickedFilter = (Filter) latestFilterList.get(position);
-                long intentId = clickedFilter.getId();
-                intentEditFilter.putExtra(FilterAddEditActivity.EXTRA_FILTER_ID, intentId); //sql starts at 1; java at 0
-                Toast.makeText(getApplicationContext(),
-                        "position:" + String.valueOf(position) + "; id:" + String.valueOf(intentId),
-                        Toast.LENGTH_SHORT).show();
-                startActivityForResult(intentEditFilter, 0);
+                filterID = (int) clickedFilter.getId();
+
+                Bundle extras = new Bundle();
+                extras.putString(FxFActivity.EXTRA_FILTER_ID, String.valueOf(filterID));
+                extras.putString(FxFActivity.EXTRA_FILM_ID, String.valueOf(filmID));
+                intentEditFilter.putExtras(extras);
+
+//                Toast.makeText(getApplicationContext(),
+//                        "position:" + String.valueOf(position) + "; id:" + String.valueOf(intentId),
+//                        Toast.LENGTH_SHORT).show();
+                startActivity(intentEditFilter);
             }
         });
     }
 
     // Reload the latest filter list after addition/deletion
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         filterAdapterLoad();
     }
 
     /**
-     * Create a custom adaptor to connect the filter list from generateData() with the filterlistview
+     * Create a custom adaptor to connect the filter list from generateData() with the
+     * filterlistview
      */
-    public void filterAdapterLoad(){
+    public void filterAdapterLoad() {
         filterAdapter = new GearAdapter(this, generateData()); //pass context/data to the custom adapter
         filterListView = (ListView) findViewById(R.id.filterListView); //Get ListView from activity_main.xml
         filterListView.setAdapter(filterAdapter);
@@ -56,31 +68,23 @@ public class FilterListActivity extends Activity {
 
     private ArrayList<Filter> generateData() {
         db.open();
-        ArrayList<Filter> allFilters = new ArrayList<Filter>();
-        allFilters = db.getAllFilters();
+        FiltersMatchingFilm fmf = new FiltersMatchingFilm();
+        ArrayList<Filter> xy = fmf.getMatchingFilters(filmID);
         db.close();
-        return (allFilters);
+
+        return (xy);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.filter_list_activity_actions, menu);
+        //getMenuInflater().inflate(R.menu.filter_list_activity_actions, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_add_filter:
-                Intent intentAddFilter = new Intent(FilterListActivity.this, FilterAddEditActivity.class);
-                startActivity(intentAddFilter);
-                Toast.makeText(FilterListActivity.this, R.string.action_add_filter,
-                        Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return (true);
     }
 }
