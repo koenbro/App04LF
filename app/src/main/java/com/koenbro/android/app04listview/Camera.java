@@ -51,6 +51,9 @@ public class Camera {
 
     @Override
     public String toString() {
-        return "Camera [id=" + id + ", name=" + cameraName  + "]";
+        return "Camera ["+ cameraName  + "; id=" + id + "]";
+    }
+    public String toStringShort() {
+        return cameraName  + " (id=" + id + ")";
     }
 }

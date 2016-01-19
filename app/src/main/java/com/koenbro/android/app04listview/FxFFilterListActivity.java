@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class FxFListActivity extends Activity {
+public class FxFFilterListActivity extends Activity {
     FilterDBAdapter db;
     GearAdapter filterAdapter;
     ListView filterListView;
@@ -31,7 +31,7 @@ public class FxFListActivity extends Activity {
         filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intentEditFilter = new Intent(FxFListActivity.this, FxFActivity.class);
+                Intent intentEditFilter = new Intent(FxFFilterListActivity.this, FxFActivity.class);
                 //Log.d(DBContract.TableFilter.TAG, String.valueOf(position));
                 ArrayList<Filter> latestFilterList = generateData();
                 Filter clickedFilter = (Filter) latestFilterList.get(position);

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="equipment_pages">
+        <item>Choose...</item>
+        <item>Cameras</item>
+        <item>Films</item>
+        <item>Filters</item>
+        <item>Lenses</item>
+        <item>Meters</item>
+        <item>Shots</item>
+        <item>Film-specific FF</item>
+    </string-array>
+
     <string-array name="film_type">
         <item>bw</item>
         <item>color</item>

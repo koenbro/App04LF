@@ -54,6 +54,9 @@ public class Meter {
 
     @Override
     public String toString() {
-        return "Meter [id=" + id + ", name=" + mMeterName  + "]";
+        return "Meter [" + mMeterName  +  ", id=" + id +  "]";
+    }
+    public String toStringShort() {
+        return  mMeterName  +  " (id=" + id +")" ;
     }
 }

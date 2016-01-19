@@ -31,7 +31,7 @@ public class ShotListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 //Intent i = new Intent(ShotListActivity.this, ShotAddEditActivity.class);
-                Log.d(DBContract.TableShot.TAG, String.valueOf(position));
+                Log.d(DBContractShots.TableShot.TAG, String.valueOf(position));
                 ArrayList<Shot> latestShotList = generateData();
                 Shot clickedShot = (Shot) latestShotList.get(position);
                 long intentId = clickedShot.getId();

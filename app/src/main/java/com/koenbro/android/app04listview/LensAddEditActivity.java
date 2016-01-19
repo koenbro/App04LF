@@ -151,6 +151,7 @@ public class LensAddEditActivity extends Activity {
                 fillBlankFields();
                 Lens newLens = getUserInput();
 
+
                 if (getIntent().getLongExtra(EXTRA_LENS_ID,0) == 0){
                     db.addLens(newLens);
                     Toast.makeText(LensAddEditActivity.this,
@@ -162,6 +163,7 @@ public class LensAddEditActivity extends Activity {
                 }
                 finish();
                 db.close();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

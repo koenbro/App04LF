@@ -87,6 +87,7 @@ public class MainActivity extends Activity {
     private ShotMetaInfo shotMetaInfo;
     private DBUtil dbUtil;
     private DBAdapter db;
+    private DBAdapterShots dbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class MainActivity extends Activity {
         shotMetaInfo = new ShotMetaInfo();
         createWidgets();
         refreshDynamicContent();
+        FxFPairs testy = new FxFPairs();
     }
 
 
@@ -112,6 +114,14 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
         db.close();
+
+        dbs = new DBAdapterShots(this);
+        try {
+            dbs.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dbs.close();
     }
 
     private void createWidgets() {
@@ -178,6 +188,9 @@ public class MainActivity extends Activity {
                         break;
                     case 6:
                         intent = new Intent(MainActivity.this, ShotListActivity.class);
+                        break;
+                    case 7:
+                        intent = new Intent(MainActivity.this, FxFFilmListActivity.class);
                         break;
                 }
                 startActivity(intent);

@@ -41,15 +41,6 @@
 
     <string name="equipment_choose_page">Edit gear</string>
 
-    <string-array name="equipment_pages">
-        <item>Choose...</item>
-        <item>Cameras</item>
-        <item>Films</item>
-        <item>Filters</item>
-        <item>Lenses</item>
-        <item>Meters</item>
-        <item>Shots</item>
-    </string-array>
 
     <string name="film_name">Film name</string>
     <string name="film_ei">EI</string>
@@ -176,12 +167,13 @@
     <string name="file_to_email">lfdb_backup.sqlite</string>
     <string name="one_third">*</string>
     <string name="two_thirds">**</string>
-    <string name="one_third_down">1/3 down</string>
-    <string name="one_third_up">1/3 up</string>
+    <string name="one_third_down">&#8531; down</string>
+    <string name="one_third_up">&#8531; up</string>
     <string name="shutter">shutter</string>
-    <string name="blank"></string>
+    <string name="blank"> </string>
     <string name="title_activity_filmx_filter">FilmxFilterActivity</string>
     <string name="title_activity_gear_list">GearListActivity</string>
+    <string name="title_activity_fx_ffilm">FxFFilmActivity</string>
 
 
 </resources>

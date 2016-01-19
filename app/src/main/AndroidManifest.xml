@@ -77,7 +77,7 @@
             android:label="@string/title_activity_shot_list">
         </activity>
         <activity
-            android:name=".FxFListActivity"
+            android:name=".FxFFilterListActivity"
             android:label="@string/title_activity_filmx_filter">
         </activity>
         <activity
@@ -87,6 +87,10 @@
         <activity
             android:name=".GearListActivity"
             android:label="@string/title_activity_gear_list">
+        </activity>
+        <activity
+            android:name=".FxFFilmListActivity"
+            android:label="@string/title_activity_fx_ffilm">
         </activity>
     </application>
 

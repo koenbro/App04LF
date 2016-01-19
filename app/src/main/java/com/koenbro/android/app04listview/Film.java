@@ -108,7 +108,12 @@ public class Film {
 
     @Override
     public String toString() {
-        return "Film [id=" + id + ", name=" + filmName + ", ei=" +
-                filmEi + "]";
+        return "Film [" + filmName + ", type: " +filmType +   ", ei=" +
+                filmEi + ", id=" + id + "]";
     }
+    public String toStringShort() {
+        return  filmName  +   " (ei=" +
+                filmEi + ", id=" + id +")";
+    }
+
 }

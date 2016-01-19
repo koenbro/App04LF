@@ -39,7 +39,7 @@ public class FxFActivity extends Activity {
         allPairs = fxfDB.getAllFxF();
         fxfDB.close();
 
-        fxf = new FxF();
+
 
         Bundle extras = getIntent().getExtras();
         filmID = Integer.parseInt(extras.getString(EXTRA_FILM_ID));
@@ -47,6 +47,7 @@ public class FxFActivity extends Activity {
 
         film = getFilm(filmID);
         filter = getFilter(filterID);
+        fxf = getFxF(filmID, filterID);
         createWidgets();
     }
 
@@ -87,20 +88,20 @@ public class FxFActivity extends Activity {
         } else {
             mIsFilterColor.setText("no");
         }
-        mFF.setText(getFF(filmID, filterID));
+        mFF.setText(String.valueOf(fxf.getFactor()));
 
     }
 
-    private String getFF(int filmID, int filterID) {
-        double ff = 1.0;
+    private FxF getFxF(int filmID, int filterID) {
+        //double ff = 1.0;
         if (!isFilmFilterPairNew(filmID, filterID)) {
             for (int i = 0; i < allPairs.size(); i++) {
                 if (allPairs.get(i).getFilmId() == filmID & allPairs.get(i).getFilterId() == filterID) {
-                    ff = allPairs.get(i).getFactor();
+                    fxf = allPairs.get(i);//.getFactor();
                 }
             }
         }
-        return String.valueOf(ff);
+        return fxf;
     }
 
     private boolean isFilmFilterPairNew(int filmID, int filterID) {
@@ -138,8 +139,8 @@ public class FxFActivity extends Activity {
                     fxfDB.close();
                 } else {
                     fxfDB.open();
-                    fxfDB.deleteFxF(fxf);
-                    fxfDB.addFxF(fxf);
+                    fxfDB.updateFxF(fxf);
+                    //fxfDB.addFxF(fxf);
                     fxfDB.close();
                 }
                 finish();

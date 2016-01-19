@@ -1,5 +1,8 @@
 package com.koenbro.android.app04listview;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
  * Created by laszlo on 10/24/14.
  */
@@ -72,7 +75,13 @@ public class Filter {
 
     @Override
     public String toString() {
-        return "Filter [id=" + id + ", name=" + filterName  + "]";
+        NumberFormat oneDec = new DecimalFormat("#0.0");
+        return "Filter [" + filterName  + ", FFbw=" + oneDec.format(getFilterFactorBW()) +
+                ", FFcolor=" + oneDec.format(getFilterFactorColor()) +
+                ", id=" + id + "]";
+    }
+    public String toStringShort() {
+        return  filterName  + " (id=" + id +")";
     }
 
 }
