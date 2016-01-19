@@ -13,7 +13,8 @@ public class FxFPairs {
     ArrayList<Film> allFilms;
     ArrayList<Filter> allFilters;
     ArrayList<FxF> allPairs;
-    private static final String[] filmType = {"bw", "color", "IR"};
+    String filmType;
+    //private static final String[] filmType = {"bw", "color", "IR"};
 
 
     public FxFPairs() {
@@ -46,6 +47,42 @@ public class FxFPairs {
         return allPairs;
     }
 
+    public Film getFilmByID (ArrayList<Film> itemList, int id){
+        Film item = new Film();
+        for (int i=0;i<itemList.size();i++) {
+            if ((int)itemList.get(i).getId() == id) {
+                item = itemList.get(i);
+            }
+        }
+        return item;
+    }
+
+    public Filter getFilterByID (ArrayList<Filter> itemList, int id){
+        Filter item = new Filter();
+        for (int i=0;i<itemList.size();i++) {
+            if ((int)itemList.get(i).getId() == id) {
+                item = itemList.get(i);
+            }
+        }
+        return item;
+    }
+
+
+
+    public ArrayList<Filter> filtersMatchingFilm(int filmID){
+        filmType = getFilmByID(allFilms, filmID).getFilmType();
+
+        ArrayList<Filter> filtersMatchingFilm = new ArrayList<Filter>();
+        for (int i=0; i<allFilters.size();i++) {
+            if(filmType.matches("bw") & allFilters.get(i).isFilterForBW()) {
+                filtersMatchingFilm.add(allFilters.get(i));
+            }
+            if (filmType.matches("color") & allFilters.get(i).isFilterForColor()){
+                filtersMatchingFilm.add(allFilters.get(i));
+            }
+        }
+        return filtersMatchingFilm;
+    }
 
     public void matchAll(){
         for (int i=0;i<allFilms.size();i++){
@@ -76,13 +113,13 @@ public class FxFPairs {
         newPair.setFilmType(iteratedFilm.getFilmType());
         newPair.setFilterId(iteratedFilter.getId());
         newPair.setFilterName(iteratedFilter.getFilterName());
-        newPair.setFactor(getFFforFilm(iteratedFilm, iteratedFilter));
+        newPair.setFactor(getGenericFFforFilm(iteratedFilm, iteratedFilter));
         newPair.setSpecific(false);
         return newPair;
     }
 
-    private double getFFforFilm(Film iteratedFilm, Filter iteratedFilter) {
-        double ff =1;
+    private double getGenericFFforFilm(Film iteratedFilm, Filter iteratedFilter) {
+        double ff = 1;
         if (iteratedFilm.getFilmType().matches("bw")) {
             ff=iteratedFilter.getFilterFactorBW();
         }
@@ -115,4 +152,14 @@ public class FxFPairs {
         return answer;
     }
 
+    public double getFF(Film film, Filter filter) {
+        double ff = 1;
+        for (int i=0;i<allPairs.size();i++ ) {
+            if ((int)film.getId()== allPairs.get(i).getFilmId()  &
+                    (int)filter.getId() == allPairs.get(i).getFilterId()   ){
+                ff= allPairs.get(i).getFactor();
+            }
+        }
+        return ff;
+    }
 }

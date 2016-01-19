@@ -17,7 +17,7 @@ public class Filter {
     public Filter() {}
 
     public Filter(String filterName, boolean filterForBW, boolean filterForColor,
-                  float filterFactorBW, float filterFactorColor) {
+                  double filterFactorBW, double filterFactorColor) {
         this.filterName = filterName;
         this.filterForBW = filterForBW;
         this.filterForColor = filterForColor;
@@ -61,7 +61,7 @@ public class Filter {
         return filterFactorBW;
     }
 
-    public void setFilterFactorBW(float filterFactorBW) {
+    public void setFilterFactorBW(double filterFactorBW) {
         this.filterFactorBW = filterFactorBW;
     }
 
@@ -69,7 +69,7 @@ public class Filter {
         return filterFactorColor;
     }
 
-    public void setFilterFactorColor(float filterFactorColor) {
+    public void setFilterFactorColor(double filterFactorColor) {
         this.filterFactorColor = filterFactorColor;
     }
 

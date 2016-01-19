@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Database utilities: export, handle, email
@@ -16,19 +18,43 @@ import java.nio.channels.FileChannel;
  */
 public class DBUtil {
     ShotMetaInfo shotMetaInfo;
+    NumberFormat round;
+    NumberFormat oneDec;
+    NumberFormat twoDec;
 
     public DBUtil() {
         shotMetaInfo = new ShotMetaInfo();
+        round = new DecimalFormat("#0");
+        oneDec = new DecimalFormat("#0.0");
+        twoDec = new DecimalFormat("#0.00");
     }
 
-    public void exportDatabase(String databaseName, String backupDBPath) {
+    public String round (double d) {
+        return round.format(d);
+    }
+
+    public String onDec (double d) {
+        return oneDec.format(d);
+    }
+
+    public String twoDec (double d) {
+        return twoDec.format(d);
+    }
+
+    public void exportDatabase(int dbIndex, String backupDBPath) {
+        String[] dbList = ApplicationContextProvider.getContext().databaseList();
         try {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
             if (sd.canWrite()) {
+
+                //dbIndex is:
+                //0 - first db; 1 - journal of 1st db  here: lfgear
+                //2 - 2nd db                           here: lfshots
                 String currentDBPath = "//data//" +
                         ApplicationContextProvider.getContext().getPackageName() +
-                        "//databases//" + databaseName;
+                        "//databases//" + dbList[dbIndex];
+
                 File currentDB = new File(data, currentDBPath);
                 File backupDB = new File(sd, backupDBPath);
                 if (currentDB.exists()) {

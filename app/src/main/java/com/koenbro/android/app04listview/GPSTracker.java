@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
+    AlertDialog.Builder alertDialog;
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -46,6 +48,7 @@ public class GPSTracker extends Service implements LocationListener {
 
     public GPSTracker(Context context) {
         this.mContext = context;
+
         getLocation();
     }
 
@@ -156,8 +159,8 @@ public class GPSTracker extends Service implements LocationListener {
      * On pressing Settings button will lauch Settings Options
      * */
     public void showSettingsAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
+        alertDialog = new AlertDialog.Builder(mContext);
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings");
 
@@ -180,7 +183,16 @@ public class GPSTracker extends Service implements LocationListener {
         });
 
         // Showing Alert Message
-        alertDialog.show();
+        try{
+            alertDialog.show();
+        }
+        catch  (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(GPSTracker.this, "enable GPS", Toast.LENGTH_SHORT).show();
+        }
+        finally {
+            Toast.makeText(GPSTracker.this, "enable GPS", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

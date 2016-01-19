@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -89,6 +87,8 @@ public class MainActivity extends Activity {
     private DBAdapter db;
     private DBAdapterShots dbs;
 
+    //TODO when you delete one film (or filter0) -> delete all related pairs of FF
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
         shotMetaInfo = new ShotMetaInfo();
         createWidgets();
         refreshDynamicContent();
-        FxFPairs testy = new FxFPairs();
+        //FxFPairs testy = new FxFPairs();
     }
 
 
@@ -181,17 +181,18 @@ public class MainActivity extends Activity {
                         intent = new Intent(MainActivity.this, FilterListActivity.class);
                         break;
                     case 4:
-                        intent = new Intent(MainActivity.this, LensListActivity.class);
-                        break;
-                    case 5:
-                        intent = new Intent(MainActivity.this, MeterListActivity.class);
-                        break;
-                    case 6:
-                        intent = new Intent(MainActivity.this, ShotListActivity.class);
-                        break;
-                    case 7:
                         intent = new Intent(MainActivity.this, FxFFilmListActivity.class);
                         break;
+                    case 5:
+                        intent = new Intent(MainActivity.this, LensListActivity.class);
+                        break;
+                    case 6:
+                        intent = new Intent(MainActivity.this, MeterListActivity.class);
+                        break;
+                    case 7:
+                        intent = new Intent(MainActivity.this, ShotListActivity.class);
+                        break;
+
                 }
                 startActivity(intent);
             }
@@ -365,7 +366,12 @@ public class MainActivity extends Activity {
             case R.id.action_send_data:
                 emailedFilename = getResources().getString(R.string.file_to_email);
                 emailAddress = getResources().getString(R.string.email_address);
-                dbUtil.exportDatabase(DBContract.DB_NAME, emailedFilename);
+
+                //dbIndex is:
+                //0 - first db; 1 - journal of 1st db  here: lfgear
+                //2 - 2nd db                           here: lfshots
+                int dbIndex = 2;
+                dbUtil.exportDatabase(dbIndex, emailedFilename);
                 //email the exported file
                 startActivityForResult(
                         Intent.createChooser(dbUtil.
@@ -393,11 +399,11 @@ public class MainActivity extends Activity {
      * @return String   formatted sequence BF - FF - RC
      */
     private String exposureCompensations() {
-        NumberFormat twoDec = new DecimalFormat("#0.00");
+
         String exposureCompensations =
-                "BF: " + twoDec.format(liveShot.getBf()) +
-                        ";  FF: " + twoDec.format(liveShot.getFf()) +
-                        ";  RC: " + twoDec.format(liveShot.getRc());
+                "BF: " + dbUtil.twoDec(liveShot.getBf()) +
+                        ";  FF: " + dbUtil.twoDec(liveShot.getFf()) +
+                        ";  RC: " + dbUtil.twoDec(liveShot.getRc());
         return exposureCompensations;
     }
 

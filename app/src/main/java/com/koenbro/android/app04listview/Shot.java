@@ -1,8 +1,5 @@
 package com.koenbro.android.app04listview;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 /**
  * Created by laszlo on 10/31/14.
  */
@@ -37,6 +34,7 @@ public class Shot {
     private Filter filter;
     private Camera camera;
     private Meter meter;
+    private FxFPairs fxFPairs;
 
     //reference values for light meters
     private final double tMeterRef = 15;
@@ -45,10 +43,14 @@ public class Shot {
     private final double isoMeterRef = 100;
     //TODO get these from db
 
+    DBUtil dbUtil;
+
 
     Shot() {}
     public Shot(Film film, Lens lens, Filter filter, Camera camera, Meter meter,
                 double aperture, int bellowsExtension, double meterRead) {
+        fxFPairs = new FxFPairs();
+        dbUtil = new DBUtil();
         this.film = film;
         this.lens = lens;
         this.filter = filter;
@@ -66,14 +68,39 @@ public class Shot {
         setMeterName(meter.getMeterName());
         setShutter(calcShutter(aperture));
         setPrettyShutter(pretty(shutter));
+
+
     }
 
-    private double calcFf(Film film, Filter filter) {
-        if (film.getFilmType().matches("bw")) ff = filter.getFilterFactorBW();
-        if (film.getFilmType().matches("color")) ff = filter.getFilterFactorColor();
-        setFf(ff);
-        return ff;
+    private double calcShutter(double aperture) {
+        double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
+        bf = Math.pow((double) bellowsExtension / (double) lens.getLensFocal(), 2.0);
+        setBf(bf);
+        double ac = Math.pow(aperture / fMeterRef, 2.0); //aperture
+        double sc = isoMeterRef / film.getFilmEi(); //film sensitivity
+        ff = fxFPairs.getFF(film, filter);
+        shutter = (1 / tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
+        shutter = shutter * calcRc(shutter); //post-reciprocity correction
+        return shutter;
     }
+
+    private String pretty(double shutter) {
+        String pretty;
+
+        //TODO maybe just cast as integer; or round; or set to nearest
+        //need to handle fractions as inverse 1/T
+        if (shutter <1){
+            shutter = 1/shutter;
+            pretty = "1/" + dbUtil.round(shutter);
+            if (shutter < 8) {  //show more details
+                pretty = pretty +  " (" + dbUtil.twoDec(1/shutter) + "s)";
+            }
+        } else {
+            pretty = dbUtil.round(shutter)+"s";
+        }
+        return pretty;
+    }
+
     private double calcRc (double shutter){
         if (shutter < 1) rc = 1;
         else if(shutter>=1 & shutter<2) rc = film.getFilmRc1();
@@ -85,34 +112,6 @@ public class Shot {
         else if(shutter>=100) rc = film.getFilmRc7();
         setRc(rc);
         return( rc);
-    }
-    private double calcShutter(double aperture) {
-        double mc = Math.pow(2.0, evMeterRef - meterRead); //meter
-        bf = Math.pow((double) bellowsExtension / (double) lens.getLensFocal(), 2.0);
-        setBf(bf);
-        double ac = Math.pow(aperture / fMeterRef, 2.0); //aperture
-        double sc = isoMeterRef / film.getFilmEi(); //film sensitivity
-        ff = calcFf(film, filter);
-        shutter = (1 / tMeterRef) * mc * bf * ac * sc * ff; //pre-reciprocity
-        shutter = shutter * calcRc(shutter); //post-reciprocity correction
-        return shutter;
-    }
-    private String pretty(double shutter) {
-        String pretty;
-        NumberFormat round = new DecimalFormat("#0");
-        NumberFormat twoDec = new DecimalFormat("#0.00");
-        //TODO maybe just cast as integer; or round; or set to nearest
-        //need to handle fractions as inverse 1/T
-        if (shutter <1){
-            shutter = 1/shutter;
-            pretty = "1/" + round.format(shutter);
-            if (shutter < 8) {  //show more details
-                pretty = pretty +  " (" + twoDec.format(1/shutter) + "s)";
-            }
-        } else {
-            pretty = round.format(shutter)+"s";
-        }
-        return pretty;
     }
 
     public String[] getOneThirdDownUp() {

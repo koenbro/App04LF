@@ -58,8 +58,8 @@ public class FilterDBAdapter {
         filter.setFilterName(cursor.getString(1));
         filter.setFilterForBW(Boolean.parseBoolean(cursor.getString(2)));
         filter.setFilterForColor(Boolean.parseBoolean(cursor.getString(3)));
-        filter.setFilterFactorBW(Float.parseFloat(cursor.getString(4)));
-        filter.setFilterFactorColor(Float.parseFloat(cursor.getString(5)));
+        filter.setFilterFactorBW(Double.parseDouble(cursor.getString(4)));
+        filter.setFilterFactorColor(Double.parseDouble(cursor.getString(5)));
         return(filter);
     }
 

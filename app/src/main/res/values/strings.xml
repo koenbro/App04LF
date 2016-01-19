@@ -165,12 +165,12 @@
     <string name="default_ev">10</string>
     <string name="email_address">lvaszar@gmail.com</string>
     <string name="file_to_email">lfdb_backup.sqlite</string>
-    <string name="one_third">*</string>
-    <string name="two_thirds">**</string>
+    <string name="one_third">&#8531;</string>
+    <string name="two_thirds">&#8532;</string>
     <string name="one_third_down">&#8531; down</string>
     <string name="one_third_up">&#8531; up</string>
     <string name="shutter">shutter</string>
-    <string name="blank"> </string>
+    <string name="blank">.</string>
     <string name="title_activity_filmx_filter">FilmxFilterActivity</string>
     <string name="title_activity_gear_list">GearListActivity</string>
     <string name="title_activity_fx_ffilm">FxFFilmActivity</string>

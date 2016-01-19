@@ -68,8 +68,8 @@ public class FxFFilterListActivity extends Activity {
 
     private ArrayList<Filter> generateData() {
         db.open();
-        FiltersMatchingFilm fmf = new FiltersMatchingFilm();
-        ArrayList<Filter> xy = fmf.getMatchingFilters(filmID);
+        FxFPairs fmf = new FxFPairs();
+        ArrayList<Filter> xy = fmf.filtersMatchingFilm(filmID);
         db.close();
 
         return (xy);
