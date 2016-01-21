@@ -235,8 +235,8 @@ public class FilmAddEditActivity extends Activity {
         }
         finish();
         db.close();
-        FxFPairs match = new FxFPairs();
-        match.matchAll();
+        FxFPairs ffPairs = new FxFPairs();
+        ffPairs.generateAllPairs();
     }
 
     /*  Alert dialog using deprecated code. Works but need to replace.

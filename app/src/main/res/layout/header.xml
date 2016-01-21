@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-
     <TextView
-        android:text="Gear"
+        android:id="@+id/listview_header"
+        android:text="@string/film_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
@@ -14,11 +15,7 @@
         android:textColor="@color/Peru"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <ListView
-        android:id="@+id/gearListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+
 </LinearLayout>
 
 

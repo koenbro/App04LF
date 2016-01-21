@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class FxFActivity extends Activity {
+public class FxFAddEditActivity extends Activity {
     private TextView mFilmName;
     private TextView mFilmType;
     private TextView mFilterName;
@@ -32,6 +32,7 @@ public class FxFActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTitle(R.string.fxf_set_custom_ff);
         setContentView(R.layout.activity_film_x_filter);
 
         fxfDB = new FxFDBAdapter(this);
@@ -124,7 +125,7 @@ public class FxFActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save_meter:
+            case R.id.action_save_fxf_pair:
                 fxf.setFilmId(filmID);
                 fxf.setFilterId(filterID);
                 //get user selection of FF, or, if left blank, add default of 1.0
@@ -132,17 +133,17 @@ public class FxFActivity extends Activity {
                     mFF.setText("1.0");
                 } else {
                     fxf.setFactor(Double.parseDouble(mFF.getText().toString()));
+                    fxf.setSpecific(true);
                 }
-                if (isFilmFilterPairNew(filmID, filterID)) {
-                    fxfDB.open();
-                    fxfDB.addFxF(fxf);
-                    fxfDB.close();
-                } else {
+//                if (isFilmFilterPairNew(filmID, filterID)) {
+//                    fxfDB.open();
+//                    fxfDB.addFxF(fxf);
+//                    fxfDB.close();
+//                } else {
                     fxfDB.open();
                     fxfDB.updateFxF(fxf);
-                    //fxfDB.addFxF(fxf);
                     fxfDB.close();
-                }
+//                }
                 finish();
                 return true;
             default:

@@ -2,12 +2,12 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
     >
 
-    <!-- Results -->
+    <!-- 1. Results -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Lens and aperture-->
+    <!-- 2. Lens and aperture-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
 
     </LinearLayout>
 
-    <!-- Bellows - meter  -->
+    <!-- 3. Bellows - Zone System - meter  -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/thirdTable"
@@ -159,31 +159,46 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
-
-            <TextView
-                android:text="@string/main_choose_be"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:text="@string/main_choose_be"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_set_be"
+                    android:inputType="number"
+                    android:hint="@string/hint_be_max"
+                    android:maxWidth="@dimen/edit_text_max_width"
+                    />
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:padding="10dp"/>
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical|right"
+                android:gravity="right"
+                android:paddingRight="10dp">
+                <TextView
+                    android:text="@string/main_zonesystem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_toLeftOf="@+id/main_zs_spinner"/>
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_zs_spinner"
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_set_be"
-                android:numeric="integer"
-                android:inputType="number"
-                android:hint="@string/hint_be_max"
-                android:maxWidth="@dimen/edit_text_max_width"
-                />
+                    />
+            </LinearLayout>
         </LinearLayout>
-
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingRight="10dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -203,8 +218,7 @@
                         android:checkedButton="@+id/radioButtonMeter0"
                         android:paddingLeft="4dp"
                         android:layout_gravity="center_vertical|right"
-                        android:gravity="right"
-                >
+                        android:gravity="right">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -229,7 +243,7 @@
 
     </LinearLayout>
 
-    <!-- Film - filter - comment -->
+    <!-- 4. Film - filter - comment -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/fourthTable"
@@ -238,7 +252,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/layout_bg"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        >
 
         <LinearLayout
             android:orientation="horizontal"
@@ -291,11 +307,32 @@
             </LinearLayout>
         </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:text="@string/main_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_holder_id"
+            android:maxWidth="@dimen/spinner_max_width"/>
+
+    </LinearLayout>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingRight="10dp"
+            android:paddingBottom="10dp"
             >
             <TextView
                 android:text="@string/main_comment"
@@ -312,7 +349,7 @@
 
     </LinearLayout>
 
-    <!-- Manage gear-->
+    <!-- 5. Manage gear-->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/fifthTable"
@@ -321,8 +358,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/layout_bg"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="16dp">
-
+        >
 
         <LinearLayout
             android:orientation="horizontal"

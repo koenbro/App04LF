@@ -20,9 +20,23 @@ public class FxFPairs {
     public FxFPairs() {
         allFilms = getAllFilms();
         allFilters = getAllFilters();
-        allPairs=getAllPairs();
+        allPairs = getAllPairs();
     }
 
+    public void generateAllPairs(){
+        for (int i=0;i<allFilms.size();i++){
+            for (int j=0;j<allFilters.size();j++){
+                Film iteratedFilm=allFilms.get(i);
+                Filter iteratedFilter=allFilters.get(j);
+                if (filmMatchesFilter(iteratedFilm,iteratedFilter)){
+                    if (isFilmFilterPairNew((int)iteratedFilm.getId(),(int)iteratedFilter.getId())){
+                        FxF newPair = createNewPair(iteratedFilm,iteratedFilter);
+                        savePair(newPair);
+                    }
+                }
+            }
+        }
+    }
     private ArrayList<Film> getAllFilms(){
         filmDB = new FilmDBAdapter(ApplicationContextProvider.getContext());
         filmDB.open();
@@ -30,7 +44,6 @@ public class FxFPairs {
         filmDB.close();
         return allFilms;
     }
-
     private ArrayList<Filter> getAllFilters(){
         filterDB = new FilterDBAdapter(ApplicationContextProvider.getContext());
         filterDB.open();
@@ -38,7 +51,6 @@ public class FxFPairs {
         filterDB.close();
         return allFilters;
     }
-
     private ArrayList<FxF> getAllPairs(){
         fxfDB = new FxFDBAdapter(ApplicationContextProvider.getContext());
         fxfDB.open();
@@ -56,7 +68,6 @@ public class FxFPairs {
         }
         return item;
     }
-
     public Filter getFilterByID (ArrayList<Filter> itemList, int id){
         Filter item = new Filter();
         for (int i=0;i<itemList.size();i++) {
@@ -67,11 +78,8 @@ public class FxFPairs {
         return item;
     }
 
-
-
     public ArrayList<Filter> filtersMatchingFilm(int filmID){
         filmType = getFilmByID(allFilms, filmID).getFilmType();
-
         ArrayList<Filter> filtersMatchingFilm = new ArrayList<Filter>();
         for (int i=0; i<allFilters.size();i++) {
             if(filmType.matches("bw") & allFilters.get(i).isFilterForBW()) {
@@ -84,21 +92,6 @@ public class FxFPairs {
         return filtersMatchingFilm;
     }
 
-    public void matchAll(){
-        for (int i=0;i<allFilms.size();i++){
-            for (int j=0;j<allFilters.size();j++){
-                Film iteratedFilm=allFilms.get(i);
-                Filter iteratedFilter=allFilters.get(j);
-                if (filmMatchesFilter(iteratedFilm,iteratedFilter)){
-                    if (isFilmFilterPairNew((int)iteratedFilm.getId(),(int)iteratedFilter.getId())){
-                        FxF newPair = createNewPair(iteratedFilm,iteratedFilter);
-                        savePair(newPair);
-                    }
-                }
-            }
-        }
-    }
-
     private void savePair(FxF newPair) {
         fxfDB = new FxFDBAdapter(ApplicationContextProvider.getContext());
         fxfDB.open();
@@ -106,14 +99,14 @@ public class FxFPairs {
         fxfDB.close();
     }
 
-    private FxF createNewPair(Film iteratedFilm, Filter iteratedFilter) {
+    private FxF createNewPair(Film film, Filter filter) {
         FxF newPair = new FxF();
-        newPair.setFilmId(iteratedFilm.getId());
-        newPair.setFilmName(iteratedFilm.getFilmName());
-        newPair.setFilmType(iteratedFilm.getFilmType());
-        newPair.setFilterId(iteratedFilter.getId());
-        newPair.setFilterName(iteratedFilter.getFilterName());
-        newPair.setFactor(getGenericFFforFilm(iteratedFilm, iteratedFilter));
+        newPair.setFilmId(film.getId());
+        newPair.setFilmName(film.getFilmName());
+        newPair.setFilmType(film.getFilmType());
+        newPair.setFilterId(filter.getId());
+        newPair.setFilterName(filter.getFilterName());
+        newPair.setFactor(getGenericFFforFilm(film, filter));
         newPair.setSpecific(false);
         return newPair;
     }

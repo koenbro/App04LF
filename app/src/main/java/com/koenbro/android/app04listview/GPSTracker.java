@@ -155,6 +155,7 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     /**
+     * CAUSES A NULL POINTER EXCEPTION (LV)
      * Function to show settings alert dialog
      * On pressing Settings button will lauch Settings Options
      * */

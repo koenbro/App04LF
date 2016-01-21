@@ -159,8 +159,8 @@ public class FilterAddEditActivity extends Activity {
                 }
                 finish();
                 db.close();
-                FxFPairs match = new FxFPairs();
-                match.matchAll();
+                FxFPairs ffPairs = new FxFPairs();
+                ffPairs.generateAllPairs();
                 return true;
             /*case R.id.action_settings:
                 openSettings();

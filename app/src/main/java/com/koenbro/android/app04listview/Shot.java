@@ -19,6 +19,8 @@ public class Shot {
     private String comment;
     private double latitude;
     private double longitude;
+    private int filmHolderID;
+    private String zoneSytemPushPull;
 
     private String filmName;
     private int filmEi;
@@ -48,7 +50,8 @@ public class Shot {
 
     Shot() {}
     public Shot(Film film, Lens lens, Filter filter, Camera camera, Meter meter,
-                double aperture, int bellowsExtension, double meterRead) {
+                double aperture, int bellowsExtension, double meterRead, String zoneSytemPushPull,
+                int filmHolderID) {
         fxFPairs = new FxFPairs();
         dbUtil = new DBUtil();
         this.film = film;
@@ -68,8 +71,8 @@ public class Shot {
         setMeterName(meter.getMeterName());
         setShutter(calcShutter(aperture));
         setPrettyShutter(pretty(shutter));
-
-
+        setZoneSytemPushPull(zoneSytemPushPull);
+        setFilmHolderID(filmHolderID);
     }
 
     private double calcShutter(double aperture) {
@@ -302,6 +305,20 @@ public class Shot {
     }
     public double getIsoMeterRef() {
         return isoMeterRef;
+    }
+
+    public int getFilmHolderID() {
+        return filmHolderID;
+    }
+    public void setFilmHolderID(int filmHolderID) {
+        this.filmHolderID = filmHolderID;
+    }
+
+    public String getZoneSytemPushPull() {
+        return zoneSytemPushPull;
+    }
+    public void setZoneSytemPushPull(String zoneSytemPushPull) {
+        this.zoneSytemPushPull = zoneSytemPushPull;
     }
 
     @Override

@@ -33,7 +33,6 @@ public class ShotDBAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
     }
-
     public ShotDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
@@ -69,6 +68,8 @@ public class ShotDBAdapter {
         values.put(DBContractShots.TableShot.COLUMN_19, String.valueOf(shot.getComment()));
         values.put(DBContractShots.TableShot.COLUMN_20, String.valueOf(shot.getLatitude()));
         values.put(DBContractShots.TableShot.COLUMN_21, String.valueOf(shot.getLongitude()));
+        values.put(DBContractShots.TableShot.COLUMN_22, shot.getZoneSytemPushPull());
+        values.put(DBContractShots.TableShot.COLUMN_23, String.valueOf(shot.getFilmHolderID()));
         return(values);
     }
     private Shot cursorToShot(Cursor cursor){
@@ -95,6 +96,8 @@ public class ShotDBAdapter {
         shot.setComment(cursor.getString(19));
         shot.setLatitude(Double.parseDouble(cursor.getString(20)));
         shot.setLongitude(Double.parseDouble(cursor.getString(21)));
+        shot.setZoneSytemPushPull(cursor.getString(22));
+        shot.setFilmHolderID(Integer.parseInt(cursor.getString(23)));
         return(shot);
     }
 

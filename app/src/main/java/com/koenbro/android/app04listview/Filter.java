@@ -76,9 +76,7 @@ public class Filter {
     @Override
     public String toString() {
         NumberFormat oneDec = new DecimalFormat("#0.0");
-        return "Filter [" + filterName  + ", FFbw=" + oneDec.format(getFilterFactorBW()) +
-                ", FFcolor=" + oneDec.format(getFilterFactorColor()) +
-                ", id=" + id + "]";
+        return "Filter " + filterName  + " (id=" + id + ")";
     }
     public String toStringShort() {
         return  filterName  + " (id=" + id +")";

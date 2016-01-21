@@ -18,14 +18,14 @@ import java.util.ArrayList;
  */
 public class FilmListActivity extends Activity{
     FilmDBAdapter db;
-    //FilmAdapter filmAdapter;
-    GearAdapter filmAdapter;
     ListView filmListView;
+    GearAdapter filmAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_list);
+
         db = new FilmDBAdapter(this);
         filmAdapterLoad();
         filmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

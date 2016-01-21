@@ -1,7 +1,5 @@
 package com.koenbro.android.app04listview;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 
 import java.io.File;
@@ -16,15 +14,15 @@ import java.text.NumberFormat;
  * @author laszlo
  * @date 2/26/15.
  */
-public class DBUtil {
-    ShotMetaInfo shotMetaInfo;
+public class DBUtil  {
+
     NumberFormat round;
     NumberFormat oneDec;
     NumberFormat twoDec;
 
     public DBUtil() {
-        shotMetaInfo = new ShotMetaInfo();
-        round = new DecimalFormat("#0");
+        //shotMetaInfo = new ShotMetaInfo();
+        round =  new DecimalFormat("#0");
         oneDec = new DecimalFormat("#0.0");
         twoDec = new DecimalFormat("#0.00");
     }
@@ -33,12 +31,16 @@ public class DBUtil {
         return round.format(d);
     }
 
-    public String onDec (double d) {
+    public String oneDec (double d) {
         return oneDec.format(d);
     }
 
     public String twoDec (double d) {
         return twoDec.format(d);
+    }
+
+    public String leadingZero (int i) {
+        return String.format("%02d", i);
     }
 
     public void exportDatabase(int dbIndex, String backupDBPath) {
@@ -72,17 +74,6 @@ public class DBUtil {
         //TODO add logic
     }
 
-    public Intent sendEmailIntent (String email, String fileToSend) {
-        File file = new File(Environment.getExternalStorageDirectory(), fileToSend);
-        Uri path = Uri.fromFile(file);
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("application/octet-stream");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "lf-db-backup_" +
-                shotMetaInfo.getDay() + "_" + shotMetaInfo.getTime());
-        String to[] = { email };
-        intent.putExtra(Intent.EXTRA_EMAIL, to);
-        intent.putExtra(Intent.EXTRA_TEXT, "Here is the db.");
-        intent.putExtra(Intent.EXTRA_STREAM, path);
-        return intent;
-    }
+
+
 }

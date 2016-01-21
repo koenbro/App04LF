@@ -3,7 +3,6 @@ package com.koenbro.android.app04listview;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -39,8 +37,9 @@ public class MainActivity extends Activity {
     private RadioButton mOneThirdStop;
     private RadioButton mTwoThirdStop;
     private EditText mBellowsText;
-    private Spinner mBellowsSpinner;
+    private Spinner mZoneSystemSpinner;
     private Spinner mFilterChoice;
+    private Spinner mHolderID;
     private Spinner mMeterReadEV;
     private RadioGroup mThirdEV;
     private RadioButton mFullEV;
@@ -70,6 +69,8 @@ public class MainActivity extends Activity {
     private Meter meterChosen;
     private Camera cameraChosen;
     private String comment;
+    private String zoneSystemChosen;
+    private int holderIDChosen;
 
     //inventory
     private ArrayList<Film> allFilms;
@@ -79,13 +80,12 @@ public class MainActivity extends Activity {
     private ArrayList<Camera> allCameras;
 
     private Shot liveShot;
-    private String emailedFilename;
-    private String emailAddress;
     private Gear gear;
     private ShotMetaInfo shotMetaInfo;
     private DBUtil dbUtil;
     private DBAdapter db;
     private DBAdapterShots dbs;
+
 
     //TODO when you delete one film (or filter0) -> delete all related pairs of FF
 
@@ -99,7 +99,6 @@ public class MainActivity extends Activity {
         shotMetaInfo = new ShotMetaInfo();
         createWidgets();
         refreshDynamicContent();
-        //FxFPairs testy = new FxFPairs();
     }
 
 
@@ -135,7 +134,10 @@ public class MainActivity extends Activity {
         mTwoThirdStop = (RadioButton) findViewById(R.id.radioButtonf2);
 
         mFilterChoice = (Spinner) findViewById(R.id.main_filter_spinner);
+        mHolderID = (Spinner)findViewById(R.id.main_holder_id);
+
         mBellowsText = (EditText) findViewById(R.id.main_set_be);
+        mZoneSystemSpinner = (Spinner) findViewById(R.id.main_zs_spinner);
         mMeterReadEV = (Spinner) findViewById(R.id.main_ev_spinner);
 
         mThirdEV = (RadioGroup) findViewById(R.id.radioGroupMeterRead);
@@ -192,7 +194,6 @@ public class MainActivity extends Activity {
                     case 7:
                         intent = new Intent(MainActivity.this, ShotListActivity.class);
                         break;
-
                 }
                 startActivity(intent);
             }
@@ -242,6 +243,16 @@ public class MainActivity extends Activity {
         mLensAperture.setSelection(adapterAperture.getPosition(
                 getResources().getString(R.string.default_fstop))); //"11"
 
+        //show zone system puch-pull options; static from array resource
+        ArrayAdapter<CharSequence> adapterZoneSystem =
+                ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.zone_sytem,
+                        android.R.layout.simple_spinner_item);
+        adapterZoneSystem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mZoneSystemSpinner.setAdapter(adapterZoneSystem);
+        mZoneSystemSpinner.setSelection(adapterZoneSystem.getPosition(
+                getResources().getString(R.string.default_zone_system))); //"N"
+
         //show filter names from db
         ArrayList<String> filtersNames = new ArrayList<String>();
         for (int i = 0; i < allFilters.size(); i++) {
@@ -262,6 +273,16 @@ public class MainActivity extends Activity {
         mMeterReadEV.setAdapter(adapterMeterReadEV);
         mMeterReadEV.setSelection(adapterMeterReadEV.getPosition(
                 getResources().getString(R.string.default_ev))); //"10"
+
+        //show holder Ids; static from resource, use EV array
+        ArrayAdapter<CharSequence> adapterHolderID =
+                ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.ev_values,
+                        android.R.layout.simple_spinner_item);
+        adapterHolderID.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mHolderID.setAdapter(adapterHolderID);
+        mHolderID.setSelection(adapterHolderID.getPosition(
+                getResources().getString(R.string.default_holder))); //"1"
 
         //show meter names from db
         ArrayList<String> metersNames = new ArrayList<String>();
@@ -314,6 +335,13 @@ public class MainActivity extends Activity {
                 bellowsExtension = lensChosen.getLensFocal();
             }
         }
+
+        //ZoneSystemSpinner
+        zoneSystemChosen = String.valueOf(mZoneSystemSpinner.getSelectedItem());
+
+        //holder ID
+        holderIDChosen = Integer.parseInt(String.valueOf(mHolderID.getSelectedItem()));
+
         //the meter read (like the aperture) also depends on spinner + radio buttons
         meterReadValue = Double.parseDouble(String.valueOf(mMeterReadEV.getSelectedItem()));
         int radioButtonMeterID = mThirdEV.getCheckedRadioButtonId();
@@ -333,7 +361,7 @@ public class MainActivity extends Activity {
     private void calcExposure() {
         getUserChoices();
         liveShot = new Shot(filmChosen, lensChosen, filterChosen, cameraChosen, meterChosen,
-                aperture, bellowsExtension, meterReadValue);
+                aperture, bellowsExtension, meterReadValue, zoneSystemChosen, holderIDChosen);
         mExposure.setText(liveShot.getPrettyShutter()); //pretty format shutter
         mExposureLo.setText(liveShot.getOneThirdDownUp()[0]);
         mExposureHi.setText(liveShot.getOneThirdDownUp()[1]);
@@ -361,37 +389,17 @@ public class MainActivity extends Activity {
                         exposureCompensations(), Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_save_shot:
+                //only save if the object liveShot has been instantiated, ie. the exposure was calculated
+                //without this condition, null pointer exception is thrown
+                if (liveShot instanceof Shot) {
                 saveShot(liveShot);
-                return true;
-            case R.id.action_send_data:
-                emailedFilename = getResources().getString(R.string.file_to_email);
-                emailAddress = getResources().getString(R.string.email_address);
-
-                //dbIndex is:
-                //0 - first db; 1 - journal of 1st db  here: lfgear
-                //2 - 2nd db                           here: lfshots
-                int dbIndex = 2;
-                dbUtil.exportDatabase(dbIndex, emailedFilename);
-                //email the exported file
-                startActivityForResult(
-                        Intent.createChooser(dbUtil.
-                                        sendEmailIntent(emailAddress, emailedFilename),
-                                "Send mail..."),
-                        1222);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1222) {
-            File file = new File(Environment.getExternalStorageState() +
-                    "/folderName/" + emailedFilename + ".xml");
-            file.delete();
-        }
-    }
 
     /**
      * Retrieve bellows factor, filter factor, and reciprocity correction.

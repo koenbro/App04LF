@@ -26,7 +26,10 @@ public class CameraListActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intentEditCamera = new Intent(CameraListActivity.this, CameraAddEditActivity.class);
                 long intentId = gear.getAllCameras().get(position).getId();
-                intentEditCamera.putExtra(CameraAddEditActivity.EXTRA_CAMERA_ID, intentId); //sql starts at 1; java at 0
+                intentEditCamera.putExtra(CameraAddEditActivity.EXTRA_CAMERA_ID, intentId);
+                Toast.makeText(getApplicationContext(),
+                        "position:" + String.valueOf(position) + "; id:" + String.valueOf(intentId),
+                        Toast.LENGTH_SHORT).show();//sql starts at 1; java at 0
                 startActivityForResult(intentEditCamera, 0);
             }
         });
