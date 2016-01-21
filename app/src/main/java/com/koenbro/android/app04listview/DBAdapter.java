@@ -37,7 +37,7 @@ public class DBAdapter {
             db.execSQL(DBContract.TableFilter.CREATE_TABLE);
             db.execSQL(DBContract.TableLens.CREATE_TABLE);
             db.execSQL(DBContract.TableMeter.CREATE_TABLE);
-            db.execSQL(DBContract.TableShot.CREATE_TABLE);
+            //db.execSQL(DBContract.TableShot.CREATE_TABLE);
             db.execSQL(DBContract.TableFilmFilter.CREATE_TABLE);
             seedDB(db);
         }
@@ -61,7 +61,7 @@ public class DBAdapter {
             db.execSQL(DBContract.TableFilter.DELETE_TABLE);
             db.execSQL(DBContract.TableLens.DELETE_TABLE);
             db.execSQL(DBContract.TableMeter.DELETE_TABLE);
-            db.execSQL(DBContract.TableShot.DELETE_TABLE);
+            //db.execSQL(DBContract.TableShot.DELETE_TABLE);
             db.execSQL(DBContract.TableFilmFilter.DELETE_TABLE);
             onCreate(db);
         }

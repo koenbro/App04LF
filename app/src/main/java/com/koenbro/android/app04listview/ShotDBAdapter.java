@@ -22,7 +22,7 @@ public class ShotDBAdapter {
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
-            super(context, DBContract.DB_NAME, null, DBContract.DB_VERSION);
+            super(context, DBContractShots.DB_NAME, null, DBContractShots.DB_VERSION);
         }
 
         @Override
@@ -33,7 +33,6 @@ public class ShotDBAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
     }
-
     public ShotDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
@@ -48,27 +47,29 @@ public class ShotDBAdapter {
 
     private ContentValues shotToContentValues (Shot shot){
         ContentValues values = new ContentValues();
-        values.put(DBContract.TableShot.COLUMN_1, shot.getShotDay());
-        values.put(DBContract.TableShot.COLUMN_2, shot.getShotTime());
-        values.put(DBContract.TableShot.COLUMN_3, String.valueOf(shot.getPhotoShootId()));
-        values.put(DBContract.TableShot.COLUMN_4, shot.getFilmName());
-        values.put(DBContract.TableShot.COLUMN_5, shot.getFilmEi());
-        values.put(DBContract.TableShot.COLUMN_6, shot.getLensName());
-        values.put(DBContract.TableShot.COLUMN_7, shot.getLensFocal());
-        values.put(DBContract.TableShot.COLUMN_8, shot.getFilterName());
-        values.put(DBContract.TableShot.COLUMN_9, shot.getCameraName());
-        values.put(DBContract.TableShot.COLUMN_10, shot.getMeterName());
-        values.put(DBContract.TableShot.COLUMN_11, String.valueOf(shot.getAperture()));
-        values.put(DBContract.TableShot.COLUMN_12, String.valueOf(shot.getBellowsExtension()));
-        values.put(DBContract.TableShot.COLUMN_13, String.valueOf(shot.getMeterRead()));
-        values.put(DBContract.TableShot.COLUMN_14, String.valueOf(shot.getFf()));
-        values.put(DBContract.TableShot.COLUMN_15, String.valueOf(shot.getBf()));
-        values.put(DBContract.TableShot.COLUMN_16, String.valueOf(shot.getRc()));
-        values.put(DBContract.TableShot.COLUMN_17, String.valueOf(shot.getShutter()));
-        values.put(DBContract.TableShot.COLUMN_18, String.valueOf(shot.getPrettyShutter()));
-        values.put(DBContract.TableShot.COLUMN_19, String.valueOf(shot.getComment()));
-        values.put(DBContract.TableShot.COLUMN_20, String.valueOf(shot.getLatitude()));
-        values.put(DBContract.TableShot.COLUMN_21, String.valueOf(shot.getLongitude()));
+        values.put(DBContractShots.TableShot.COLUMN_1, shot.getShotDay());
+        values.put(DBContractShots.TableShot.COLUMN_2, shot.getShotTime());
+        values.put(DBContractShots.TableShot.COLUMN_3, String.valueOf(shot.getPhotoShootId()));
+        values.put(DBContractShots.TableShot.COLUMN_4, shot.getFilmName());
+        values.put(DBContractShots.TableShot.COLUMN_5, shot.getFilmEi());
+        values.put(DBContractShots.TableShot.COLUMN_6, shot.getLensName());
+        values.put(DBContractShots.TableShot.COLUMN_7, shot.getLensFocal());
+        values.put(DBContractShots.TableShot.COLUMN_8, shot.getFilterName());
+        values.put(DBContractShots.TableShot.COLUMN_9, shot.getCameraName());
+        values.put(DBContractShots.TableShot.COLUMN_10, shot.getMeterName());
+        values.put(DBContractShots.TableShot.COLUMN_11, String.valueOf(shot.getAperture()));
+        values.put(DBContractShots.TableShot.COLUMN_12, String.valueOf(shot.getBellowsExtension()));
+        values.put(DBContractShots.TableShot.COLUMN_13, String.valueOf(shot.getMeterRead()));
+        values.put(DBContractShots.TableShot.COLUMN_14, String.valueOf(shot.getFf()));
+        values.put(DBContractShots.TableShot.COLUMN_15, String.valueOf(shot.getBf()));
+        values.put(DBContractShots.TableShot.COLUMN_16, String.valueOf(shot.getRc()));
+        values.put(DBContractShots.TableShot.COLUMN_17, String.valueOf(shot.getShutter()));
+        values.put(DBContractShots.TableShot.COLUMN_18, String.valueOf(shot.getPrettyShutter()));
+        values.put(DBContractShots.TableShot.COLUMN_19, String.valueOf(shot.getComment()));
+        values.put(DBContractShots.TableShot.COLUMN_20, String.valueOf(shot.getLatitude()));
+        values.put(DBContractShots.TableShot.COLUMN_21, String.valueOf(shot.getLongitude()));
+        values.put(DBContractShots.TableShot.COLUMN_22, shot.getZoneSytemPushPull());
+        values.put(DBContractShots.TableShot.COLUMN_23, String.valueOf(shot.getFilmHolderID()));
         return(values);
     }
     private Shot cursorToShot(Cursor cursor){
@@ -95,17 +96,19 @@ public class ShotDBAdapter {
         shot.setComment(cursor.getString(19));
         shot.setLatitude(Double.parseDouble(cursor.getString(20)));
         shot.setLongitude(Double.parseDouble(cursor.getString(21)));
+        shot.setZoneSytemPushPull(cursor.getString(22));
+        shot.setFilmHolderID(Integer.parseInt(cursor.getString(23)));
         return(shot);
     }
 
     // CRUD
     public void addShot(Shot shot) {
         ContentValues values = shotToContentValues(shot);
-        this.mDb.insert(DBContract.TableShot.TABLE_NAME, null, values);
+        this.mDb.insert(DBContractShots.TableShot.TABLE_NAME, null, values);
     }
     public Shot getShot(long id) {
-        Cursor cursor = mDb.query(DBContract.TableShot.TABLE_NAME,
-                DBContract.TableShot.COLUMNS,
+        Cursor cursor = mDb.query(DBContractShots.TableShot.TABLE_NAME,
+                DBContractShots.TableShot.COLUMNS,
                 " id = ?", // c. selections
                 new String[]{String.valueOf(id)}, // d. selections args
                 null, // e. group by
@@ -114,40 +117,40 @@ public class ShotDBAdapter {
                 null); // h. limit
         if (cursor != null) cursor.moveToFirst();
         Shot shot = cursorToShot(cursor);
-//        Log.d(DBContract.TableShot.TAG, TAG_GET_ONE + id + ") " + shot.toString());
+//        Log.d(DBContractShots.TableShot.TAG, TAG_GET_ONE + id + ") " + shot.toString());
         cursor.close();
         return(shot);
     }
     public ArrayList<Shot> getAllShots(){
         Shot shot;
         ArrayList<Shot> shots = new ArrayList<Shot>();
-        String query = "SELECT * FROM " + DBContract.TableShot.TABLE_NAME;
+        String query = "SELECT * FROM " + DBContractShots.TableShot.TABLE_NAME;
         Cursor cursor = mDb.rawQuery(query, null);
         if (cursor.moveToFirst()){
             do{
                 shot = cursorToShot(cursor);
                 shots.add(shot);
-                Log.d(DBContract.TableShot.TAG, "id: " + cursor.getString(0));
+                Log.d(DBContractShots.TableShot.TAG, "id: " + cursor.getString(0));
             }
             while (cursor.moveToNext());
         }
-//        Log.d(DBContract.TableShot.TAG, TAG_GET_ALL  + shots.toString());
+//        Log.d(DBContractShots.TableShot.TAG, TAG_GET_ALL  + shots.toString());
         cursor.close();
         return (shots);
     }
     public int updateShot(Shot shot){
         ContentValues values = shotToContentValues(shot);
-        int i = mDb.update(DBContract.TableShot.TABLE_NAME,
+        int i = mDb.update(DBContractShots.TableShot.TABLE_NAME,
                 values,
-                DBContract.TableShot.COLUMN_ID+"=?",
+                DBContractShots.TableShot.COLUMN_ID+"=?",
                 new String [] {String.valueOf(shot.getId())});
-//        Log.d(DBContract.TableShot.TAG,  TAG_UPDATE + shot.toString());
+//        Log.d(DBContractShots.TableShot.TAG,  TAG_UPDATE + shot.toString());
         return(i);
     }
     public void deleteShot(Shot shot){
-        mDb.delete(DBContract.TableShot.TABLE_NAME,
-                DBContract.TableShot.COLUMN_ID + " = ?",
+        mDb.delete(DBContractShots.TableShot.TABLE_NAME,
+                DBContractShots.TableShot.COLUMN_ID + " = ?",
                 new String[] {String.valueOf(shot.getId())});
-//        Log.d(DBContract.TableShot.TAG,  TAG_DELETE + shot.toString());
+//        Log.d(DBContractShots.TableShot.TAG,  TAG_DELETE + shot.toString());
     }
 }

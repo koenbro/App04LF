@@ -48,8 +48,12 @@ public class FxFDBAdapter {
     private ContentValues fxFToContentValues(FxF fxF) {
         ContentValues values = new ContentValues();
         values.put(DBContract.TableFilmFilter.COLUMN_1, String.valueOf(fxF.getFilmId()));
-        values.put(DBContract.TableFilmFilter.COLUMN_2, String.valueOf(fxF.getFilterId()));
-        values.put(DBContract.TableFilmFilter.COLUMN_3, String.valueOf(fxF.getFactor()));
+        values.put(DBContract.TableFilmFilter.COLUMN_2, fxF.getFilmName());
+        values.put(DBContract.TableFilmFilter.COLUMN_3, fxF.getFilmType());
+        values.put(DBContract.TableFilmFilter.COLUMN_4, String.valueOf(fxF.getFilterId()));
+        values.put(DBContract.TableFilmFilter.COLUMN_5, fxF.getFilterName());
+        values.put(DBContract.TableFilmFilter.COLUMN_6, String.valueOf(fxF.getFactor()));
+        values.put(DBContract.TableFilmFilter.COLUMN_7, String.valueOf(fxF.isSpecific()));
         return (values);
     }
 
@@ -57,8 +61,12 @@ public class FxFDBAdapter {
         FxF fxF = new FxF();
         fxF.setId(Long.parseLong(cursor.getString(0)));
         fxF.setFilmId(Long.parseLong(cursor.getString(1)));
-        fxF.setFilterId(Long.parseLong(cursor.getString(2)));
-        fxF.setFactor(Double.parseDouble(cursor.getString(3)));
+        fxF.setFilmName(cursor.getString(2));
+        fxF.setFilmType(cursor.getString(3));
+        fxF.setFilterId(Long.parseLong(cursor.getString(4)));
+        fxF.setFilterName(cursor.getString(5));
+        fxF.setFactor(Double.parseDouble(cursor.getString(6)));
+        fxF.setSpecific(Boolean.getBoolean(cursor.getString(7)));
         return fxF;
     }
 

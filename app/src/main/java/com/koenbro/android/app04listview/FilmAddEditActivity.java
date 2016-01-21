@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,7 +33,7 @@ public class FilmAddEditActivity extends Activity {
     private EditText mFilmRC6;
     private EditText mFilmRC7;
     private List<String> mFilmTypes;
-    private Button mFilterFactors;
+    //private Button mFilterFactors;
     //private Gear gear;
     //private ArrayList<Filter> allFilters;
     private long filmID;
@@ -92,34 +91,9 @@ public class FilmAddEditActivity extends Activity {
         adapterFilmType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilmType.setAdapter(adapterFilmType);
 
-        mFilterFactors = (Button) findViewById(R.id.button_filmxfilter);
-
-
-//        allFilters = gear.getAllFilters(); //show filter names from db
-//        ArrayList<String> filtersNames = new ArrayList<String>();
-//        for (int i = 0; i < allFilters.size(); i++) {
-//            filtersNames.add(allFilters.get(i).getFilterName());
-//        }
-//        ArrayAdapter<String> filtersNamesAdapter =
-//                new ArrayAdapter<String>(this,
-//                        android.R.layout.simple_spinner_item,
-//                        filtersNames);
-//        filtersNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mFilters.setAdapter(filtersNamesAdapter);
-//        mFilters.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            Intent intent;
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
-//                //intent = new Intent(FilmAddEditActivity.this, Film.class);
-//Toast.makeText(getApplicationContext(), "yo",Toast.LENGTH_SHORT).show() ;
-//                //startActivity(intent);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                return;
-//            }
-//        });
+        //mFilterFactors = (Button) findViewById(R.id.button_filmxfilter);
+        //There is no listener associated with the button; the layout file specifies
+        //android:onClick="openListMatchingFilters" which points to the method in this class
 
         mFilmEI = (EditText) findViewById(R.id.editTextFilmEi);
         mFilmRC1 = (EditText) findViewById(R.id.editTextRC1);
@@ -132,14 +106,17 @@ public class FilmAddEditActivity extends Activity {
     }
 
     /**
-     * Called when the user clicks the Send button
+     * Called when the user clicks the Film-Filter factor button
      */
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, FxFListActivity.class);
-        Toast.makeText(this, "yo film: " + String.valueOf(filmID), Toast.LENGTH_SHORT).show();
+    public void openListMatchingFilters(View view) {
+        saveFilm();
+        Intent intent = new Intent(this, FxFFilterListActivity.class);
+        Toast.makeText(this, "film: " + String.valueOf(filmID)+ " matches these filters:"
+                , Toast.LENGTH_LONG).show();
         intent.putExtra(EXTRA_FILM_ID, filmID);
         startActivity(intent);
     }
+
 
     private void fillWidgets() {  //Fill in the fields for the first time as the Activity is created
         mFilmName.setText(mFilm.getFilmName());
@@ -235,28 +212,31 @@ public class FilmAddEditActivity extends Activity {
                 }
                 return true;
             case R.id.action_save_film:
-                db.open();
-                fillBlankFields();
-                Film newFilm = getUserInput();
-                // intent extra of 0 means a new film is added
-                if (getIntent().getLongExtra(EXTRA_FILM_ID, 0) == 0) {
-                    db.addFilm(newFilm);
-                    Toast.makeText(FilmAddEditActivity.this,
-                            R.string.film_added, Toast.LENGTH_SHORT).show();
-                } else {
-                    int i = db.updateFilm(newFilm);
-                    Toast.makeText(FilmAddEditActivity.this,
-                            R.string.film_saved, Toast.LENGTH_SHORT).show();
-                }
-                finish();
-                db.close();
+                saveFilm();
                 return true;
-            /*case R.id.action_settings:
-                openSettings();
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void saveFilm() {
+        db.open();
+        fillBlankFields();
+        Film newFilm = getUserInput();
+        // intent extra of 0 means a new film is added
+        if (getIntent().getLongExtra(EXTRA_FILM_ID, 0) == 0) {
+            db.addFilm(newFilm);
+            Toast.makeText(FilmAddEditActivity.this,
+                    R.string.film_added, Toast.LENGTH_SHORT).show();
+        } else {
+            int i = db.updateFilm(newFilm);
+            Toast.makeText(FilmAddEditActivity.this,
+                    R.string.film_saved, Toast.LENGTH_SHORT).show();
+        }
+        finish();
+        db.close();
+        FxFPairs ffPairs = new FxFPairs();
+        ffPairs.generateAllPairs();
     }
 
     /*  Alert dialog using deprecated code. Works but need to replace.

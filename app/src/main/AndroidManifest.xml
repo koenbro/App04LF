@@ -6,12 +6,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <android:uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".ApplicationContextProvider"
@@ -61,10 +58,6 @@
             android:label="@string/title_activity_camera_add_edit">
         </activity>
         <activity
-            android:name=".zzdeleteActivity"
-            android:label="@string/title_activity_zzdelete">
-        </activity>
-        <activity
             android:name=".MeterListActivity"
             android:label="@string/title_activity_meter_list">
         </activity>
@@ -77,16 +70,20 @@
             android:label="@string/title_activity_shot_list">
         </activity>
         <activity
-            android:name=".FxFListActivity"
-            android:label="@string/title_activity_filmx_filter">
+            android:name=".ShotDetailActivity"
+            android:label="@string/title_activity_shot_detail">
         </activity>
         <activity
-            android:name=".FxFActivity"
-            android:label="@string/title_activity_filmx_filter">
+            android:name=".FxFFilterListActivity"
+            android:label="@string/title_fxf_filterlist">
         </activity>
         <activity
-            android:name=".GearListActivity"
-            android:label="@string/title_activity_gear_list">
+            android:name=".FxFAddEditActivity"
+            android:label="@string/title_fxf_set_custom_ff">
+        </activity>
+        <activity
+            android:name=".FxFFilmListActivity"
+            android:label="@string/title_fxf_choose_film">
         </activity>
     </application>
 

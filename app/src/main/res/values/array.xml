@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="equipment_pages">
+        <item>Choose&#8230;</item>
+        <item>Cameras</item>
+        <item>Films</item>
+        <item>Filters</item>
+        <item>Film-specific FF</item>
+        <item>Lenses</item>
+        <item>Meters</item>
+        <item>Shots</item>
+    </string-array>
+
     <string-array name="film_type">
         <item>bw</item>
         <item>color</item>
@@ -32,5 +44,13 @@
         <item>13</item><item>14</item><item>15</item>
         <item>16</item><item>17</item><item>18</item>
         <item>19</item><item>20</item><item>21</item>
+    </string-array>
+
+    <string-array name="zone_sytem">
+        <item>N-2</item>
+        <item>N-1</item>
+        <item>N</item>
+        <item>N+1</item>
+        <item>N+2</item>
     </string-array>
 </resources>

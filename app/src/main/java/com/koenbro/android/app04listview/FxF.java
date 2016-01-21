@@ -6,8 +6,12 @@ package com.koenbro.android.app04listview;
 public class FxF {
     private long id;
     private long filmId;
+    private String filmName;
+    private String filmType;
     private long filterId;
+    private String filterName;
     private double factor;
+    private boolean specific;
 
     public long getId() {
         return id;
@@ -25,6 +29,30 @@ public class FxF {
         this.filmId = filmId;
     }
 
+    public String getFilmName() {
+        return filmName;
+    }
+
+    public void setFilmName(String filmName) {
+        this.filmName = filmName;
+    }
+
+    public String getFilmType() {
+        return filmType;
+    }
+
+    public void setFilmType(String filmType) {
+        this.filmType = filmType;
+    }
+
+    public String getFilterName() {
+        return filterName;
+    }
+
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
+    }
+
     public long getFilterId() {
         return filterId;
     }
@@ -39,6 +67,14 @@ public class FxF {
 
     public void setFactor(double factor) {
         this.factor = factor;
+    }
+
+    public boolean isSpecific() {
+        return specific;
+    }
+
+    public void setSpecific(boolean specific) {
+        this.specific = specific;
     }
 
     @Override

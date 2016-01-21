@@ -81,6 +81,12 @@ public class Lens {
     }
     @Override
     public String toString() {
-        return "Lens [id=" + id + ", name=" + lensName  + "]";
+        return "Lens [" + String.valueOf(getLensFocal()) + "mm f/" +
+                String.valueOf(getLensApertureOpen()) + " " + getLensBrand()  +
+                ", id=" + id+"]";
+    }
+    public String toStringShort() {
+        return  String.valueOf(getLensFocal()) + "mm f/" +
+                String.valueOf(getLensApertureOpen())   + " (id=" + id + ")";
     }
 }

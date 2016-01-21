@@ -1,5 +1,8 @@
 package com.koenbro.android.app04listview;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
  * Created by laszlo on 10/24/14.
  */
@@ -14,7 +17,7 @@ public class Filter {
     public Filter() {}
 
     public Filter(String filterName, boolean filterForBW, boolean filterForColor,
-                  float filterFactorBW, float filterFactorColor) {
+                  double filterFactorBW, double filterFactorColor) {
         this.filterName = filterName;
         this.filterForBW = filterForBW;
         this.filterForColor = filterForColor;
@@ -58,7 +61,7 @@ public class Filter {
         return filterFactorBW;
     }
 
-    public void setFilterFactorBW(float filterFactorBW) {
+    public void setFilterFactorBW(double filterFactorBW) {
         this.filterFactorBW = filterFactorBW;
     }
 
@@ -66,13 +69,17 @@ public class Filter {
         return filterFactorColor;
     }
 
-    public void setFilterFactorColor(float filterFactorColor) {
+    public void setFilterFactorColor(double filterFactorColor) {
         this.filterFactorColor = filterFactorColor;
     }
 
     @Override
     public String toString() {
-        return "Filter [id=" + id + ", name=" + filterName  + "]";
+        NumberFormat oneDec = new DecimalFormat("#0.0");
+        return "Filter " + filterName  + " (id=" + id + ")";
+    }
+    public String toStringShort() {
+        return  filterName  + " (id=" + id +")";
     }
 
 }

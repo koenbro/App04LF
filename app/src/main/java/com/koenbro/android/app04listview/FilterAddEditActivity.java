@@ -77,8 +77,8 @@ public class FilterAddEditActivity extends Activity {
         mFilter.setFilterName(getString(R.string.hint_filter_name));
         mFilter.setFilterForBW(false);
         mFilter.setFilterForBW(false);
-        mFilter.setFilterFactorBW(Float.parseFloat(getString(R.string.hint_ff_bw)));
-        mFilter.setFilterFactorColor(Float.parseFloat(getString(R.string.hint_ff_color)));
+        mFilter.setFilterFactorBW(Double.parseDouble(getString(R.string.hint_ff_bw)));
+        mFilter.setFilterFactorColor(Double.parseDouble(getString(R.string.hint_ff_color)));
         return(mFilter);
     }
 
@@ -94,8 +94,8 @@ public class FilterAddEditActivity extends Activity {
         mFilter.setFilterName(mFilterName.getText().toString());
         mFilter.setFilterForBW(mFilterForBW.isChecked());  //(bFilterForBW);
         mFilter.setFilterForColor(mFilterForColor.isChecked()); //(bFilterForColor);
-        mFilter.setFilterFactorBW(Float.parseFloat(mFilterFactorBW.getText().toString()));
-        mFilter.setFilterFactorColor(Float.parseFloat(mFilterFactorColor.getText().toString()));
+        mFilter.setFilterFactorBW(Double.parseDouble(mFilterFactorBW.getText().toString()));
+        mFilter.setFilterFactorColor(Double.parseDouble(mFilterFactorColor.getText().toString()));
         return(mFilter);
     }
 
@@ -159,6 +159,8 @@ public class FilterAddEditActivity extends Activity {
                 }
                 finish();
                 db.close();
+                FxFPairs ffPairs = new FxFPairs();
+                ffPairs.generateAllPairs();
                 return true;
             /*case R.id.action_settings:
                 openSettings();

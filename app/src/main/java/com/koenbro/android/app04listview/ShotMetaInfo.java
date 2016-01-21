@@ -12,18 +12,22 @@ public class ShotMetaInfo {
     private String day;
     private String time;
     private Time now;
+    DBUtil dbUtil;
     private GPSTracker gps;
     private double latitude;
     private double longitude;
 
     public ShotMetaInfo() {
+        dbUtil = new DBUtil();
         now = new Time(Time.getCurrentTimezone());
         gps = new GPSTracker(ApplicationContextProvider.getContext());
     }
 
     private void timeStamp(){
         now.setToNow();
-        day =  now.year +"-"+(now.month+1)+"-"+now.monthDay;
+        day =  now.year + "-" +
+                dbUtil.leadingZero(now.month+1) + "-" +
+                dbUtil.leadingZero(now.monthDay);
         time = now.format("%k:%M:%S");
     }
 
@@ -40,7 +44,12 @@ public class ShotMetaInfo {
             // can't get location
             // GPS or Network is not enabled
             // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
+            latitude=0.0;
+            longitude=0.0;
+            Toast.makeText(ApplicationContextProvider.getContext(), "Attention!" + "\n\n" +
+                    "Your Location is UNAVAILABLE." +
+                    "\nTurn on your GPS", Toast.LENGTH_LONG).show();
+            //gps.showSettingsAlert();  <- this causes a NullPointerException
         }
     }
 
